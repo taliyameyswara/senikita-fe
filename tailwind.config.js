@@ -7,12 +7,13 @@ export default {
         primary: "#8B5C21",
         secondary: "#33312D",
         tertiary: "#CD9651",
-        red: "#CD5151",
+        customRed: "#CD5151",
       },
     },
     fontFamily: {
       raleway: ["Raleway", "sans-serif"],
       crimson: ["Crimson Text", "serif"],
+      nunito: ["Nunito", "sans-serif"],
     },
     container: {
       center: true,

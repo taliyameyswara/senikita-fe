@@ -51,23 +51,23 @@ const ProfileLinks = [
   },
   {
     id: 2,
-    title: "Jadi Seniman",
+    title: "Daftar Menjadi Penyedia Seni",
     icon: <IoColorPaletteOutline />,
-    link: "/#",
+    link: "/artprovider-register",
   },
   {
     id: 3,
-    title: <span className="text-red">Keluar</span>,
-    icon: <IoLogOutOutline className="text-red" />,
+    title: <span className="text-customRed">Keluar</span>,
+    icon: <IoLogOutOutline className="text-customRed" />,
     link: "/#",
   },
 ];
 
-const auth = false;
+const auth = true;
 
 const Navbar = () => {
   return (
-    <nav className="bg-white duration-200 relative z-40">
+    <nav className="bg-white duration-200 sticky top-0 z-40">
       <div className="py-4 shadow-sm">
         {/* desktop nav */}
         <div className="container hidden md:flex justify-between items-center">
@@ -151,14 +151,14 @@ const Navbar = () => {
                 {/* cart */}
                 <button className="relative p-3">
                   <IoCartOutline className="text-2xl text-secondary" />
-                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                  <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                     20
                   </div>
                 </button>
                 {/* message */}
                 <button className="relative p-3">
                   <IoChatboxOutline className="text-2xl text-secondary" />
-                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                  <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                     20
                   </div>
                 </button>
@@ -241,14 +241,14 @@ const Navbar = () => {
                   {/* cart */}
                   <button className="relative p-3">
                     <IoCartOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                    <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                       20
                     </div>
                   </button>
                   {/* message */}
                   <button className="relative p-3">
                     <IoChatboxOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                    <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                       20
                     </div>
                   </button>
