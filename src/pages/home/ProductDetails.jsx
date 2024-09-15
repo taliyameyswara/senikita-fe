@@ -10,7 +10,7 @@ import ProductList from "../../components/card/ProductList";
 import { ProductData } from "../../utils/ProductData";
 
 const product = {
-  category: "Produk Kesenian",
+  type: "Produk Kesenian",
   name: "Lukisan Abstrak Khas Jawa Tengah",
   price: 1500000,
   rating: 4.6,
