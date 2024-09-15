@@ -15,38 +15,48 @@ import CategoryLists from "./pages/admin/Categories/CategoryLists";
 import NotFound from "./pages/auth/404";
 import VerificationLists from "./pages/admin/Verification/VerificationLists";
 
+import SearchResult from "./pages/home/SearchResult";
+import ProductDetails from "./pages/home/ProductDetails";
+import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {/* route for public after login */}
-        <Route element={<PublicRoutes />}>
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/otp" element={<OTPVerification />} />
-        </Route>
+      <ToastContainer>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {/* route for public after login */}
+          <Route element={<PublicRoutes />}>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/otp" element={<OTPVerification />} />
+          </Route>
 
 
-        {/* route for admin */}
-        <Route element={<AdminRoutes />}>
-          <Route path='/dashboard' element={<Dashboard />} />
-          {/* user */}
-          <Route path='/dashboard/users' element={<UserLists />} />
-          {/* category */}
-          <Route path='/dashboard/categories' element={<CategoryLists />} />
-          {/* verification shop */}
-          <Route path='/dashboard/verification-shop' element={<VerificationLists />} />
-        </Route>
+          {/* route for admin */}
+          <Route element={<AdminRoutes />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+            {/* user */}
+            <Route path='/dashboard/users' element={<UserLists />} />
+            {/* category */}
+            <Route path='/dashboard/categories' element={<CategoryLists />} />
+            {/* verification shop */}
+            <Route path='/dashboard/verification-shop' element={<VerificationLists />} />
+          </Route>
 
-        {/* Route 403 Not Authorized */}
-        <Route path="/not-authorized" element={<NotAuthorized />} />
-        {/* Route 404 */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <ToastContainer />
-    </Router>
+          {/* Route 403 Not Authorized */}
+          <Route path="/not-authorized" element={<NotAuthorized />} />
+
+          {/* Route 404 */}
+          <Route path="*" element={<NotFound />} />
+
+          {/* Route for home */}
+          <Route path="/searchresult" element={<SearchResult />} />
+          <Route path="/productdetails" element={<ProductDetails />} />
+          <Route path="/artprovider-register" element={<ArtProviderRegister />} />
+        </Routes >
+      </ToastContainer >
+    </Router >
   );
 }
 

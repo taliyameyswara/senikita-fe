@@ -9,10 +9,9 @@ export default {
         primary: "#8B5C21",
         secondary: "#33312D",
         tertiary: "#CD9651",
-        red: "#CD5151",
-
         // Custom color
         'grey-custom': '#F1F5F9',
+        customRed: "#CD5151",
       },
     },
 
@@ -20,6 +19,7 @@ export default {
       raleway: ["Raleway", "sans-serif"],
       crimson: ["Crimson Text", "serif"],
       inter: ['Inter', 'sans-serif'],
+      nunito: ["Nunito", "sans-serif"],
     },
     container: {
       center: true,

@@ -1,13 +1,9 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
-/* Crimson text */
-@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
-
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* Crimson text */
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap");
 
 /* Raleway */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
@@ -60,4 +56,39 @@
 
 .bounce-out {
   animation: bounceOut 0.2s ease-out;
+}
+
+/* slider styling */
+
+.slick-dots li button:before {
+  color: white !important;
+  opacity: 0.75;
+}
+
+.slick-dots li.slick-active button:before {
+  color: white !important;
+  opacity: 1;
+}
+
+/* Custom CSS for Slick Dots */
+
+.custom-dots {
+  display: flex !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  @apply gap-2 mt-2 space-x-0 md:gap-3;
+}
+
+.custom-dots li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: opacity(0.65);
+  @apply w-14 h-14 md:w-16 md:h-16;
+}
+
+.custom-dots li.slick-active a {
+  filter: opacity(1);
+  @apply border-4 rounded-xl border-tertiary;
 }
