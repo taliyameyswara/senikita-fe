@@ -54,9 +54,9 @@ function App() {
           <Route path="/searchresult" element={<SearchResult />} />
           <Route path="/productdetails" element={<ProductDetails />} />
           <Route path="/artprovider-register" element={<ArtProviderRegister />} />
-        </Routes >
-      </ToastContainer >
-    </Router >
+        </Routes>
+      </ToastContainer>
+    </Router>
   );
 }
 
