@@ -8,18 +8,25 @@
 /* Raleway */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
-/* Nunito */
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+/* Additional styles */
+@import 'additional-styles/utility-patterns.css';
+@import 'additional-styles/range-slider.css';
+@import 'additional-styles/toggle-switch.css';
+@import 'additional-styles/flatpickr.css';
+@import 'additional-styles/theme.css';
+
 
 @keyframes bounceIn {
   0% {
     transform: scale(0.5);
     opacity: 0;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -31,10 +38,12 @@
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(0.5);
     opacity: 0;
   }
+
   100% {
     transform: scale(0.5);
     opacity: 0;
@@ -68,7 +77,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
-  @apply mt-2 space-x-0 gap-2 md:gap-3;
+  @apply gap-2 mt-2 space-x-0 md:gap-3;
 }
 
 .custom-dots li a {
@@ -81,5 +90,5 @@
 
 .custom-dots li.slick-active a {
   filter: opacity(1);
-  @apply rounded-xl border-4 border-tertiary;
+  @apply border-4 rounded-xl border-tertiary;
 }

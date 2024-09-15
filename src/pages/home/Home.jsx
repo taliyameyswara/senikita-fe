@@ -5,6 +5,7 @@ import Footer from "../../components/footer/Footer";
 import { ProductData } from "../../utils/ProductData";
 
 const Home = () => {
+
   return (
     <div>
       <div className="">
