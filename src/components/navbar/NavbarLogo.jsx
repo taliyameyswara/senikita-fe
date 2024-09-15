@@ -4,7 +4,7 @@ const NavbarLogo = () => {
   return (
     <div>
       {/* navbar with logo */}
-      <nav className="bg-white duration-200 relative z-40">
+      <nav className="bg-white duration-200 relative z-40 shadow">
         <div className="py-4 shadow-sm flex items-center justify-center">
           {/* logo */}
           <Link

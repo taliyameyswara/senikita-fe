@@ -46,7 +46,7 @@ const ScrollTab = ({ tabs }) => {
   return (
     <div>
       <div
-        className="flex  bg-white sticky top-20 z-20 my-3  "
+        className="flex  bg-white sticky top-20 z-20 my-3"
         style={{ width: "100% !important" }}
       >
         {tabs.map((tab, index) => (

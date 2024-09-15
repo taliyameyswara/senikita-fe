@@ -15,6 +15,12 @@ const keyword = "seni tari";
 
 const SearchResult = () => {
   const products = ProductData;
+
+  const [selectedCharacter, setSelectedCharacter] = useState(null);
+
+  const handleCharacterChange = (selectedOption) => {
+    setSelectedCharacter(selectedOption);
+  };
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Hasil Pencarian", to: "/searchresult" },
@@ -58,7 +64,6 @@ const SearchResult = () => {
   // Filter price
   const [selectedPriceOptions, setSelectedPriceOptions] = useState([]);
   const priceOptions = [
-    { value: "Semua Harga", label: "Semua Harga" },
     { value: "0-100000", label: "Rp 0 - Rp 100.000" },
     { value: "100000-500000", label: "Rp 100.000 - Rp 500.000" },
     { value: "500000-1000000", label: "Rp 500.000 - Rp 1.000.000" },
@@ -110,25 +115,24 @@ const SearchResult = () => {
               <ToggleButton icon={<IoFilterOutline />} title="Filter">
                 <div className="grid grid-rows-3 mt-3 gap-3">
                   <SearchInput
-                    name="Filter daerah"
+                    name="Filter karakter"
                     apiUrl="https://rickandmortyapi.com/api/character"
-                    placeholder="Cari daerah..."
+                    placeholder="Cari karakter..."
                     mapData={mapData}
                     handleSelect={handleLocationSelect}
                   />
+
                   <Selection
                     name={"Filter harga"}
                     options={priceOptions}
                     selectedOptions={selectedPriceOptions}
                     onSelect={handlePriceSelect}
-                    placeholder="Semua Harga"
                   />
                   <Selection
                     name={"Filter rating"}
                     options={ratingOptions}
                     selectedOptions={selectedRatingOptions}
                     onSelect={handleRatingSelect}
-                    placeholder="Semua Rating"
                   />
                 </div>
               </ToggleButton>
@@ -137,25 +141,22 @@ const SearchResult = () => {
             {/* desktop */}
             <div className="hidden md:grid md:grid-cols-3 gap-3 items-end">
               <SearchInput
-                name="Filter daerah"
                 apiUrl="https://rickandmortyapi.com/api/character"
-                placeholder="Cari daerah..."
+                placeholder="Filter Daerah"
                 mapData={mapData}
                 handleSelect={handleLocationSelect}
               />
               <Selection
-                name={"Filter harga"}
                 options={priceOptions}
                 selectedOptions={selectedPriceOptions}
                 onSelect={handlePriceSelect}
-                placeholder="Semua Harga"
+                placeholder="Filter Harga"
               />
               <Selection
-                name={"Filter rating"}
                 options={ratingOptions}
                 selectedOptions={selectedRatingOptions}
                 onSelect={handleRatingSelect}
-                placeholder="Semua Rating"
+                placeholder="Filter Rating"
               />
             </div>
           </div>

@@ -12,11 +12,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 
 /* Additional styles */
-@import "additional-styles/utility-patterns.css";
+/* @import "additional-styles/utility-patterns.css";
 @import "additional-styles/range-slider.css";
 @import "additional-styles/toggle-switch.css";
 @import "additional-styles/flatpickr.css";
-@import "additional-styles/theme.css";
+@import "additional-styles/theme.css"; */
 
 @keyframes bounceIn {
   0% {

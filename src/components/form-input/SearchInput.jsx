@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 import axios from "axios";
-import { IoLocationOutline } from "react-icons/io5";
 
-const SearchFilter = ({
+const SearchInput = ({
   name,
   apiUrl,
   placeholder,
@@ -12,9 +12,21 @@ const SearchFilter = ({
 }) => {
   const [items, setItems] = useState([]);
   const [query, setQuery] = useState("");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const fetchData = async () => {
+  // Fetch data when the dropdown menu is opened
+  const fetchDataOnOpen = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}`);
+      setItems(data.results);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Fetch data when typing in the search query
+  const fetchDataOnQuery = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}?${queryParam}=${query}`);
       setItems(data.results);
@@ -25,48 +37,57 @@ const SearchFilter = ({
 
   useEffect(() => {
     if (query) {
-      fetchData();
-      setIsDropdownOpen(true);
-    } else {
-      setIsDropdownOpen(false);
+      fetchDataOnQuery();
     }
   }, [query]);
 
   const handleItemSelect = (item) => {
-    setQuery(mapData(item));
+    setSelectedItem(item);
     handleSelect(item);
-    setIsDropdownOpen(false);
   };
 
   return (
     <div>
       <div className="mb-1 text-gray-700">{name}</div>
-      <div className="relative">
-        <input
-          type="text"
-          placeholder={placeholder}
-          className="p-3 py-2 border border-gray-200 rounded-2xl shadow-sm focus:outline-none w-full"
-          onChange={(event) => setQuery(event.target.value)}
-          value={query}
-          onFocus={() => query && setIsDropdownOpen(true)}
-          onBlur={() => setTimeout(() => setIsDropdownOpen(false), 100)}
-        />
-        {isDropdownOpen && items.length > 0 && (
-          <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-xl max-h-60 overflow-y-auto">
-            {items.map((item) => (
-              <li
-                key={item.id}
-                className="p-2 px-3 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleItemSelect(item)}
-              >
-                {mapData(item)}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      <Select
+        inputValue={query}
+        onInputChange={(value) => setQuery(value)}
+        options={items.map((item) => ({
+          label: mapData(item),
+          value: item.id,
+        }))}
+        onChange={(selected) =>
+          handleItemSelect(selected ? selected.value : null)
+        }
+        onMenuOpen={() => {
+          setIsMenuOpen(true);
+          fetchDataOnOpen(); // Fetch data when dropdown is opened
+        }}
+        onMenuClose={() => setIsMenuOpen(false)}
+        placeholder={placeholder}
+        isClearable // Menambahkan isClearable di sini
+        unstyled
+        classNames={{
+          input: () => "[&_input:focus]:ring-0",
+          clearIndicator: ({ isFocused }) =>
+            ` ${
+              isFocused ? "text-neutral-600" : "text-neutral-200"
+            } hover:text-neutral-400`,
+          control: ({ isFocused }) =>
+            `p-3 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${
+              isFocused ? "border-primary" : ""
+            }`,
+          option: ({ isSelected }) =>
+            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${
+              isSelected ? " text-primary" : "text-black"
+            }`,
+          menu: () => "bg-white rounded-xl shadow-lg",
+          placeholder: () => "text-gray-500",
+          singleValue: () => "text-gray-900",
+        }}
+      />
     </div>
   );
 };
 
-export default SearchFilter;
+export default SearchInput;

@@ -4,7 +4,7 @@ import AvatarUpload from "../../components/AvatarUpload";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import FooterLogo from "../../components/footer/FooterLogo";
 import TextInput from "../../components/form-input/TextInput";
-import SelectInput from "../../components/form-input/SelectInput";
+import SearchInput from "../../components/form-input/SearchInput";
 import DateInput from "../../components/form-input/DateInput";
 import SucesssModal from "../../components/SuccessModal";
 import Selection from "../../components/Selection";
@@ -266,36 +266,44 @@ const ArtProviderRegister = () => {
               onChange={(e) => handleInputChange(e, "providerInfo", "address")}
             />
 
-            <SelectInput
+            <SearchInput
+              name={
+                <>
+                  <div className="text-sm font-semibold text-black">
+                    Kabupaten/kota
+                  </div>
+                </>
+              }
               label="Kabupaten/kota"
-              placeholder={"Pilih kabupaten/kota"}
-              options={[
-                { value: "Semarang", label: "Semarang" },
-                { value: "Demak", label: "Demak" },
-                { value: "Kudus", label: "Kudus" },
-              ]}
+              placeholder="Pilih kabupaten/kota"
+              apiUrl="https://rickandmortyapi.com/api/character"
+              mapData={(item) => item.name}
               value={formData.providerInfo.city}
-              onChange={(selected) =>
+              handleSelect={(selected) =>
                 handleInputChange(
-                  { target: { value: selected.value } },
+                  { target: { value: selected } },
                   "providerInfo",
                   "city"
                 )
               }
             />
 
-            <SelectInput
+            <SearchInput
+              name={
+                <>
+                  <div className="text-sm font-semibold text-black mt-5">
+                    Provinsi
+                  </div>
+                </>
+              }
               label="Provinsi"
-              placeholder={"Pilih provinsi"}
-              options={[
-                { value: "Jawa Tengah", label: "Jawa Tengah" },
-                { value: "Jawa Barat", label: "Jawa Barat" },
-                { value: "Jawa Timur", label: "Jawa Timur" },
-              ]}
+              placeholder="Pilih provinsi"
+              apiUrl="https://rickandmortyapi.com/api/character"
+              mapData={(item) => item.name}
               value={formData.providerInfo.province}
-              onChange={(selected) =>
+              handleSelect={(selected) =>
                 handleInputChange(
-                  { target: { value: selected.value } },
+                  { target: { value: selected } },
                   "providerInfo",
                   "province"
                 )
@@ -305,7 +313,7 @@ const ArtProviderRegister = () => {
             <Selection
               name={
                 <>
-                  <div className="text-sm font-semibold text-black">
+                  <div className="text-sm font-semibold text-black mt-5">
                     Kategori Kesenian
                   </div>
                 </>
@@ -315,7 +323,7 @@ const ArtProviderRegister = () => {
                 formData.providerInfo.artCategory.includes(option.value)
               )}
               onSelect={handleCategorySelect}
-              placeholder="Pilih kategori kesenian"
+              placeholder="Kategori kesenian"
               isMulti={true}
             />
           </div>

@@ -1,5 +1,5 @@
 // src/components/Navbar.js
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import {
   IoCartOutline,
   IoChatboxOutline,
@@ -7,19 +7,19 @@ import {
   IoLogOutOutline,
   IoColorPaletteOutline,
   IoMenuOutline,
-} from 'react-icons/io5';
-import { IoMdSearch, IoMdHeartEmpty } from 'react-icons/io';
-import { FaCaretDown } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import DropdownNav from './DropdownNav';
-import Avatar from '../../assets/avatar.png';
-import { UserContext } from '../../context/UserContext';
+} from "react-icons/io5";
+import { IoMdSearch, IoMdHeartEmpty } from "react-icons/io";
+import { FaCaretDown } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import DropdownNav from "./DropdownNav";
+import Avatar from "../../assets/avatar.png";
+import { UserContext } from "../../context/UserContext";
 // import { UserContext } from './../..'; // Import UserContext
 
 const CategoryLinks = [
-  { id: 1, name: 'Seni Lukis', link: '/#' },
-  { id: 2, name: 'Seni Tari', link: '/#' },
-  { id: 3, name: 'Seni Desain', link: '/#' },
+  { id: 1, name: "Seni Lukis", link: "/#" },
+  { id: 2, name: "Seni Tari", link: "/#" },
+  { id: 3, name: "Seni Desain", link: "/#" },
 ];
 
 const ProfileLinks = [
@@ -61,7 +61,7 @@ const Navbar = () => {
   const { user, logout, loading } = useContext(UserContext); // Use logout from context
 
   return (
-    <nav className="relative z-40 duration-200 bg-white">
+    <nav className="sticky top-0 z-40 duration-200 bg-white">
       <div className="py-4 shadow-sm">
         {/* desktop nav */}
         <div className="container items-center justify-between hidden md:flex">
@@ -135,9 +135,10 @@ const Navbar = () => {
                           href={data.link}
                           onClick={(e) => {
                             e.preventDefault();
-                            if (data.id === 3) { // ID 3 is for logout
+                            if (data.id === 3) {
+                              // ID 3 is for logout
                               logout(); // Call logout from context
-                              window.location.href = '/login'; // Redirect after logout
+                              window.location.href = "/login"; // Redirect after logout
                             }
                           }}
                           className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
@@ -226,9 +227,10 @@ const Navbar = () => {
                             href={data.link}
                             onClick={(e) => {
                               e.preventDefault();
-                              if (data.id === 3) { // ID 3 is for logout
+                              if (data.id === 3) {
+                                // ID 3 is for logout
                                 logout(); // Call logout from context
-                                window.location.href = '/login'; // Redirect after logout
+                                window.location.href = "/login"; // Redirect after logout
                               }
                             }}
                             className="flex items-center w-full gap-3 p-2 px-4 rounded-md text-secondary hover:bg-gray-100"
