@@ -1,3 +1,5 @@
+// src/components/Navbar.js
+import React, { useContext } from 'react';
 import {
   IoCartOutline,
   IoChatboxOutline,
@@ -5,92 +7,55 @@ import {
   IoLogOutOutline,
   IoColorPaletteOutline,
   IoMenuOutline,
-} from "react-icons/io5";
-import { IoMdSearch, IoMdHeartEmpty } from "react-icons/io";
-import { FaCaretDown } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import DropdownNav from "./DropdownNav";
-import Avatar from "../../assets/avatar.png";
+} from 'react-icons/io5';
+import { IoMdSearch, IoMdHeartEmpty } from 'react-icons/io';
+import { FaCaretDown } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import DropdownNav from './DropdownNav';
+import Avatar from '../../assets/avatar.png';
+import { UserContext } from '../../context/UserContext';
+// import { UserContext } from './../..'; // Import UserContext
 
 const CategoryLinks = [
-  {
-    id: 1,
-    name: "Seni Lukis",
-    link: "/#",
-  },
-  {
-    id: 2,
-    name: "Seni Tari",
-    link: "/#",
-  },
-  {
-    id: 3,
-    name: "Seni Desain",
-    link: "/#",
-  },
+  { id: 1, name: 'Seni Lukis', link: '/#' },
+  { id: 2, name: 'Seni Tari', link: '/#' },
+  { id: 3, name: 'Seni Desain', link: '/#' },
 ];
 
 const ProfileLinks = [
-  // {
-  //   id: 1,
-  //   title: "Toko Anda",
-  //   icon: <IoStorefrontOutline />,
-  //   link: "/#",
-  // },
-  // {
-  //   id: 1,
-  //   title: "Toko Anda",
-  //   icon: <IoStorefrontOutline />,
-  //   link: "/#",
-  // },
-  {
-    id: 1,
-    title: "Dashboard",
-    icon: <IoStorefrontOutline />,
-    link: "/#",
-  },
-  {
-    id: 2,
-    title: "Jadi Seniman",
-    icon: <IoColorPaletteOutline />,
-    link: "/#",
-  },
-  {
-    id: 3,
-    title: <span className="text-red">Keluar</span>,
-    icon: <IoLogOutOutline className="text-red" />,
-    link: "/#",
-  },
+  { id: 1, title: 'Dashboard', icon: <IoStorefrontOutline />, link: '/#' },
+  { id: 2, title: 'Jadi Seniman', icon: <IoColorPaletteOutline />, link: '/#' },
+  { id: 3, title: <span className="text-red">Keluar</span>, icon: <IoLogOutOutline className="text-red" />, link: '/#' },
 ];
 
-const auth = false;
-
 const Navbar = () => {
+  const { user, logout, loading } = useContext(UserContext); // Use logout from context
+
   return (
-    <nav className="bg-white duration-200 relative z-40">
+    <nav className="relative z-40 duration-200 bg-white">
       <div className="py-4 shadow-sm">
         {/* desktop nav */}
-        <div className="container hidden md:flex justify-between items-center">
+        <div className="container items-center justify-between hidden md:flex">
           {/* logo and category section */}
           <div className="flex items-center gap-4">
             {/* logo */}
             <Link
               to="/"
-              className="text-primary font-crimson font-bold tracking-widest sm:text-4xl text-2xl mr-3"
+              className="mr-3 text-2xl font-bold tracking-widest text-primary font-crimson sm:text-4xl"
             >
               senikita
             </Link>
 
             {/* category items */}
             <div className="hidden lg:block">
-              {/* dropdown  */}
+              {/* dropdown */}
               <DropdownNav title="Kategori" icon={<FaCaretDown />}>
                 <ul className="space-y-3">
                   {CategoryLinks.map((data) => (
                     <li key={data.id}>
                       <a
                         href={data.link}
-                        className="inline-block p-2 px-4 text-secondary/80 hover:underline hover:bg-gray-100 hover:text-primary w-full"
+                        className="inline-block w-full p-2 px-4 text-secondary/80 hover:underline hover:bg-gray-100 hover:text-primary"
                       >
                         {data.name}
                       </a>
@@ -103,21 +68,21 @@ const Navbar = () => {
           {/* searchbar */}
           <div className="flex-grow mx-4">
             <div className="relative group">
-              <IoMdSearch className="text-xl text-gray-600 absolute left-3 top-1/2 -translate-y-1/2" />
+              <IoMdSearch className="absolute text-xl text-gray-600 -translate-y-1/2 left-3 top-1/2" />
               <input
                 type="text"
                 placeholder="Cari kesenian.."
-                className="search-bar p-3 border border-gray-200 rounded-full bg-gray-100 focus:outline-none w-full pl-10"
+                className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none"
               />
             </div>
           </div>
 
           {/* navbar right section */}
           <div className="flex items-center gap-2">
-            {auth ? (
+            {user ? (
               // authenticated
               <>
-                {/*  profile */}
+                {/* profile */}
                 <DropdownNav
                   title={
                     <>
@@ -127,7 +92,7 @@ const Navbar = () => {
                           alt="Profile"
                           className="w-8 h-8 rounded-full"
                         />
-                        <div className="">Taliya</div>
+                        <div className="">{user.name}</div>
                       </div>
                     </>
                   }
@@ -139,7 +104,14 @@ const Navbar = () => {
                       <li key={data.id}>
                         <a
                           href={data.link}
-                          className="flex items-center gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary w-full"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (data.id === 3) { // ID 3 is for logout
+                              logout(); // Call logout from context
+                              window.location.href = '/login'; // Redirect after logout
+                            }
+                          }}
+                          className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
                         >
                           <div className="text-xl">{data.icon}</div>
                           <div className="text-base">{data.title}</div>
@@ -151,38 +123,32 @@ const Navbar = () => {
                 {/* cart */}
                 <button className="relative p-3">
                   <IoCartOutline className="text-2xl text-secondary" />
-                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5 border-white border-2">
                     20
                   </div>
                 </button>
                 {/* message */}
                 <button className="relative p-3">
                   <IoChatboxOutline className="text-2xl text-secondary" />
-                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                  <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5 border-white border-2">
                     20
                   </div>
                 </button>
                 {/* liked */}
-                <button className=" p-3">
+                <button className="p-3 ">
                   <IoMdHeartEmpty className="text-2xl text-secondary" />
                 </button>
               </>
             ) : (
               // !authenticated
               <>
-                {/* <Link
-                    to="/daftar-seniman"
-                    className="font-semibold text-sm md:text-base"
-                  >
-                    Daftar sebagai Seniman
-                  </Link> */}
                 <Link
-                  to="/"
-                  className="font-semibold text-sm md:text-base mr-4"
+                  to="/signup"
+                  className="mr-4 text-sm font-semibold md:text-base"
                 >
                   Daftar
                 </Link>
-                <div className="p-2 px-5 rounded-full bg-primary text-white">
+                <div className="p-2 px-5 text-white rounded-full bg-primary">
                   <Link to="/login" className="">
                     Masuk
                   </Link>
@@ -193,22 +159,22 @@ const Navbar = () => {
         </div>
 
         {/* mobile nav */}
-        <div className="flex flex-col md:hidden px-4">
+        <div className="flex flex-col px-4 md:hidden">
           {/* top section*/}
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center justify-between mb-4">
             {/* logo */}
             <Link
               to="/"
-              className="text-primary font-crimson font-bold tracking-widest sm:text-4xl text-2xl mr-3"
+              className="mr-3 text-2xl font-bold tracking-widest text-primary font-crimson sm:text-4xl"
             >
               senikita
             </Link>
             {/* profile, cart, message, liked */}
             <div className="flex items-center gap-2">
-              {auth ? (
+              {user ? (
                 // authenticated
                 <>
-                  {/*  profile */}
+                  {/* profile */}
                   <DropdownNav
                     title={
                       <>
@@ -229,7 +195,14 @@ const Navbar = () => {
                         <li key={data.id}>
                           <a
                             href={data.link}
-                            className="flex items-center gap-3 p-2 px-4 text-secondary hover:bg-gray-100 w-full rounded-md"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (data.id === 3) { // ID 3 is for logout
+                                logout(); // Call logout from context
+                                window.location.href = '/login'; // Redirect after logout
+                              }
+                            }}
+                            className="flex items-center w-full gap-3 p-2 px-4 rounded-md text-secondary hover:bg-gray-100"
                           >
                             <div className="text-xl">{data.icon}</div>
                             <div className="text-base">{data.title}</div>
@@ -241,38 +214,32 @@ const Navbar = () => {
                   {/* cart */}
                   <button className="relative p-3">
                     <IoCartOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5 border-white border-2">
                       20
                     </div>
                   </button>
                   {/* message */}
                   <button className="relative p-3">
                     <IoChatboxOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                    <div className="w-4 h-4 bg-red text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5 border-white border-2">
                       20
                     </div>
                   </button>
                   {/* liked */}
-                  <button className=" p-3">
+                  <button className="p-3 ">
                     <IoMdHeartEmpty className="text-2xl text-secondary" />
                   </button>
                 </>
               ) : (
                 // !authenticated
                 <>
-                  {/* <Link
-                    to="/daftar-seniman"
-                    className="font-semibold text-sm md:text-base"
-                  >
-                    Daftar sebagai Seniman
-                  </Link> */}
                   <Link
                     to="/"
-                    className="font-semibold text-sm md:text-base mr-4"
+                    className="mr-4 text-sm font-semibold md:text-base"
                   >
                     Daftar
                   </Link>
-                  <div className="p-2 px-5 rounded-full bg-primary text-white">
+                  <div className="p-2 px-5 text-white rounded-full bg-primary">
                     <Link to="/login" className="">
                       Masuk
                     </Link>
@@ -282,21 +249,15 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* bottom section */}
-          <div className="flex items-center justify-between gap-4">
-            {/* category dropdown  */}
-            <DropdownNav title={<IoMenuOutline className="text-3xl" />}>
+          {/* category items */}
+          <div className="mb-4">
+            <DropdownNav title="Kategori" icon={<FaCaretDown />}>
               <ul className="space-y-3">
-                <div className="pt-2 px-4 font-semibold">
-                  <span className="">Kategori kesenian</span>
-                  <div className="w-full h-[0.5px] mt-2 bg-gray-200"></div>
-                </div>
-
                 {CategoryLinks.map((data) => (
                   <li key={data.id}>
                     <a
                       href={data.link}
-                      className="inline-block p-1 px-4 text-secondary/80 hover:underline hover:bg-gray-100 w-full rounded-md"
+                      className="inline-block w-full p-2 px-4 text-secondary/80 hover:underline hover:bg-gray-100 hover:text-primary"
                     >
                       {data.name}
                     </a>
@@ -304,17 +265,6 @@ const Navbar = () => {
                 ))}
               </ul>
             </DropdownNav>
-            {/* searchbar */}
-            <div className="flex-grow">
-              <div className="relative group">
-                <IoMdSearch className="text-xl text-gray-600 absolute left-3 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Cari kesenian.."
-                  className="search-bar p-3 border border-gray-200 rounded-full bg-gray-100 focus:outline-none w-full pl-10"
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>

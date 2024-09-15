@@ -12,15 +12,25 @@
 /* Raleway */
 @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
 
+/* Additional styles */
+@import 'additional-styles/utility-patterns.css';
+@import 'additional-styles/range-slider.css';
+@import 'additional-styles/toggle-switch.css';
+@import 'additional-styles/flatpickr.css';
+@import 'additional-styles/theme.css';
+
+
 @keyframes bounceIn {
   0% {
     transform: scale(0.5);
     opacity: 0;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 1;
   }
+
   100% {
     transform: scale(1);
     opacity: 1;
@@ -32,10 +42,12 @@
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(0.5);
     opacity: 0;
   }
+
   100% {
     transform: scale(0.5);
     opacity: 0;
