@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useAxiosInstance } from '../../../config/axiosConfig';
+import '../../../css/additional-styles/dashboard.css'
 
 
 const UserModal = ({ isOpen, onClose, user, refreshData }) => {
