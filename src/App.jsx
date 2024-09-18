@@ -57,12 +57,13 @@ function App() {
         {/* Route for home */}
         <Route path="/searchresult" element={<SearchResult />} />
         <Route path="/productdetails" element={<ProductDetails />} />
-        <Route path="/artprovider-register" element={<ArtProviderRegister />} />
+        {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
         <Route path="/user/dashboard" element={<DashboardUser />} />
         <Route
           path="/user/dashboard/transaction"
           element={<DashboardTransaction />}
         />
+        <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
       </Routes>
       <ToastContainer />
     </Router>

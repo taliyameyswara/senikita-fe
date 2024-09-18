@@ -8,6 +8,7 @@ import UserModal from './UserModal';
 import DeleteUserModal from './DeleteUserModal';
 import LoadingTable from '../../../components/loading/LoadingTable';
 import { toast } from 'react-toastify';
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 function UserLists() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,6 +22,11 @@ function UserLists() {
     const [search, setSearch] = useState(''); // State untuk menyimpan input pencarian
     const axiosInstance = useAxiosInstance();
 
+    const breadcrumbItems = [
+        { label: "Dashboard", to: "/dashboard" },
+        { label: "Users", to: "/dashboard/users" },
+        { label: "Management Users", to: "/dashboard/users" },
+    ];
 
     const openModal = (user = null) => {
         setSelectedUser(user);
@@ -92,7 +98,8 @@ function UserLists() {
                 <main>
                     <div className="w-full px-4 py-8 mx-auto sm:px-6 lg:px-8 max-w-9xl">
                         {/* Page header */}
-                        <div className="mb-5 sm:flex sm:justify-between sm:items-center">
+                        <Breadcrumbs items={breadcrumbItems} />
+                        <div className="mt-4 mb-5 sm:flex sm:justify-between sm:items-center">
                             <div className="mb-4 sm:mb-0">
                                 <h1 className="text-2xl font-bold md:text-3xl text-slate-800">Users </h1>
                             </div>
@@ -105,7 +112,7 @@ function UserLists() {
                                     className="px-4 py-2 border rounded border-slate-300"
                                 />
                                 <button
-                                    className="text-white bg-indigo-500 btn hover:bg-indigo-600"
+                                    className="flex items-center p-2 text-white bg-indigo-500 rounded-md hover:bg-indigo-600"
                                     onClick={() => openModal()}
                                 >
                                     <svg className="w-4 h-4 opacity-50 fill-current shrink-0" viewBox="0 0 16 16">

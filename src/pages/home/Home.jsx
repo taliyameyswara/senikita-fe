@@ -3,6 +3,7 @@ import ProductList from "../../components/card/ProductList";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import { ProductData } from "../../utils/ProductData";
+import { useAxiosInstance } from '../../config/axiosConfig';
 
 const Home = () => {
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { IoPeople } from "react-icons/io5";
 import SidebarLinkGroup from './SidebarLinkGroup';
+import '../../../css/additional-styles/dashboard.css'
 
 function Sidebar({
   sidebarOpen,

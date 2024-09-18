@@ -157,11 +157,10 @@ const LogIn = () => {
               <div>
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white font-semibold rounded-xl ${
-                    isFormValid
+                  className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
                       ? "bg-primary hover:bg-primary-dark"
                       : "bg-gray-300 cursor-not-allowed"
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
                   disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
                 >
                   {isLoading ? (

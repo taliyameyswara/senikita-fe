@@ -113,7 +113,7 @@ const ProductDetails = () => {
   return (
     <>
       <Navbar />
-      <div className="py-4 px-6 container mb-20">
+      <div className="container px-6 py-4 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
         <OrderBottomBar product={product} />

@@ -44,7 +44,7 @@ const ProfileLinks = [
     id: 2,
     title: "Daftar Menjadi Penyedia Seni",
     icon: <IoColorPaletteOutline />,
-    link: "/artprovider-register",
+    link: "/daftar/seniman",
   },
   {
     id: 3,
@@ -131,12 +131,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     <ul className="space-y-3">
                       {ProfileLinks.map((data) => (
                         <li key={data.id}>
-                          <a
-                            href={data.link}
+                          <Link
+                            to={data.link}
                             onClick={(e) => {
-                              e.preventDefault();
                               if (data.id === 3) {
-                                // ID 3 is for logout
+                                e.preventDefault();
                                 logout(); // Call logout from context
                                 window.location.href = "/login"; // Redirect after logout
                               }
@@ -145,7 +144,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                           >
                             <div className="text-xl">{data.icon}</div>
                             <div className="text-base">{data.title}</div>
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
