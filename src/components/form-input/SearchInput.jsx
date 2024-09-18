@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import axios from "axios";
+import { useAxiosInstance } from '../../config/axiosConfig';
+
 
 const SearchInput = ({
   name,
@@ -9,7 +10,11 @@ const SearchInput = ({
   mapData,
   handleSelect,
   queryParam = "name",
+  dataKey,
+  disabled, // Add disabled prop
 }) => {
+  const axios = useAxiosInstance();
+
   const [items, setItems] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -19,7 +24,7 @@ const SearchInput = ({
   const fetchDataOnOpen = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}`);
-      setItems(data.results);
+      setItems(data[dataKey]);
     } catch (error) {
       console.error(error);
     }
@@ -29,7 +34,7 @@ const SearchInput = ({
   const fetchDataOnQuery = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}?${queryParam}=${query}`);
-      setItems(data.results);
+      setItems(data[dataKey]);
     } catch (error) {
       console.error(error);
     }
@@ -66,20 +71,18 @@ const SearchInput = ({
         onMenuClose={() => setIsMenuOpen(false)}
         placeholder={placeholder}
         isClearable // Menambahkan isClearable di sini
+        isDisabled={disabled}
         unstyled
         classNames={{
           input: () => "[&_input:focus]:ring-0",
           clearIndicator: ({ isFocused }) =>
-            ` ${
-              isFocused ? "text-neutral-600" : "text-neutral-200"
+            ` ${isFocused ? "text-neutral-600" : "text-neutral-200"
             } hover:text-neutral-400`,
           control: ({ isFocused }) =>
-            `p-3 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${
-              isFocused ? "border-primary" : ""
+            `p-3 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${isFocused ? "border-primary" : ""
             }`,
           option: ({ isSelected }) =>
-            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${
-              isSelected ? " text-primary" : "text-black"
+            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${isSelected ? " text-primary" : "text-black"
             }`,
           menu: () => "bg-white rounded-xl shadow-lg",
           placeholder: () => "text-gray-500",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAxiosInstance } from '../../../config/axiosConfig';
 import { toast } from 'react-toastify';
+import '../../../css/additional-styles/dashboard.css'
 
 
 function DeleteCategoryModal({ isOpen, onClose, category, refreshData }) {

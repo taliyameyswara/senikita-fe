@@ -45,7 +45,7 @@ const ProfileLinks = [
     id: 2,
     title: "Daftar Menjadi Penyedia Seni",
     icon: <IoColorPaletteOutline />,
-    link: "/artprovider-register",
+    link: "/daftar/seniman",
   },
   {
     id: 3,
@@ -131,21 +131,20 @@ const Navbar = () => {
                   <ul className="space-y-3">
                     {ProfileLinks.map((data) => (
                       <li key={data.id}>
-                        <a
-                          href={data.link}
+                        <Link
+                          to={data.link}
                           onClick={(e) => {
-                            e.preventDefault();
                             if (data.id === 3) {
-                              // ID 3 is for logout
-                              logout(); // Call logout from context
-                              window.location.href = "/login"; // Redirect after logout
+                              e.preventDefault();
+                              logout();
+                              window.location.href = "/login";
                             }
                           }}
                           className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
                         >
                           <div className="text-xl">{data.icon}</div>
                           <div className="text-base">{data.title}</div>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -223,12 +222,11 @@ const Navbar = () => {
                     <ul className="space-y-3">
                       {ProfileLinks.map((data) => (
                         <li key={data.id}>
-                          <a
-                            href={data.link}
+                          <Link
+                            to={data.link}
                             onClick={(e) => {
-                              e.preventDefault();
                               if (data.id === 3) {
-                                // ID 3 is for logout
+                                e.preventDefault();
                                 logout(); // Call logout from context
                                 window.location.href = "/login"; // Redirect after logout
                               }
@@ -237,7 +235,7 @@ const Navbar = () => {
                           >
                             <div className="text-xl">{data.icon}</div>
                             <div className="text-base">{data.title}</div>
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>

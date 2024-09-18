@@ -4,7 +4,7 @@ import Header from '../../../components/admin/partials/Header';
 import DataTable from '../../../components/admin/components/DataTable';
 import PaginationClassic from '../../../components/admin/components/PaginationClassic';
 import { useAxiosInstance } from '../../../config/axiosConfig';
-
+import Breadcrumbs from "../../../components/Breadcrumbs";
 import CategoryModal from './CategoryModal';
 import DeleteCategoryModal from './DeleteCategoryModal';
 import { toast } from 'react-toastify';
@@ -21,6 +21,12 @@ function CategoryLists() {
     const [totalPages, setTotalPages] = useState(1);
     const [search, setSearch] = useState(''); // State untuk menyimpan input pencarian
     const axiosInstance = useAxiosInstance();
+
+    const breadcrumbItems = [
+        { label: "Dashboard", to: "/dashboard" },
+        { label: "Categories", to: "/dashboard/categories" },
+        { label: "Management Categories", to: "/dashboard/categories" },
+    ];
 
     const openModal = (data = null) => {
         setselectedData(data);
@@ -93,8 +99,10 @@ function CategoryLists() {
                 <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
                 <main>
                     <div className="w-full px-4 py-8 mx-auto sm:px-6 lg:px-8 max-w-9xl">
+                        <Breadcrumbs items={breadcrumbItems} />
+
                         {/* Page header */}
-                        <div className="mb-5 sm:flex sm:justify-between sm:items-center">
+                        <div className="mt-4 mb-5 sm:flex sm:justify-between sm:items-center">
                             <div className="mb-4 sm:mb-0">
                                 <h1 className="text-2xl font-bold md:text-3xl text-slate-800">Categories ✨</h1>
                             </div>
@@ -107,7 +115,7 @@ function CategoryLists() {
                                     className="px-4 py-2 border rounded border-slate-300"
                                 />
                                 <button
-                                    className="text-white bg-indigo-500 btn hover:bg-indigo-600"
+                                    className="flex items-center p-2 text-white bg-indigo-500 rounded-md hover:bg-indigo-600"
                                     onClick={() => openModal()}
                                 >
                                     <svg className="w-4 h-4 opacity-50 fill-current shrink-0" viewBox="0 0 16 16">
