@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Stepper from "../../components/Stepper";
 import AvatarUpload from "../../components/AvatarUpload";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
@@ -8,32 +8,67 @@ import SearchInput from "../../components/form-input/SearchInput";
 import DateInput from "../../components/form-input/DateInput";
 import SucesssModal from "../../components/SuccessModal";
 import Selection from "../../components/Selection";
+import { UserContext } from "../../context/UserContext";
+import { useAxiosInstance } from '../../config/axiosConfig';
 
 const ArtProviderRegister = () => {
+  const { user } = useContext(UserContext);
+  const axiosInstance = useAxiosInstance();
+  const [loading, setLoading] = useState(true);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+
   const [currentStep, setCurrentStep] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const [formData, setFormData] = useState({
     personalInfo: {
-      photo: null,
-      fullName: "",
+      profile_picture: null,
+      name: "",
       username: "",
-      phone: "",
-      birthDate: "",
-      birthPlace: "",
+      call_number: "",
+      birth_date: "",
+      birth_location: "",
       gender: "",
     },
     providerInfo: {
-      providerPhoto: null,
-      providerName: "",
-      providerDescription: "",
+      name: "",
+      desc: "",
       address: "",
-      city: "",
+      city_id: "",
       province: "",
-      artCategory: [],
+      categories: [],
     },
     termsAccepted: false,
   });
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prevData) => ({
+        ...prevData,
+        personalInfo: {
+          ...prevData.personalInfo,
+          username: user.name, // Assuming 'name' is the desired field from user
+        },
+      }));
+    }
+
+    axiosInstance.get("/category")
+      .then(response => {
+        console.log(response.data.data.data)
+        const categories = response.data.data.data.map(category => ({
+          value: category.id.toString(),
+          label: category.name
+        }));
+        setCategoryOptions(categories);
+        console.log(categories)
+      })
+      .catch(err => {
+        console.error("Error fetching data:", err);
+      })
+      .finally(() => {
+        // Mengatur status loading
+        setLoading(false);
+      });
+  }, [user]);
 
   const steps = [
     "Data Pribadi",
@@ -77,26 +112,26 @@ const ArtProviderRegister = () => {
 
   const isStepValid = () => {
     if (currentStep === 0) {
-      const { fullName, username, phone, birthDate, birthPlace, gender } =
+      const { name, username, call_number, birth_date, birth_location, gender } =
         formData.personalInfo;
-      return fullName && username && phone && birthDate && birthPlace && gender;
+      return name && username && call_number && birth_date && birth_location && gender;
     }
     if (currentStep === 1) {
       const {
-        providerName,
-        providerDescription,
+        name,
+        desc,
         address,
-        city,
+        city_id,
         province,
-        artCategory,
+        categories,
       } = formData.providerInfo;
       return (
-        providerName &&
-        providerDescription &&
+        name &&
+        desc &&
         address &&
-        city &&
+        city_id &&
         province &&
-        artCategory
+        categories
       );
     }
     if (currentStep === 2) {
@@ -105,29 +140,73 @@ const ArtProviderRegister = () => {
     return false;
   };
 
-  const handleSubmit = () => {
-    setIsModalOpen(true);
-  };
-
   const [selectedCategoryOptions, setSelectedCategoryOptions] = useState([]);
-  const categoryOptions = [
-    { value: "Seni Tari", label: "Seni Tari" },
-    { value: "Seni Rupa", label: "Seni Rupa" },
-    { value: "Seni Musik", label: "Seni Musik" },
-  ];
+
+  // const categoryOptions = [
+  //   { value: "1", label: "Seni Tari" },
+  //   { value: "2", label: "Seni Rupa" },
+  //   { value: "3", label: "Seni Musik" },
+  // ];
+
   const handleCategorySelect = (selected) => {
     const selectedValues = selected.map((option) => option.value);
     const updatedFormData = {
       ...formData,
       providerInfo: {
         ...formData.providerInfo,
-        artCategory: selectedValues,
+        categories: selectedValues,
       },
     };
     setFormData(updatedFormData);
     setSelectedCategoryOptions(selected);
     console.log("Updated Form Data:", updatedFormData); // Log the updated form data
   };
+
+
+  const handleSubmit = async () => {
+    const providerJson = {
+      ...formData.providerInfo,
+    };
+
+    // Create FormData for personalInfo
+    const personalFormData = new FormData();
+    for (const key in formData.personalInfo) {
+      if (formData.personalInfo[key]) {
+        personalFormData.append(key, formData.personalInfo[key]);
+      }
+    }
+
+    personalFormData.append('_method', 'PUT');
+
+    try {
+      // Post to /user/shop
+      await axiosInstance.post("/user/shop", providerJson, {
+        headers: {
+          "Content-Type": "application/json", // Set header for JSON
+        },
+      });
+
+      // Post to /user/edit-profile
+      await axiosInstance.post("/user/edit-profile", personalFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Open success modal
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
+  };
+
+
+
+  if (!user) {
+    return "";
+  }
+  if (loading) return <div></div>;
+
 
   return (
     <div className="container px-6 mb-8">
@@ -148,15 +227,15 @@ const ArtProviderRegister = () => {
             <AvatarUpload
               title={"Upload foto profil"}
               onImageSelect={(file) =>
-                handleImageSelect(file, "personalInfo", "photo")
+                handleImageSelect(file, "personalInfo", "profile_picture")
               }
             />
 
             <TextInput
               label="Nama Lengkap"
               placeholder="Masukkan nama lengkap"
-              value={formData.personalInfo.fullName}
-              onChange={(e) => handleInputChange(e, "personalInfo", "fullName")}
+              value={formData.personalInfo.name}
+              onChange={(e) => handleInputChange(e, "personalInfo", "name")}
             />
 
             <TextInput
@@ -169,33 +248,33 @@ const ArtProviderRegister = () => {
             <TextInput
               label="Nomor Telepon"
               placeholder="Masukkan nomor telepon"
-              value={formData.personalInfo.phone}
-              onChange={(e) => handleInputChange(e, "personalInfo", "phone")}
+              value={formData.personalInfo.call_number}
+              onChange={(e) => handleInputChange(e, "personalInfo", "call_number")}
             />
 
             <DateInput
               label="Tanggal Lahir"
-              value={formData.personalInfo.birthDate}
+              value={formData.personalInfo.birth_date}
               onChange={(e) =>
-                handleInputChange(e, "personalInfo", "birthDate")
+                handleInputChange(e, "personalInfo", "birth_date")
               }
             />
 
             <TextInput
               label="Tempat Lahir"
               placeholder="Masukkan tempat lahir"
-              value={formData.personalInfo.birthPlace}
+              value={formData.personalInfo.birth_location}
               onChange={(e) =>
-                handleInputChange(e, "personalInfo", "birthPlace")
+                handleInputChange(e, "personalInfo", "birth_location")
               }
             />
 
             <div className="mb-5">
               <label className="text-sm font-semibold">Jenis Kelamin</label>
-              <div className="mt-1 flex space-x-3">
+              <div className="flex mt-1 space-x-3">
                 <label
                   htmlFor="male"
-                  className="flex-1 flex space-x-2 justify-between items-center p-3 py-2 border border-gray-300 rounded-xl"
+                  className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-xl"
                 >
                   <span>Laki-laki</span>
                   <input
@@ -211,7 +290,7 @@ const ArtProviderRegister = () => {
                 </label>
                 <label
                   htmlFor="female"
-                  className="flex-1 flex space-x-2 justify-between items-center p-3 py-2 border border-gray-300 rounded-xl"
+                  className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-xl"
                 >
                   <span>Perempuan</span>
                   <input
@@ -233,28 +312,28 @@ const ArtProviderRegister = () => {
         {/* Step 2: Data Penyedia Kesenian */}
         {currentStep === 1 && (
           <div className="mt-5">
-            <AvatarUpload
+            {/* <AvatarUpload
               title={"Upload foto penyedia kesenian"}
               onImageSelect={(file) =>
-                handleImageSelect(file, "providerInfo", "providerPhoto")
+                handleImageSelect(file, "providerInfo", "providerprofile_picture")
               }
-            />
+            /> */}
 
             <TextInput
               label="Nama Penyedia Kesenian"
               placeholder="Masukkan nama penyedia kesenian"
-              value={formData.providerInfo.providerName}
+              value={formData.providerInfo.name}
               onChange={(e) =>
-                handleInputChange(e, "providerInfo", "providerName")
+                handleInputChange(e, "providerInfo", "name")
               }
             />
 
             <TextInput
               label="Deskripsi Penyedia Kesenian"
               placeholder="Masukkan deskripsi penyedia kesenian"
-              value={formData.providerInfo.providerDescription}
+              value={formData.providerInfo.des}
               onChange={(e) =>
-                handleInputChange(e, "providerInfo", "providerDescription")
+                handleInputChange(e, "providerInfo", "desc")
               }
               textarea
             />
@@ -269,36 +348,15 @@ const ArtProviderRegister = () => {
             <SearchInput
               name={
                 <>
-                  <div className="text-sm font-semibold text-black">
-                    Kabupaten/kota
-                  </div>
-                </>
-              }
-              label="Kabupaten/kota"
-              placeholder="Pilih kabupaten/kota"
-              apiUrl="https://rickandmortyapi.com/api/character"
-              mapData={(item) => item.name}
-              value={formData.providerInfo.city}
-              handleSelect={(selected) =>
-                handleInputChange(
-                  { target: { value: selected } },
-                  "providerInfo",
-                  "city"
-                )
-              }
-            />
-
-            <SearchInput
-              name={
-                <>
-                  <div className="text-sm font-semibold text-black mt-5">
+                  <div className="text-sm font-semibold text-black ">
                     Provinsi
                   </div>
                 </>
               }
               label="Provinsi"
               placeholder="Pilih provinsi"
-              apiUrl="https://rickandmortyapi.com/api/character"
+              dataKey="provinces"
+              apiUrl="/provinces"
               mapData={(item) => item.name}
               value={formData.providerInfo.province}
               handleSelect={(selected) =>
@@ -310,17 +368,43 @@ const ArtProviderRegister = () => {
               }
             />
 
+            <SearchInput
+              name={
+                <>
+                  <div className="mt-5 text-sm font-semibold text-black">
+                    Kabupaten/kota
+                  </div>
+                </>
+              }
+              label="Kabupaten/kota"
+              placeholder="Pilih kabupaten/kota"
+              apiUrl={`/cities-by-province/${formData.providerInfo.province}`}
+              dataKey="cities"
+              mapData={(item) => item.name}
+              value={formData.providerInfo.city_id}
+              handleSelect={(selected) =>
+                handleInputChange(
+                  { target: { value: selected } },
+                  "providerInfo",
+                  "city_id"
+                )
+              }
+              disabled={!formData.providerInfo.province} // Disable if province is not selected
+            />
+
+
+
             <Selection
               name={
                 <>
-                  <div className="text-sm font-semibold text-black mt-5">
+                  <div className="mt-5 text-sm font-semibold text-black">
                     Kategori Kesenian
                   </div>
                 </>
               }
               options={categoryOptions}
               selectedOptions={categoryOptions.filter((option) =>
-                formData.providerInfo.artCategory.includes(option.value)
+                formData.providerInfo.categories.includes(option.value)
               )}
               onSelect={handleCategorySelect}
               placeholder="Kategori kesenian"
@@ -332,11 +416,11 @@ const ArtProviderRegister = () => {
         {/* Step 3: Syarat & Ketentuan */}
         {currentStep === 2 && (
           <div className="mt-5">
-            <div className="border rounded-xl p-6">
-              <h3 className="font-semibold text-center text-lg mb-3">
+            <div className="p-6 border rounded-xl">
+              <h3 className="mb-3 text-lg font-semibold text-center">
                 Syarat & Ketentuan
               </h3>
-              <div className="terms-content md:text-base text-sm">
+              <div className="text-sm terms-content md:text-base">
                 <p>
                   Dengan mendaftar sebagai penyedia kesenian, Anda menyetujui
                   bahwa Anda akan menjual produk/jasa kesenian yang sesuai
@@ -377,11 +461,11 @@ const ArtProviderRegister = () => {
           </div>
         )}
 
-        <div className="mt-8 flex justify-between">
+        <div className="flex justify-between mt-8">
           {currentStep > 0 && (
             <button
               onClick={handlePrev}
-              className="px-4 py-2 border border-secondary text-secondary rounded-xl font-semibold "
+              className="px-4 py-2 font-semibold border border-secondary text-secondary rounded-xl "
             >
               Sebelumnya
             </button>
@@ -391,11 +475,10 @@ const ArtProviderRegister = () => {
             <button
               onClick={handleNext}
               disabled={!isStepValid()}
-              className={`px-4 py-2 rounded-xl ${
-                isStepValid()
-                  ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-              }`}
+              className={`px-4 py-2 rounded-xl ${isStepValid()
+                ? "bg-secondary text-white font-semibold hover:bg-opacity_id -90"
+                : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
             >
               Selanjutnya
             </button>
@@ -403,11 +486,10 @@ const ArtProviderRegister = () => {
             <button
               onClick={handleSubmit}
               disabled={!isStepValid()}
-              className={`px-4 py-2 rounded-xl ${
-                isStepValid()
-                  ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-              }`}
+              className={`px-4 py-2 rounded-xl ${isStepValid()
+                ? "bg-tertiary text-white font-semibold hover:bg-opacity_id-90"
+                : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
             >
               Selesai
             </button>

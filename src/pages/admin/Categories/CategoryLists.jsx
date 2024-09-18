@@ -4,7 +4,6 @@ import Header from '../../../components/admin/partials/Header';
 import DataTable from '../../../components/admin/components/DataTable';
 import PaginationClassic from '../../../components/admin/components/PaginationClassic';
 import { useAxiosInstance } from '../../../config/axiosConfig';
-import '../../../css/additional-styles/dashboard.css'
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import CategoryModal from './CategoryModal';
 import DeleteCategoryModal from './DeleteCategoryModal';

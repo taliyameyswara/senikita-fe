@@ -8,7 +8,6 @@ import UserModal from './UserModal';
 import DeleteUserModal from './DeleteUserModal';
 import LoadingTable from '../../../components/loading/LoadingTable';
 import { toast } from 'react-toastify';
-import '../../../css/additional-styles/dashboard.css'
 import Breadcrumbs from "../../../components/Breadcrumbs";
 
 function UserLists() {
