@@ -18,6 +18,8 @@ import VerificationLists from "./pages/admin/Verification/VerificationLists";
 import SearchResult from "./pages/home/SearchResult";
 import ProductDetails from "./pages/home/ProductDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
+import DashboardUser from "./pages/user/DashboardUser";
+import DashboardTransaction from "./pages/user/Transaction/DashboardTransaction";
 
 function App() {
   return (
@@ -56,6 +58,11 @@ function App() {
         <Route path="/searchresult" element={<SearchResult />} />
         <Route path="/productdetails" element={<ProductDetails />} />
         <Route path="/artprovider-register" element={<ArtProviderRegister />} />
+        <Route path="/user/dashboard" element={<DashboardUser />} />
+        <Route
+          path="/user/dashboard/transaction"
+          element={<DashboardTransaction />}
+        />
       </Routes>
       <ToastContainer />
     </Router>
