@@ -20,6 +20,9 @@ import ProductDetails from "./pages/home/ProductDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 import DashboardUser from "./pages/user/DashboardUser";
 import DashboardTransaction from "./pages/user/Transaction/DashboardTransaction";
+import TransactionDetail from "./pages/user/Transaction/TransactionDetails";
+import DashboardSeniman from "./pages/seniman/DashboardSeniman";
+import KesenianList from "./pages/seniman/Kesenian/KesenianList";
 
 function App() {
   return (
@@ -58,11 +61,22 @@ function App() {
         <Route path="/searchresult" element={<SearchResult />} />
         <Route path="/productdetails" element={<ProductDetails />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
+
+        {/* user */}
         <Route path="/user/dashboard" element={<DashboardUser />} />
         <Route
           path="/user/dashboard/transaction"
           element={<DashboardTransaction />}
         />
+        <Route
+          path="/user/dashboard/transaction/details"
+          element={<TransactionDetail />}
+        />
+
+        {/* seniman */}
+        <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
+        <Route path="/seniman/dashboard/kesenian" element={<KesenianList />} />
+
         <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
       </Routes>
       <ToastContainer />
