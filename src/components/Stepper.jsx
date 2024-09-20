@@ -3,7 +3,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 
 const Stepper = ({ steps, currentStep, stepperTitle, stepperSubtitle }) => {
   return (
-    <div className="mt-10">
+    <div className="">
       <div className="flex flex-col gap-3 items-center text-center">
         <h1 className="md:text-xl  font-semibold">{stepperTitle}</h1>
         <p className="text-gray-500 text-sm md:text-base">{stepperSubtitle}</p>

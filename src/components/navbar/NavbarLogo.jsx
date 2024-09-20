@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const NavbarLogo = () => {
   return (
-    <div className="pb-16">
+    <div className="pb-28">
       <nav className="bg-white duration-200 z-40 shadow fixed w-full top-0">
         <div className="py-4 shadow-sm flex justify-center">
           {/* logo */}
