@@ -3,7 +3,7 @@ import { IoCheckmarkOutline, IoChevronDownOutline } from "react-icons/io5";
 
 const DropdownFilter = ({
   title,
-  options, // List of filter options (e.g., categories, types, etc.)
+  options, // List of filter options
   selectedOption, // Currently selected option
   setSelectedOption, // Function to set selected option
   label = "Filter", // Customizable label for the dropdown
