@@ -4,6 +4,7 @@ import AvatarUpload from "../../components/AvatarUpload";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import FooterLogo from "../../components/footer/FooterLogo";
 import TextInput from "../../components/form-input/TextInput";
+import TextareaInput from "../../components/form-input/TextareaInput";
 import SearchInput from "../../components/form-input/SearchInput";
 import DateInput from "../../components/form-input/DateInput";
 import SucesssModal from "../../components/SuccessModal";
@@ -143,12 +144,6 @@ const ArtProviderRegister = () => {
 
   const [selectedCategoryOptions, setSelectedCategoryOptions] = useState([]);
 
-  // const categoryOptions = [
-  //   { value: "1", label: "Seni Tari" },
-  //   { value: "2", label: "Seni Rupa" },
-  //   { value: "3", label: "Seni Musik" },
-  // ];
-
   const handleCategorySelect = (selected) => {
     const selectedValues = selected.map((option) => option.value);
     const updatedFormData = {
@@ -229,49 +224,50 @@ const ArtProviderRegister = () => {
                 }
               />
 
-              <TextInput
-                label="Nama Lengkap"
-                placeholder="Masukkan nama lengkap"
-                value={formData.personalInfo.name}
-                onChange={(e) => handleInputChange(e, "personalInfo", "name")}
-              />
+              <div className="flex flex-col gap-5">
+                <TextInput
+                  label="Nama Lengkap"
+                  placeholder="Masukkan nama lengkap"
+                  value={formData.personalInfo.name}
+                  onChange={(e) => handleInputChange(e, "personalInfo", "name")}
+                />
 
-              <TextInput
-                label="Username"
-                placeholder="Masukkan username"
-                value={formData.personalInfo.username}
-                onChange={(e) =>
-                  handleInputChange(e, "personalInfo", "username")
-                }
-              />
+                <TextInput
+                  label="Username"
+                  placeholder="Masukkan username"
+                  value={formData.personalInfo.username}
+                  onChange={(e) =>
+                    handleInputChange(e, "personalInfo", "username")
+                  }
+                />
 
-              <TextInput
-                label="Nomor Telepon"
-                placeholder="Masukkan nomor telepon"
-                value={formData.personalInfo.call_number}
-                onChange={(e) =>
-                  handleInputChange(e, "personalInfo", "call_number")
-                }
-              />
+                <TextInput
+                  label="Nomor Telepon"
+                  placeholder="Masukkan nomor telepon"
+                  value={formData.personalInfo.call_number}
+                  onChange={(e) =>
+                    handleInputChange(e, "personalInfo", "call_number")
+                  }
+                />
 
-              <DateInput
-                label="Tanggal Lahir"
-                value={formData.personalInfo.birth_date}
-                onChange={(e) =>
-                  handleInputChange(e, "personalInfo", "birth_date")
-                }
-              />
+                <DateInput
+                  label="Tanggal Lahir"
+                  value={formData.personalInfo.birth_date}
+                  onChange={(e) =>
+                    handleInputChange(e, "personalInfo", "birth_date")
+                  }
+                />
 
-              <TextInput
-                label="Tempat Lahir"
-                placeholder="Masukkan tempat lahir"
-                value={formData.personalInfo.birth_location}
-                onChange={(e) =>
-                  handleInputChange(e, "personalInfo", "birth_location")
-                }
-              />
-
-              <div className="mb-5">
+                <TextInput
+                  label="Tempat Lahir"
+                  placeholder="Masukkan tempat lahir"
+                  value={formData.personalInfo.birth_location}
+                  onChange={(e) =>
+                    handleInputChange(e, "personalInfo", "birth_location")
+                  }
+                />
+              </div>
+              <div className="mt-5">
                 <label className="text-sm font-semibold">Jenis Kelamin</label>
                 <div className="flex mt-1 space-x-3">
                   <label
@@ -321,53 +317,54 @@ const ArtProviderRegister = () => {
               }
             /> */}
 
-              <TextInput
-                label="Nama Penyedia Kesenian"
-                placeholder="Masukkan nama penyedia kesenian"
-                value={formData.providerInfo.name}
-                onChange={(e) => handleInputChange(e, "providerInfo", "name")}
-              />
+              <div className="flex flex-col gap-5">
+                <TextInput
+                  label="Nama Penyedia Kesenian"
+                  placeholder="Masukkan nama penyedia kesenian"
+                  value={formData.providerInfo.name}
+                  onChange={(e) => handleInputChange(e, "providerInfo", "name")}
+                />
 
-              <TextInput
-                label="Deskripsi Penyedia Kesenian"
-                placeholder="Masukkan deskripsi penyedia kesenian"
-                value={formData.providerInfo.des}
-                onChange={(e) => handleInputChange(e, "providerInfo", "desc")}
-                textarea
-              />
+                <TextareaInput
+                  label="Deskripsi Penyedia Kesenian"
+                  placeholder="Masukkan deskripsi penyedia kesenian"
+                  value={formData.providerInfo.des}
+                  onChange={(e) => handleInputChange(e, "providerInfo", "desc")}
+                  textarea
+                />
 
-              <TextInput
-                label="Alamat"
-                placeholder="Masukkan alamat"
-                value={formData.providerInfo.address}
-                onChange={(e) =>
-                  handleInputChange(e, "providerInfo", "address")
-                }
-              />
+                <TextareaInput
+                  label="Alamat"
+                  placeholder="Masukkan alamat"
+                  value={formData.providerInfo.address}
+                  onChange={(e) =>
+                    handleInputChange(e, "providerInfo", "address")
+                  }
+                />
 
-              <SearchInput
-                name={
-                  <>
-                    <div className="text-sm font-semibold text-black ">
-                      Provinsi
-                    </div>
-                  </>
-                }
-                label="Provinsi"
-                placeholder="Pilih provinsi"
-                dataKey="provinces"
-                apiUrl="/provinces"
-                mapData={(item) => item.name}
-                value={formData.providerInfo.province}
-                handleSelect={(selected) =>
-                  handleInputChange(
-                    { target: { value: selected } },
-                    "providerInfo",
-                    "province"
-                  )
-                }
-              />
-
+                <SearchInput
+                  name={
+                    <>
+                      <div className="text-sm font-semibold text-black ">
+                        Provinsi
+                      </div>
+                    </>
+                  }
+                  label="Provinsi"
+                  placeholder="Pilih provinsi"
+                  dataKey="provinces"
+                  apiUrl="/provinces"
+                  mapData={(item) => item.name}
+                  value={formData.providerInfo.province}
+                  handleSelect={(selected) =>
+                    handleInputChange(
+                      { target: { value: selected } },
+                      "providerInfo",
+                      "province"
+                    )
+                  }
+                />
+              </div>
               <SearchInput
                 name={
                   <>
