@@ -27,6 +27,8 @@ import AddProduct from "./pages/seniman/Kesenian/product/AddProduct";
 import EditProduct from "./pages/seniman/Kesenian/product/EditProduct";
 import AddService from "./pages/seniman/Kesenian/service/AddService";
 import EditService from "./pages/seniman/Kesenian/service/EditService";
+import ProductOrder from "./pages/form/ProductOrder";
+import ServiceOrder from "./pages/form/ServiceOrder";
 
 function App() {
   return (
@@ -65,6 +67,8 @@ function App() {
         <Route path="/searchresult" element={<SearchResult />} />
         <Route path="/productdetails" element={<ProductDetails />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
+        <Route path="/productorder" element={<ProductOrder />} />
+        <Route path="/serviceorder" element={<ServiceOrder />} />
 
         {/* user */}
         <Route path="/user/dashboard" element={<DashboardUser />} />
