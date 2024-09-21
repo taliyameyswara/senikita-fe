@@ -11,7 +11,7 @@ const KesenianProduct = () => {
   const [products, setProducts] = useState([
     {
       id: 1,
-      thumbnail: "https://via.placeholder.com/100", // Example image
+      thumbnail: "https://via.placeholder.com/100",
       name: "Lukisan Pemandangan",
       category: "Seni Rupa",
       likes: 120,
@@ -132,7 +132,7 @@ const KesenianProduct = () => {
                     className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                   >
                     <div
-                      className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
+                      className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
                         product.isActive
                           ? "translate-x-full bg-tertiary/10"
                           : "bg-tertiary/10"
