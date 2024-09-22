@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { RiAppsLine } from "react-icons/ri";
 import { IoMdPaper, IoMdHeartEmpty } from "react-icons/io";
-import { IoColorPaletteOutline } from "react-icons/io5";
+import { LuBaggageClaim } from "react-icons/lu";
+import { IoChatboxOutline, IoColorPaletteOutline } from "react-icons/io5";
 import { PiListStar } from "react-icons/pi";
 import { HiOutlineUser } from "react-icons/hi2";
-import { IoWalletOutline } from "react-icons/io5";
+import { IoWalletOutline, IoChevronForwardOutline } from "react-icons/io5";
 import SidebarLinkGroup from "./SidebarLinkGroup";
-import { IoChevronForwardOutline } from "react-icons/io5";
 
 const SidebarLinks = [
   { id: 1, name: "Dashboard", icon: <RiAppsLine />, link: "/user/dashboard" },
@@ -38,13 +37,52 @@ const SidebarLinks = [
   },
   {
     id: 6,
-    name: "Pengaturan Profil",
+    name: "Profil",
     icon: <HiOutlineUser />,
-    link: "/user/dashboard/profile-settings",
+    link: "/user/dashboard/profil",
   },
 ];
 
-function Sidebar({ sidebarOpen, setSidebarOpen }) {
+const SidebarSenimanLinks = [
+  {
+    id: 1,
+    name: "Dashboard",
+    icon: <RiAppsLine />,
+    link: "/seniman/dashboard",
+  },
+  {
+    id: 2,
+    name: "Daftar Kesenian",
+    icon: <IoColorPaletteOutline />,
+    link: "/seniman/dashboard/kesenian",
+  },
+  {
+    id: 3,
+    name: "Pesanan",
+    icon: <IoMdPaper />,
+    link: "/seniman/dashboard/order",
+  },
+  {
+    id: 4,
+    name: "Chat",
+    icon: <IoChatboxOutline />,
+    link: "/seniman/dashboard/chat",
+  },
+  {
+    id: 5,
+    name: "Ulasan",
+    icon: <PiListStar />,
+    link: "/seniman/dashboard/review",
+  },
+  {
+    id: 6,
+    name: "Profil Seniman",
+    icon: <HiOutlineUser />,
+    link: "/seniman/dashboard/profil",
+  },
+];
+
+function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
   const location = useLocation();
   const { pathname } = location;
 
@@ -56,7 +94,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
 
-  // close on click outside
+  // Handle clicking outside to close sidebar
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!sidebar.current || !trigger.current) return;
@@ -72,7 +110,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     return () => document.removeEventListener("click", clickHandler);
   });
 
-  // close if the esc key is pressed
+  // Handle escape key to close sidebar
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
       if (!sidebarOpen || keyCode !== 27) return;
@@ -82,6 +120,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+  // Handle sidebar expanded state in localStorage
   useEffect(() => {
     localStorage.setItem("sidebar-expanded", sidebarExpanded);
     if (sidebarExpanded) {
@@ -91,9 +130,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
     }
   }, [sidebarExpanded]);
 
+  const linksToDisplay =
+    userRole === "seniman" ? SidebarSenimanLinks : SidebarLinks;
+
   return (
     <div>
-      {/* Sidebar backdrop (mobile only) */}
       <div
         className={`fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
           sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -101,17 +142,14 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
         aria-hidden="true"
       ></div>
 
-      {/* Sidebar */}
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0  transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-64"
         }`}
       >
-        {/* Sidebar header */}
         <div className="flex justify-between pr-3 sm:px-2 mb-5">
-          {/* Close button */}
           <button
             ref={trigger}
             className="lg:hidden text-primary"
@@ -130,174 +168,52 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </button>
         </div>
 
-        {/* Links */}
+        {/* Sidebar Links */}
         <div className="space-y-8">
-          {/* Pages group */}
-          <div>
-            {/* <h3 className="pl-3 text-xs font-semibold uppercase text-slate-500">
-              <span
-                className="hidden w-6 text-center lg:block lg:sidebar-expanded:hidden 2xl:hidden"
-                aria-hidden="true"
-              >
-                •••
-              </span>
-              <span className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                Pages
-              </span>
-            </h3> */}
-            <Link to="/user/balance">
-              <div className="mb-5">
-                <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
-                  <div className="bg-tertiary/20 p-3 m-2 rounded-full">
-                    <IoWalletOutline className="text-xl text-primary" />
+          <Link to="/user/balance">
+            <div className="mb-5">
+              <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
+                <div className="bg-tertiary/20 p-3 m-2 rounded-full">
+                  <IoWalletOutline className="text-xl text-primary" />
+                </div>
+                <div className="flex flex-row gap-20 items-center">
+                  <div>
+                    <div className="text-sm">Saldo</div>
+                    <div className="font-bold font-nunito">Rp 0</div>
                   </div>
-                  <div className="flex flex-row gap-20 items-center">
-                    {/* saldo */}
-                    <div className="">
-                      <div className="">Saldo</div>
-                      <div className="">Rp 0</div>
-                    </div>
-                    {/* icon */}
-                    <div className="">
-                      <IoChevronForwardOutline />
-                    </div>
+                  <div>
+                    <IoChevronForwardOutline />
                   </div>
-                  {/* </div> */}
                 </div>
               </div>
-            </Link>
-            <ul className="mt-1 space-y-2">
-              {/* Dashboard */}
-              {SidebarLinks.map((data) => (
-                <li
-                  key={data.id}
-                  className={`mb-0.5 last:mb-0 hover:bg-tertiary/10 hover:text-primary hover:rounded-xl ${
-                    pathname === data.link &&
-                    "bg-tertiary/10 rounded-xl text-primary"
-                  }`}
+            </div>
+          </Link>
+
+          <ul className="mt-1 space-y-2">
+            {linksToDisplay.map((data) => (
+              <li
+                key={data.id}
+                className={`mb-0.5 last:mb-0 hover:bg-tertiary/10 hover:text-primary hover:rounded-xl ${
+                  pathname === data.link &&
+                  "bg-tertiary/10 rounded-xl text-primary"
+                }`}
+              >
+                <NavLink
+                  end
+                  to={data.link}
+                  className={`block truncate ${pathname === data.link && ""}`}
                 >
-                  <NavLink
-                    end
-                    to={data.link}
-                    className={`block truncate ${pathname === data.link && ""}`}
-                  >
-                    <div className="flex items-center p-3 px-3.5">
-                      <div className="text-xl">{data.icon}</div>
-                      <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                        {data.name}
-                      </span>
-                    </div>
-                  </NavLink>
-                </li>
-              ))}
-
-              {/* Daftar Kesenian */}
-              <SidebarLinkGroup
-                activecondition={pathname.includes("community")}
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <a
-                        href="#0"
-                        className={`block  truncate transition duration-150 ${
-                          pathname.includes("community") && ""
-                        }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <div className="flex items-center justify-between 100">
-                          <div className="flex items-center">
-                            <IoColorPaletteOutline className="text-xl" />
-                            <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                              Daftar Kesenian
-                            </span>
-                          </div>
-
-                          <div className="flex ml-2 shrink-0">
-                            <svg
-                              className={`w-3 h-3 shrink-0 ml-1 fill-current ${
-                                open && "rotate-180"
-                              }`}
-                              viewBox="0 0 12 12"
-                            >
-                              <path d="M5.9 11.4L.5 6l1.4-1.4 4 4 4-4L11.3 6z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </a>
-                      <div className="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                        <ul
-                          className={`pl-[1.1rem] mt-1 space-y-2  ${
-                            !open && "hidden"
-                          }`}
-                        >
-                          {/* Product */}
-                          <li className="last:mb-0 ">
-                            <NavLink
-                              end
-                              to="/"
-                              className={({ isActive }) =>
-                                "block  truncate" +
-                                (isActive
-                                  ? "text-primary !bg-tertiary/10 !rounded-xl p-2 px-3.5"
-                                  : "text-black p-2 px-3.5")
-                              }
-                            >
-                              <span className="text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                                Produk Kesenian
-                              </span>
-                            </NavLink>
-                          </li>
-                          {/* Product */}
-                          <li className="last:mb-0">
-                            <NavLink
-                              end
-                              to="/"
-                              className={({ isActive }) =>
-                                "block  truncate" +
-                                (isActive
-                                  ? "text-primary !bg-tertiary/10 !rounded-xl p-2 px-3.5"
-                                  : "text-black p-2 px-3.5")
-                              }
-                            >
-                              <span className="text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
-                                Produk Kesenian
-                              </span>
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-            </ul>
-          </div>
+                  <div className="flex items-center p-3 px-3.5">
+                    <div className="text-xl">{data.icon}</div>
+                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                      {data.name}
+                    </span>
+                  </div>
+                </NavLink>
+              </li>
+            ))}
+          </ul>
         </div>
-
-        {/* Expand / collapse button */}
-        {/* <div className="justify-end hidden pt-3 mt-5 lg:inline-flex 2xl:hidden">
-          <div className="px-3 py-2">
-            <button onClick={() => setSidebarExpanded(!sidebarExpanded)}>
-              <span className="sr-only">Expand / collapse sidebar</span>
-              <svg
-                className="w-6 h-6 fill-current sidebar-expanded:rotate-180"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  className="text-primary"
-                  d="M19.586 11l-5-5L16 4.586 23.414 12 16 19.414 14.586 18l5-5H7v-2z"
-                />
-                <path className="text-primary" d="M3 23H1V1h2z" />
-              </svg>
-            </button>
-          </div>
-        </div> */}
       </div>
     </div>
   );

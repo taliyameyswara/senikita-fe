@@ -3,7 +3,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 
 const DateInput = ({ label, value, onChange }) => {
   return (
-    <div className="mb-5">
+    <div className="">
       <label className="text-sm font-semibold ">{label}</label>
       <input
         type="date"

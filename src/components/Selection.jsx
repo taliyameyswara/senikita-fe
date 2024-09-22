@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FaChevronDown } from "react-icons/fa";
-import { IoCheckmarkOutline } from "react-icons/io5";
+import { IoCheckmarkOutline, IoChevronDownOutline } from "react-icons/io5";
 
 const Selection = ({
   name,
@@ -77,7 +76,7 @@ const Selection = ({
             </span>
           </span>
         )}
-        <FaChevronDown className="mr-1 text-sm" />
+        <IoChevronDownOutline className="mr-1 text-sm" />
       </button>
 
       {isOpen && (

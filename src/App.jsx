@@ -19,7 +19,16 @@ import SearchResult from "./pages/home/SearchResult";
 import ProductDetails from "./pages/home/ProductDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 import DashboardUser from "./pages/user/DashboardUser";
-import DashboardTransaction from "./pages/user/Transaction/DashboardTransaction";
+import DashboardTransaction from "./pages/user/transaction/DashboardTransaction";
+import TransactionDetail from "./pages/user/transaction/TransactionDetails";
+import DashboardSeniman from "./pages/seniman/DashboardSeniman";
+import KesenianList from "./pages/seniman/Kesenian/KesenianList";
+import AddProduct from "./pages/seniman/Kesenian/product/AddProduct";
+import EditProduct from "./pages/seniman/Kesenian/product/EditProduct";
+import AddService from "./pages/seniman/Kesenian/service/AddService";
+import EditService from "./pages/seniman/Kesenian/service/EditService";
+import ProductOrder from "./pages/form/ProductOrder";
+import ServiceOrder from "./pages/form/ServiceOrder";
 
 function App() {
   return (
@@ -58,11 +67,42 @@ function App() {
         <Route path="/searchresult" element={<SearchResult />} />
         <Route path="/productdetails" element={<ProductDetails />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
+        <Route path="/productorder" element={<ProductOrder />} />
+        <Route path="/serviceorder" element={<ServiceOrder />} />
+
+        {/* user */}
         <Route path="/user/dashboard" element={<DashboardUser />} />
         <Route
           path="/user/dashboard/transaction"
           element={<DashboardTransaction />}
         />
+        <Route
+          path="/user/dashboard/transaction/details"
+          element={<TransactionDetail />}
+        />
+
+        {/* seniman */}
+        <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
+        <Route path="/seniman/dashboard/kesenian" element={<KesenianList />} />
+        {/* product */}
+        <Route
+          path="/seniman/dashboard/kesenian/addproduct"
+          element={<AddProduct />}
+        />
+        <Route
+          path="/seniman/dashboard/kesenian/updateproduct"
+          element={<EditProduct />}
+        />
+        {/* service */}
+        <Route
+          path="/seniman/dashboard/kesenian/addservice"
+          element={<AddService />}
+        />
+        <Route
+          path="/seniman/dashboard/kesenian/updateservice"
+          element={<EditService />}
+        />
+
         <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
       </Routes>
       <ToastContainer />

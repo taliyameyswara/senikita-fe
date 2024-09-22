@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
-import { useAxiosInstance } from '../../config/axiosConfig';
-
+import { useAxiosInstance } from "../../config/axiosConfig";
 
 const SearchInput = ({
-  name,
+  label,
   apiUrl,
   placeholder,
   mapData,
@@ -53,7 +52,7 @@ const SearchInput = ({
 
   return (
     <div>
-      <div className="mb-1 text-gray-700">{name}</div>
+      <div className="mb-1 text-gray-700">{label}</div>
       <Select
         inputValue={query}
         onInputChange={(value) => setQuery(value)}
@@ -76,13 +75,16 @@ const SearchInput = ({
         classNames={{
           input: () => "[&_input:focus]:ring-0",
           clearIndicator: ({ isFocused }) =>
-            ` ${isFocused ? "text-neutral-600" : "text-neutral-200"
+            ` ${
+              isFocused ? "text-neutral-600" : "text-neutral-200"
             } hover:text-neutral-400`,
           control: ({ isFocused }) =>
-            `p-3 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${isFocused ? "border-primary" : ""
+            `p-3 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${
+              isFocused ? "border-primary" : ""
             }`,
           option: ({ isSelected }) =>
-            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${isSelected ? " text-primary" : "text-black"
+            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${
+              isSelected ? " text-primary" : "text-black"
             }`,
           menu: () => "bg-white rounded-xl shadow-lg",
           placeholder: () => "text-gray-500",

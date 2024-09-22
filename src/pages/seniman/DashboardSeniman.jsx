@@ -1,25 +1,25 @@
 import React from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import UserDashboardLayout from "../../layouts/UserDashboardLayout";
+import SenimanDashboardLayout from "../../layouts/SenimanDashboardLayout";
 
-const DashboardUser = () => {
+const DashboardSeniman = () => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
-    { label: "Dashboard", to: "/user/dashboard" },
+    { label: "Dashboard", to: "/seniman/dashboard" },
   ];
 
   return (
-    <UserDashboardLayout pageTitle="Dashboard | Transaksi">
+    <SenimanDashboardLayout pageTitle="Dashboard Seniman">
       <div className="flex flex-col gap-2 border p-3 rounded-xl">
         <div className="border p-3 py-5 rounded-xl bg-gray-50">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
         {/* Content */}
-        <div>Ini dashboard user</div>
+        <div>Ini dashboard seniman</div>
       </div>
-    </UserDashboardLayout>
+    </SenimanDashboardLayout>
   );
 };
 
-export default DashboardUser;
+export default DashboardSeniman;

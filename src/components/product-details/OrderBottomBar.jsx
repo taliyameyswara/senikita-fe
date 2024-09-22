@@ -1,8 +1,9 @@
-import React from "react";
+import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import TotalCounter from "../../components/TotalCounter";
 
 const OrderBottomBar = ({ product }) => {
+  const [quantity, setQuantity] = useState(1);
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 lg:px-24 grid grid-cols-12 gap-2 items-center md:text-base text-sm z-50">
       {/* left section */}
@@ -17,7 +18,7 @@ const OrderBottomBar = ({ product }) => {
         </div>
       </div>
       <div className="hidden lg:block lg:col-span-3">
-        <TotalCounter productPrice={product.price} />
+        <TotalCounter productPrice={product.price} quantity={quantity} />
       </div>
 
       {/* right section */}

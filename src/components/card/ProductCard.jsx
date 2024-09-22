@@ -67,7 +67,6 @@ const ProductCard = ({ product }) => {
           <div className="absolute top-2 right-3 space-y-2 space-x-2">
             {/* like */}
             <LikeButton />
-
             {/* cart */}
             <button className="bg-white p-2 rounded-full border hover:bg-gray-100">
               <IoCartOutline className="text-gray-700 text-sm md:text-base" />
