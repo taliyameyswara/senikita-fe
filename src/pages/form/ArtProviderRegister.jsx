@@ -343,14 +343,13 @@ const ArtProviderRegister = () => {
                 />
 
                 <SearchInput
-                  name={
+                  label={
                     <>
                       <div className="text-sm font-semibold text-black ">
                         Provinsi
                       </div>
                     </>
                   }
-                  label="Provinsi"
                   placeholder="Pilih provinsi"
                   dataKey="provinces"
                   apiUrl="/provinces"
@@ -366,14 +365,13 @@ const ArtProviderRegister = () => {
                 />
               </div>
               <SearchInput
-                name={
+                label={
                   <>
                     <div className="mt-5 text-sm font-semibold text-black">
                       Kabupaten/kota
                     </div>
                   </>
                 }
-                label="Kabupaten/kota"
                 placeholder="Pilih kabupaten/kota"
                 apiUrl={`/cities-by-province/${formData.providerInfo.province}`}
                 dataKey="cities"
