@@ -3,11 +3,12 @@ import { formatNumber } from "../../utils/formatNumber";
 import TotalCounter from "../../components/TotalCounter";
 
 const ProductOrderCard = ({ product, setTotalPrice }) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(product.quantity || 1);
 
   const handleQuantityChange = (newQuantity) => {
     setQuantity(newQuantity);
     setTotalPrice(newQuantity * product.productPrice);
+    if (onQuantityChange) onQuantityChange(product, newQuantity);
   };
 
   return (
@@ -20,7 +21,7 @@ const ProductOrderCard = ({ product, setTotalPrice }) => {
         />
         <div className="flex flex-col gap-3">
           <div>
-            <h3 className="text-lg">{product.productName}</h3>
+            <h3 className="text">{product.productName}</h3>
             <p className="font-nunito text-light font-semibold">
               {formatNumber(product.productPrice)}
             </p>
@@ -32,6 +33,7 @@ const ProductOrderCard = ({ product, setTotalPrice }) => {
           />
         </div>
       </div>
+      <hr className="mt-5 mb-4" />
     </div>
   );
 };

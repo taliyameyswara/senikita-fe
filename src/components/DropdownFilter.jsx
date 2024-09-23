@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { IoCheckmarkOutline, IoChevronDownOutline } from "react-icons/io5";
 
 const DropdownFilter = ({
-  title,
+  icon,
   options, // List of filter options
   selectedOption, // Currently selected option
   setSelectedOption, // Function to set selected option
@@ -51,13 +51,16 @@ const DropdownFilter = ({
         <button
           ref={trigger}
           onClick={() => setIsOpen(!isOpen)}
-          className={`inline-flex justify-between w-56 px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${
+          className={`inline-flex justify-between w-60 px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${
             isOpen
               ? "bg-tertiary/10 text-primary border border-opacity-20 border-primary"
               : "bg-gray-50 hover:bg-gray-100 border "
           }`}
         >
-          {selectedOption || label}
+          <div className="flex gap-2 items-center">
+            {icon}
+            {selectedOption || label}
+          </div>
           <IoChevronDownOutline
             className={`${isOpen ? "text-primary" : "text-gray-700"}`}
           />
@@ -76,7 +79,7 @@ const DropdownFilter = ({
               <button
                 key={option}
                 onClick={() => handleSelect(option)}
-                className={`flex justify-between items-center w-full px-4 py-2 text-sm focus:outline-none transition-colors duration-200
+                className={`flex justify-between fe items-center w-full px-4 py-2 text-sm focus:outline-none transition-colors duration-200
                 ${
                   selectedOption === option
                     ? "bg-tertiary/10 text-primary"

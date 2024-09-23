@@ -69,7 +69,6 @@ const ProductOrder = () => {
                 setTotalPrice={setTotalPrice}
               />
 
-              <hr className="mt-5 mb-4" />
               <div className="flex flex-wrap gap-2">
                 <div>
                   <button
