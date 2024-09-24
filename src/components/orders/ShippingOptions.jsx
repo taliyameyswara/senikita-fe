@@ -25,7 +25,6 @@ const ShippingOptions = ({ onShippingCostChange }) => {
 
   return (
     <div>
-      {/* <h3 className="text-lg font-semibold mb-3">Pilih Pengiriman</h3> */}
       <DropdownFilter
         label="Pilih Pengiriman"
         icon={<BsTruck />}

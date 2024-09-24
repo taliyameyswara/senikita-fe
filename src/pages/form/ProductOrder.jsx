@@ -35,7 +35,6 @@ const ProductOrder = () => {
   const [isNotesVisible, setNotesVisible] = useState(false);
   const [notesValue, setNotesValue] = useState("");
   const handleNotesButton = () => setNotesVisible(!isNotesVisible);
-
   const handleNotesChange = (e) => setNotesValue(e.target.value);
   const [shippingCost, setShippingCost] = useState(0);
   const serviceFee = 5000;
@@ -68,8 +67,7 @@ const ProductOrder = () => {
                 product={product}
                 setTotalPrice={setTotalPrice}
               />
-
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap w-full gap-2">
                 <div>
                   <button
                     className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary "
@@ -107,12 +105,9 @@ const ProductOrder = () => {
                 <>
                   <p className="text-gray-500">Belum ada alamat</p>
                   <div className="mt-2">
-                    <Link
-                      to="/user/dashboard/profile"
-                      className="border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-100 p-3 py-2 rounded-xl text-sm"
-                    >
+                    <button className="border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-100 p-3 py-2 rounded-xl text-sm">
                       Tambah Alamat
-                    </Link>
+                    </button>
                   </div>
                 </>
               )}
