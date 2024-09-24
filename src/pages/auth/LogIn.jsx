@@ -8,6 +8,7 @@ import { useAuthApi } from "../../api/auth";
 import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 import FooterLogo from "../../components/footer/FooterLogo";
+import PasswordInput from "../../components/form-input/PasswordInput";
 
 const LogIn = () => {
   const [email, setEmail] = useState("");
@@ -17,10 +18,6 @@ const LogIn = () => {
   const navigate = useNavigate();
   const { login, setEmailOTP } = useContext(UserContext);
   const { login: loginApi } = useAuthApi();
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   const isFormValid = email && password;
 
@@ -116,35 +113,12 @@ const LogIn = () => {
               </div>
 
               {/* password */}
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
-                    placeholder="Masukkan Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <div
-                    className="absolute inset-y-0 flex items-center cursor-pointer right-4"
-                    onClick={togglePasswordVisibility}
-                  >
-                    {showPassword ? (
-                      <IoEyeOffOutline className="text-lg text-gray-400" />
-                    ) : (
-                      <IoEyeOutline className="text-lg text-gray-400" />
-                    )}
-                  </div>
-                </div>
-              </div>
+              <PasswordInput
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
 
               {/* forgot password */}
               <div className="text-sm text-primary">
@@ -157,10 +131,11 @@ const LogIn = () => {
               <div>
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
+                  className={`w-full py-3 text-white font-semibold rounded-xl ${
+                    isFormValid
                       ? "bg-primary hover:bg-primary-dark"
                       : "bg-gray-300 cursor-not-allowed"
-                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
                   disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
                 >
                   {isLoading ? (
