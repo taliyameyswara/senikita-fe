@@ -29,6 +29,7 @@ import AddService from "./pages/seniman/Kesenian/service/AddService";
 import EditService from "./pages/seniman/Kesenian/service/EditService";
 import ProductOrder from "./pages/form/ProductOrder";
 import ServiceOrder from "./pages/form/ServiceOrder";
+import Cart from "./pages/home/Cart";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
         <Route path="/productorder" element={<ProductOrder />} />
         <Route path="/serviceorder" element={<ServiceOrder />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* user */}
         <Route path="/user/dashboard" element={<DashboardUser />} />
