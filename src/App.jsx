@@ -30,6 +30,7 @@ import EditService from "./pages/seniman/Kesenian/service/EditService";
 import ProductOrder from "./pages/form/ProductOrder";
 import ServiceOrder from "./pages/form/ServiceOrder";
 import Cart from "./pages/home/Cart";
+import UserProfile from "./pages/user/profile/UserProfile";
 
 function App() {
   return (
@@ -72,8 +73,10 @@ function App() {
         <Route path="/serviceorder" element={<ServiceOrder />} />
         <Route path="/cart" element={<Cart />} />
 
-        {/* user */}
+        {/* user  dashboard*/}
         <Route path="/user/dashboard" element={<DashboardUser />} />
+
+        {/* transaction */}
         <Route
           path="/user/dashboard/transaction"
           element={<DashboardTransaction />}
@@ -82,6 +85,9 @@ function App() {
           path="/user/dashboard/transaction/details"
           element={<TransactionDetail />}
         />
+
+        {/* profile */}
+        <Route path="/user/dashboard/profil" element={<UserProfile />} />
 
         {/* seniman */}
         <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
