@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import TotalCounter from "../../components/TotalCounter";
 import ShippingOptions from "../../components/orders/ShippingOptions";
 import OrderSummary from "../../components/orders/OrderSummary";
 import CustomerAddress from "../../components/orders/CustomerAddress";
-// import AddressModal from "../../components/orders/AddressModal";
+import { IoAddOutline } from "react-icons/io5";
 import Navbar from "../../components/navbar/Navbar";
 import FooterLogo from "../../components/footer/FooterLogo";
-import { formatNumber } from "../../utils/formatNumber";
+import TextareaInput from "../../components/form-input/TextareaInput";
+import ProductOrderCard from "../../components/orders/ProductOrderCard";
 
 const ProductOrder = () => {
   const [product, setProduct] = useState({
@@ -31,23 +31,18 @@ const ProductOrder = () => {
     note: "Rumah warna hijau pager oren", //optional
   });
 
-  const [quantity, setQuantity] = useState(1);
   const [totalPrice, setTotalPrice] = useState(product.productPrice);
-  const [showModal, setShowModal] = useState(false);
-
-  const handleQuantityChange = (newQuantity) => {
-    setQuantity(newQuantity);
-    setTotalPrice(newQuantity * product.productPrice);
-  };
-
+  const [isNotesVisible, setNotesVisible] = useState(false);
+  const [notesValue, setNotesValue] = useState("");
+  const handleNotesButton = () => setNotesVisible(!isNotesVisible);
+  const handleNotesChange = (e) => setNotesValue(e.target.value);
   const [shippingCost, setShippingCost] = useState(0);
   const serviceFee = 5000;
 
   return (
-    <div className="">
+    <div>
       <Navbar />
       <div className="container mx-auto p-6">
-        {/* Detail Produk */}
         <div className="grid lg:grid-cols-5 grid-cols-1  gap-10 mb-6 ">
           {/* Info Produk */}
           <div className="col-span-3 space-y-5">
@@ -57,60 +52,65 @@ const ProductOrder = () => {
                 <img
                   src={product.storeAvatar}
                   alt={product.storeName}
-                  className="w-8 h-8 rounded-full"
+                  className="w-8 h-8 rounded-lg"
                 />
-                <div className="">
-                  <h2 className="text-sm ">{product.storeName}</h2>
+                <div>
+                  <h2 className="text-sm">{product.storeName}</h2>
                   <h2 className="text-xs text-gray-500">
                     {product.storeLocation}
                   </h2>
                 </div>
               </div>
+
               {/* Produk */}
-              <div className="flex items-center space-x-4 mt-1 ">
-                <img
-                  src={product.productThumbnail}
-                  alt={product.productName}
-                  className="w-36 h-24 object-cover rounded-lg"
-                />
-                <div className="flex flex-col gap-3">
-                  <div className="">
-                    <h3 className="text-lg">{product.productName}</h3>
-                    <p className="font-nunito text-light font-semibold">
-                      {formatNumber(product.productPrice)}
-                    </p>
-                  </div>
-                  <TotalCounter
-                    productPrice={product.productPrice}
-                    quantity={quantity}
-                    onQuantityChange={handleQuantityChange}
-                  />
+              <ProductOrderCard
+                product={product}
+                setTotalPrice={setTotalPrice}
+              />
+              <div className="flex flex-wrap w-full gap-2">
+                <div>
+                  <button
+                    className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary "
+                    onClick={handleNotesButton}
+                  >
+                    <IoAddOutline />
+                    <div>Tambah catatan untuk Toko Kesenian</div>
+                  </button>
+
+                  {isNotesVisible && (
+                    <div className="mt-1">
+                      <TextareaInput
+                        label="Catatan"
+                        placeholder="Masukkan catatan Anda di sini..."
+                        value={notesValue}
+                        name="catatan"
+                        onChange={handleNotesChange}
+                        rows={3}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <ShippingOptions onShippingCostChange={setShippingCost} />
                 </div>
               </div>
             </div>
-            {/* alamat */}
-            <div className="mb-6 border rounded-xl p-4">
-              <h3 className="text-lg font-semibold">Alamat</h3>
+
+            <div className="mb-6">
+              <h3 className="text-base font-semibold">Alamat Anda</h3>
               {address ? (
                 <CustomerAddress address={address} />
               ) : (
                 <>
                   <p className="text-gray-500">Belum ada alamat</p>
-                  <div className="mt-3">
-                    <Link
-                      to="/user/dashboard/profile"
-                      className="border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-100 p-3 py-2 rounded-xl text-sm"
-                    >
+                  <div className="mt-2">
+                    <button className="border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-100 p-3 py-2 rounded-xl text-sm">
                       Tambah Alamat
-                    </Link>
+                    </button>
                   </div>
                 </>
               )}
-              <hr className="my-4" />
-
-              <div className="">
-                <ShippingOptions onShippingCostChange={setShippingCost} />
-              </div>
             </div>
           </div>
 
@@ -121,7 +121,6 @@ const ProductOrder = () => {
               shippingCost={shippingCost}
               serviceFee={serviceFee}
             />
-            {/* Button Checkout */}
             <button className="w-full mt-6 bg-primary text-white py-3 rounded-xl font-semibold">
               Checkout
             </button>

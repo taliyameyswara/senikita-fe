@@ -145,7 +145,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar  shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-64"
         }`}
       >
@@ -170,24 +170,26 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
 
         {/* Sidebar Links */}
         <div className="space-y-8">
-          <Link to="/user/balance">
-            <div className="mb-5">
-              <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
-                <div className="bg-tertiary/20 p-3 m-2 rounded-full">
-                  <IoWalletOutline className="text-xl text-primary" />
-                </div>
-                <div className="flex flex-row gap-20 items-center">
-                  <div>
-                    <div className="text-sm">Saldo</div>
-                    <div className="font-bold font-nunito">Rp 0</div>
+          {userRole === "seniman" && (
+            <Link to="/user/balance">
+              <div className="mb-5">
+                <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
+                  <div className="bg-tertiary/20 p-3 m-2 rounded-full">
+                    <IoWalletOutline className="text-xl text-primary" />
                   </div>
-                  <div>
-                    <IoChevronForwardOutline />
+                  <div className="flex flex-row gap-20 items-center">
+                    <div>
+                      <div className="text-sm">Saldo</div>
+                      <div className="font-bold font-nunito">Rp 0</div>
+                    </div>
+                    <div>
+                      <IoChevronForwardOutline />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          )}
 
           <ul className="mt-1 space-y-2">
             {linksToDisplay.map((data) => (
@@ -205,7 +207,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
                 >
                   <div className="flex items-center p-3 px-3.5">
                     <div className="text-xl">{data.icon}</div>
-                    <span className="ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100">
+                    <span className="ml-3 text-sm font-medium duration-200  2xl:opacity-100">
                       {data.name}
                     </span>
                   </div>
