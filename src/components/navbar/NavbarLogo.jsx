@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 const NavbarLogo = () => {
   return (
     <div className="pb-28">
-      <nav className="bg-white duration-200 z-40 shadow fixed w-full top-0">
-        <div className="py-4 shadow-sm flex justify-center">
+      <nav className="fixed top-0 z-40 w-full duration-200 bg-white shadow">
+        <div className="flex justify-center py-4 shadow-sm">
           {/* logo */}
           <Link
             to="/"
-            className="text-primary font-crimson font-bold tracking-widest sm:text-3xl text-2xl "
+            className="text-2xl font-bold tracking-widest text-primary font-crimson sm:text-3xl "
           >
             senikita
           </Link>

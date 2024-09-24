@@ -88,6 +88,32 @@ export const useAuthApi = () => {
             };
         }
     };
+    const refreshToken = async () => {
+        try {
+            const response = await axiosInstance.post('auth/refresh');
+            if (response.data.status === 'success') {
+                const userData = response.data.user;
+                localStorage.setItem('token', response.data.access_token);
+                return {
+                    success: true,
+                    code: response.data.code,
+                    data: userData,
+                };
+            } else {
+                return {
+                    success: false,
+                    code: response.data.code,
+                    message: response.data.message,
+                };
+            }
+        } catch (error) {
+            return {
+                success: false,
+                code: error.response ? error.response.data.code : 'SERVER_ERROR',
+                message: error.response ? error.response.data.message : 'Something went wrong',
+            };
+        }
+    }
 
     const resendOtp = async (email) => {
         try {
@@ -119,5 +145,6 @@ export const useAuthApi = () => {
         register,
         verifyOtp,
         resendOtp,
+        refreshToken,
     };
 };

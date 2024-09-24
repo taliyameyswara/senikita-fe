@@ -30,23 +30,23 @@ const SucesssModal = ({
       onClick={onClose}
     >
       <div
-        className="relative p-5 border max-w-md rounded-xl bg-white"
+        className="relative max-w-md p-5 bg-white border rounded-xl"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-primary mb-4">
+          <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full bg-primary">
             <AiOutlineCheck className="w-6 h-6 text-white" />
           </div>
-          <h3 className="text-lg leading-6 font-medium text-gray-900">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">
             {title}
           </h3>
-          <div className="mt-1 px-7 py-2">
+          <div className="py-2 mt-1 px-7">
             <p className="text-sm text-gray-500">{message}</p>
           </div>
           <div className="flex justify-center px-4 py-3">
             <Link
               to={buttonLink}
-              className="px-4 py-2 w-full bg-primary text-white text-base font-medium rounded-lg hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full px-4 py-2 text-base font-medium text-white rounded-lg bg-primary hover:bg-primary focus:outline-none focus:ring-2 focus:ring-primary"
               onClick={onClose}
             >
               {buttonText}

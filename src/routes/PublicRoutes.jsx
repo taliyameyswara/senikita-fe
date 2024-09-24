@@ -7,7 +7,7 @@ const isAdmin = () => {
 };
 
 const isAuthenticated = () => {
-    return !!localStorage.getItem("token") && !!localStorage.getItem("name"); // Mengecek apakah ada token di localStorage
+    return !!localStorage.getItem("token") && !!localStorage.getItem("user");
 };
 
 const PublicRoutes = () => {

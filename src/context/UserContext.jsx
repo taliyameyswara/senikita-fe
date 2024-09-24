@@ -9,35 +9,34 @@ const UserProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        const role = localStorage.getItem('role');
-        const name = localStorage.getItem('name');
-        const profile_picture = localStorage.getItem('profile_picture');
-        const email = localStorage.getItem('email');
-        if (token && role) {
-            setUser({ token, role, name, profile_picture });
+        const storedUser = JSON.parse(localStorage.getItem('user')); // Parse the user data from localStorage
+        const storedEmail = localStorage.getItem('email'); // Get email separately if needed
+
+        if (storedUser) {
+            setUser(storedUser); // Set the user data directly from the parsed object
         }
-        if (email) {
-            setEmail(email);
+
+        if (storedEmail) {
+            setEmail(storedEmail); // Set email separately
         }
+
         setLoading(false);
     }, []);
 
     const login = (userData) => {
-        localStorage.setItem('token', userData.token);
-        localStorage.setItem('role', userData.role);
-        localStorage.setItem('name', userData.name);
-        localStorage.setItem('profile_picture', userData.profile_picture);
-        setUser({ token: userData.token, role: userData.role, name: userData.name, profile_picture: userData.profile_picture });
-
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
     };
+
+    const refresh = (userData) => {
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData);
+    }
 
     const logout = () => {
         setUser(null);
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('name');
-        localStorage.removeItem('profile_picture');
+        localStorage.removeItem('user'); // Remove user object from localStorage
+        localStorage.removeItem('email'); // Remove email if necessary
     };
 
     const setEmailOTP = (email) => {
@@ -46,7 +45,7 @@ const UserProvider = ({ children }) => {
     };
 
     return (
-        <UserContext.Provider value={{ user, login, logout, loading, setEmailOTP, email }}>
+        <UserContext.Provider value={{ user, login, logout, loading, setEmailOTP, email, refresh }}>
             {children}
         </UserContext.Provider>
     );

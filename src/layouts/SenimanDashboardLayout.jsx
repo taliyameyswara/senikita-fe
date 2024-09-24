@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/sidebar/Sidebar";
 import Navbar from "../components/navbar/Navbar";
 import Footer from "../components/footer/Footer";
+import { toast } from 'react-toastify';
 
 const SenimanDashboardLayout = ({ children, pageTitle }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,7 +28,7 @@ const SenimanDashboardLayout = ({ children, pageTitle }) => {
           />
 
           {/* Main page content */}
-          <main className="flex-1 relative">
+          <main className="relative flex-1">
             <div className="w-full px-4 py-8 mx-auto max-w-9xl">{children}</div>
           </main>
           {/* </div> */}

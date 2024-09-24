@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
 import SenimanDashboardLayout from "../../../../layouts/SenimanDashboardLayout";
 import Stepper from "../../../../components/Stepper";
@@ -8,8 +8,19 @@ import MultipleImageUploader from "../../../../components/MultipleImageUploader"
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import PriceInput from "../../../../components/form-input/PriceInput";
+import { useAxiosInstance } from "../../../../config/axiosConfig";
+import FullPageLoader from "../../../../components/loading/FullPageLoader";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import SelectionOne from "../../../../components/SelectionOne";
 
 const AddService = () => {
+  const axiosInstance = useAxiosInstance();
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [loading, setLoading] = useState(false); // State untuk loading
+  const navigate = useNavigate();
+  const [typeOptions, settypeOptions] = useState(null);
+
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/seniman/dashboard" },
@@ -21,13 +32,21 @@ const AddService = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [formData, setFormData] = useState({
-    categories: [],
-    serviceName: "",
-    description: "",
+    category_id: [],
+    name: "",
+    desc: "",
     price: 0,
     images: [],
     agreeTerms: false,
+    person_amount: 0,
+    type: "",
   });
+
+  const options = [
+    { value: "hari", label: "Pembayaran per hari" },
+    { value: "tampil", label: "Pembayaran per tampil" },
+    { value: "jam", label: "Pembayaran per jam" },
+  ];
 
   const handleNextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   const handlePreviousStep = () => setCurrentStep((prevStep) => prevStep - 1);
@@ -37,8 +56,8 @@ const AddService = () => {
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const handleDescriptionChange = (value) => {
-    setFormData((prevFormData) => ({ ...prevFormData, description: value }));
+  const handledescChange = (value) => {
+    setFormData((prevFormData) => ({ ...prevFormData, desc: value }));
   };
 
   const handleCheckboxChange = () => {
@@ -51,6 +70,43 @@ const AddService = () => {
   const handleSubmit = () => {
     if (isStepValid()) {
       console.log("Service submitted:", formData);
+
+      const postFormData = new FormData();
+
+      postFormData.append('category_id', formData.category_id);
+      postFormData.append('name', formData.name);
+      postFormData.append('desc', formData.desc);
+      postFormData.append('price', formData.price);
+      postFormData.append('stock', formData.stock);
+      postFormData.append('person_amount', formData.person_amount);
+      postFormData.append('type', formData.type);
+
+      if (formData.images[0]) {
+        postFormData.append('thumbnail', formData.images[0].file);
+      }
+      formData.images.slice(1).forEach((image, index) => {
+        postFormData.append(`images[${index}]`, image.file);
+      });
+      setLoading(true);
+
+      axiosInstance
+        .post("/user/shop/service", postFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Mengatur header untuk multipart/form-data
+          },
+        })
+        .then((response) => {
+          toast.success("Jasa Kesenian berhasil ditambahkan");
+          navigate("/seniman/dashboard/kesenian");
+        })
+        .catch((error) => {
+          toast.error("Gagal menambahkan produk");
+          console.log(error);
+
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -58,10 +114,12 @@ const AddService = () => {
     switch (currentStep) {
       case 0:
         return (
-          formData.serviceName.trim().length > 0 &&
-          formData.description.trim().length > 0 &&
+          formData.name.trim().length > 0 &&
+          formData.desc.trim().length > 0 &&
           formData.price > 0 &&
-          formData.categories.length > 0
+          formData.category_id.length > 0 &&
+          formData.person_amount > 0,
+          formData.type !== ""
         );
       case 1:
         return formData.images.length > 0;
@@ -72,15 +130,32 @@ const AddService = () => {
     }
   };
 
+  useEffect(() => {
+    axiosInstance
+      .get("/category")
+      .then((response) => {
+        console.log(response.data.data.data);
+        const category_id = response.data.data.data.map((category) => ({
+          value: category.id.toString(),
+          label: category.name,
+        }));
+        setCategoryOptions(category_id);
+      })
+      .catch((err) => {
+      })
+      .finally(() => {
+      });
+  }, []);
+
   return (
     <SenimanDashboardLayout pageTitle="Dashboard Seniman | Daftar Kesenian">
-      <div className="flex flex-col gap-2 border p-3 rounded-xl">
-        <div className="border p-3 py-5 rounded-xl bg-gray-50">
+      <div className="flex flex-col gap-2 p-3 border rounded-xl">
+        <div className="p-3 py-5 border rounded-xl bg-gray-50">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
         {/* Content */}
-        <div className="p-8 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-8">
           <div>
             <Stepper
               steps={steps}
@@ -92,7 +167,7 @@ const AddService = () => {
               <div>
                 {/* Step 1: Informasi jasa */}
                 <div className="mb-5">
-                  <Selection
+                  <SelectionOne
                     name={
                       <>
                         <div className="mt-5 text-sm font-semibold text-black">
@@ -100,16 +175,12 @@ const AddService = () => {
                         </div>
                       </>
                     }
-                    options={[
-                      { label: "Seni Musik", value: "musik" },
-                      { label: "Seni Tari", value: "tari" },
-                      { label: "Seni Rupa", value: "rupa" },
-                    ]}
-                    selectedOptions={formData.categories}
+                    options={categoryOptions}
+                    selectedOptions={formData.category_id}
                     onSelect={(options) =>
                       setFormData((prevFormData) => ({
                         ...prevFormData,
-                        categories: options,
+                        category_id: options,
                       }))
                     }
                     placeholder="Pilih Kategori"
@@ -120,8 +191,8 @@ const AddService = () => {
                   <TextInput
                     label="Nama Jasa"
                     placeholder="Masukkan nama jasa"
-                    value={formData.serviceName}
-                    name="serviceName"
+                    value={formData.name}
+                    name="name"
                     onChange={handleInputChange}
                   />
                 </div>
@@ -132,8 +203,8 @@ const AddService = () => {
                   </label>
                   <ReactQuill
                     theme="snow"
-                    value={formData.description}
-                    onChange={handleDescriptionChange}
+                    value={formData.desc}
+                    onChange={handledescChange}
                     modules={{
                       toolbar: [
                         ["bold", "italic", "underline", "strike"],
@@ -152,16 +223,49 @@ const AddService = () => {
                     ]}
                   />
                 </div>
-
-                <div>
-                  <PriceInput
-                    label="Harga Jasa"
-                    placeholder="Masukkan harga jasa"
-                    value={formData.price}
-                    name="price"
-                    onChange={handleInputChange}
+                <div className="mb-5">
+                  <SelectionOne
+                    name={
+                      <>
+                        <div className="mt-5 text-sm font-semibold text-black">
+                          Tipe Waktu Kesenian
+                        </div>
+                      </>
+                    }
+                    options={options}
+                    selectedOptions={formData.type}
+                    onSelect={(options) =>
+                      setFormData((prevFormData) => ({
+                        ...prevFormData,
+                        type: options,
+                      }))
+                    }
+                    placeholder="Pilih Tipe Waktu Kesenian"
                   />
                 </div>
+
+
+                <div className="grid grid-cols-2 gap-5">
+                  <div className="col-span-2 sm:col-span-1">
+                    <PriceInput
+                      label="Harga Jasa"
+                      placeholder="Masukkan harga jasa"
+                      value={formData.price}
+                      name="price"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <TextInput
+                      label="Jumlah Orang"
+                      placeholder="Masukkan Jumlah Orang"
+                      value={formData.person_amount}
+                      name="person_amount"
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
               </div>
             )}
             {currentStep === 1 && (
@@ -258,11 +362,10 @@ const AddService = () => {
                 <button
                   onClick={handleNextStep}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selanjutnya
                 </button>
@@ -270,11 +373,10 @@ const AddService = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selesai
                 </button>

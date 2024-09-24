@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { IoCheckmarkOutline, IoChevronDownOutline } from "react-icons/io5";
 
-const Selection = ({
+const SelectionOne = ({
   name,
   options,
-  selectedOptions,
+  selectedOption,
   onSelect,
   placeholder,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [tempSelectedOptions, setTempSelectedOptions] =
-    useState(selectedOptions);
+  const [tempSelectedOption, setTempSelectedOption] = useState(selectedOption);
   const dropdownRef = useRef(null);
 
   const handleToggle = () => {
@@ -18,28 +17,13 @@ const Selection = ({
   };
 
   const handleSelect = (option) => {
-    if (
-      tempSelectedOptions.some((selected) => selected.value === option.value)
-    ) {
-      setTempSelectedOptions(
-        tempSelectedOptions.filter(
-          (selected) => selected.value !== option.value
-        )
-      );
-    } else {
-      setTempSelectedOptions([...tempSelectedOptions, option]);
-    }
+    setTempSelectedOption(option);
+    onSelect(option.value);  // Call onSelect immediately after SelectionOne 
+    setIsOpen(false);  // Close the dropdown
   };
 
   const isSelected = (option) => {
-    return tempSelectedOptions.some(
-      (selected) => selected.value === option.value
-    );
-  };
-
-  const handleSave = () => {
-    onSelect(tempSelectedOptions);
-    setIsOpen(false);
+    return tempSelectedOption?.value === option.value;
   };
 
   useEffect(() => {
@@ -61,20 +45,10 @@ const Selection = ({
         onClick={handleToggle}
         className="flex items-center justify-between w-full p-3 py-2 text-gray-700 bg-white border border-gray-200 rounded-xl focus:outline-none focus:border-primary"
       >
-        {tempSelectedOptions.length > 0 ? (
-          <span>
-            {placeholder}
-            <span className="ml-1 font-light text-gray-400 font-nunito">
-              ({tempSelectedOptions.length} terpilih)
-            </span>
-          </span>
+        {tempSelectedOption ? (
+          <span>{tempSelectedOption.label}</span>
         ) : (
-          <span>
-            {placeholder}{" "}
-            <span className="ml-1 font-light text-gray-400 font-nunito">
-              ({tempSelectedOptions.length} terpilih)
-            </span>
-          </span>
+          <span>{placeholder}</span>
         )}
         <IoChevronDownOutline className="mr-1 text-sm" />
       </button>
@@ -95,19 +69,10 @@ const Selection = ({
               </li>
             ))}
           </ul>
-          <div className="sticky bottom-0 p-3 bg-white border-t">
-            <button
-              type="button"
-              onClick={handleSave}
-              className="w-full px-4 py-2 text-white rounded-lg bg-primary"
-            >
-              Simpan
-            </button>
-          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default Selection;
+export default SelectionOne;

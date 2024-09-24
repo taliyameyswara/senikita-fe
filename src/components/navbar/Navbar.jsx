@@ -21,47 +21,35 @@ const CategoryLinks = [
   { id: 3, name: "Seni Desain", link: "/#" },
 ];
 
-const ProfileLinks = [
-  // {
-  //   id: 1,
-  //   title: "Toko Anda",
-  //   icon: <IoStorefrontOutline />,
-  //   link: "/#",
-  // },
-  // {
-  //   id: 1,
-  //   title: "Toko Anda",
-  //   icon: <IoStorefrontOutline />,
-  //   link: "/#",
-  // },
-  {
-    id: 1,
-    title: "Dashboard",
-    icon: <IoStorefrontOutline />,
-    link: "/#",
-  },
-  {
-    id: 2,
-    title: "Daftar Menjadi Penyedia Seni",
-    icon: <IoColorPaletteOutline />,
-    link: "/daftar/seniman",
-  },
-  {
-    id: 3,
-    title: <span className="text-customRed">Keluar</span>,
-    icon: <IoLogOutOutline className="text-customRed" />,
-    link: "/#",
-  },
-];
 
 const auth = true;
 
 const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
   const { user, logout, loading } = useContext(UserContext); // Use logout from context
+  const ProfileLinks = [
+    {
+      id: 1,
+      title: "Dashboard",
+      icon: <IoStorefrontOutline />,
+      link: user && user.role === 1 ? "/dashboard" : "/user/dashboard", // Cek role user
+    },
+    {
+      id: 2,
+      title: user && user.isHaveStore === 1 ? "Dashboard Seniman" : "Daftar Menjadi Seniman",
+      icon: <IoColorPaletteOutline />,
+      link: user && user.isHaveStore === 1 ? "/seniman/dashboard" : "/daftar/seniman",
+    },
+    {
+      id: 3,
+      title: <span className="text-customRed">Keluar</span>,
+      icon: <IoLogOutOutline className="text-customRed" />,
+      link: "/#",
+    },
+  ];
 
   return (
     <div className="md:mb-20 mb-36">
-      <nav className="fixed w-full top-0 z-40 duration-200 bg-white">
+      <nav className="fixed top-0 z-40 w-full duration-200 bg-white">
         <div className="py-4 shadow">
           {/* desktop nav */}
           <div className="container items-center justify-between hidden md:flex">
@@ -143,7 +131,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                             className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
                           >
                             <div className="text-xl">{data.icon}</div>
-                            <div className="text-base">{data.title}</div>
+                            <div className="text-sm">{data.title}</div>
                           </Link>
                         </li>
                       ))}

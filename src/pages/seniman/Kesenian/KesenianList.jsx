@@ -3,8 +3,8 @@ import Breadcrumbs from "../../../components/Breadcrumbs";
 import SenimanDashboardLayout from "../../../layouts/SenimanDashboardLayout";
 import Tabs from "../../../components/Tabs";
 import DropdownFilter from "../../../components/DropdownFilter";
-import KesenianProduct from "../../../components/kesenian/KesenianProduct";
-import KesenianService from "../../../components/kesenian/KesenianService";
+import KesenianProduct from "./product/KesenianProduct";
+import KesenianService from "./service/KesenianService";
 
 const DaftarKesenian = () => {
   const breadcrumbItems = [
@@ -31,13 +31,13 @@ const DaftarKesenian = () => {
 
   return (
     <SenimanDashboardLayout pageTitle="Dashboard Seniman | Daftar Kesenian">
-      <div className="flex flex-col gap-2 border p-3 rounded-xl">
-        <div className="border p-3 py-5 rounded-xl bg-gray-50">
+      <div className="flex flex-col gap-2 p-3 border rounded-xl">
+        <div className="p-3 py-5 border rounded-xl bg-gray-50">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
         {/* Content */}
-        <div className="p-3 flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-3">
           {/* Title */}
           <div className="text-xl font-semibold">Daftar Kesenian</div>
           <DropdownFilter

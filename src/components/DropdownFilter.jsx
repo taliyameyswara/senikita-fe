@@ -46,7 +46,7 @@ const DropdownFilter = ({
 
   return (
     <>
-      {/* <div className="text-sm mb-1">{title}</div> */}
+      {/* <div className="mb-1 text-sm">{title}</div> */}
       <div className="relative inline-block text-left">
         <button
           ref={trigger}
@@ -85,7 +85,7 @@ const DropdownFilter = ({
               >
                 {option}
                 {selectedOption === option && (
-                  <IoCheckmarkOutline className="text-primary text-lg font-semibold" />
+                  <IoCheckmarkOutline className="text-lg font-semibold text-primary" />
                 )}
               </button>
             ))}
