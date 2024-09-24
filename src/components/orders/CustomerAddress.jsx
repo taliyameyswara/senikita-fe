@@ -5,8 +5,9 @@ import Modal from "../../components/Modal";
 import TextareaInput from "../form-input/TextareaInput";
 import TextInput from "../form-input/TextInput";
 import SearchInput from "../form-input/SearchInput";
+import { GrLocation } from "react-icons/gr";
 
-const CustomerAddress = ({ address }) => {
+const CustomerAddress = ({ address, isOrder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -17,48 +18,66 @@ const CustomerAddress = ({ address }) => {
   };
 
   return (
-    <div className="border border-gray-200 p-4 rounded-xl mt-3">
+    <div className="border border-gray-200 p-5 rounded-xl mt-3">
       <div className="flex justify-between">
         <div className="">
-          <p className="font-semibold text-lg">{address.name} </p>
+          <span className="p-1.5 rounded-lg text-sm bg-tertiary/10 text-primary font-semibold">
+            {address.label}
+          </span>
+          <p className="mt-1 font-semibold text-lg">{address.name} </p>
           <p className="font-nunito font-light">{address.phone}</p>
           <div className="text-sm text-gray-500 font-light">
+            <p>{address.street}</p>
             <p>
-              {address.street}, <span>{address.zipCode}</span>
-            </p>
-            <p>
-              {" "}
-              {address.district}, {address.city}, {address.province}
+              {address.city}, {address.province}
             </p>
             <p> ({address.note})</p>
           </div>
-        </div>
-        <div className="">
-          <button onClick={openModal}>
-            <div className="p-2 bg-tertiary/10 rounded-lg">
-              <FiEdit className="text-primary" />
+          <button onClick={openModal} className="mt-3">
+            <div className="p-2 px-4 border text-sm  rounded-lg flex gap-2 items-center ">
+              <FiEdit />
+              Ubah Alamat
             </div>
           </button>
         </div>
+        {!isOrder && (
+          <div className="flex items-start">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked
+                className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
+              />
+            </label>
+          </div>
+        )}
       </div>
 
-      <Modal isOpen={isOpen} onClose={closeModal} title="Edit Alamat">
+      <Modal
+        isOpen={isOpen}
+        onClose={closeModal}
+        title="Edit Alamat"
+        subtitle="Masukkan alamat lengkap"
+        width="w-1/2"
+      >
         <div className="space-y-5">
-          <TextInput
-            label="Nama Penerima"
-            placeholder="Masukkan nama"
-            value={address.name}
-            name="name"
-            onChange={handleChange}
-          />
-          <TextInput
-            type="tel"
-            label="Telepon"
-            placeholder="Masukkan nomor telepon"
-            value={address.phone}
-            name="phone"
-            onChange={handleChange}
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <TextInput
+              label="Nama Penerima"
+              placeholder="Masukkan nama"
+              value={address.name}
+              name="name"
+              onChange={handleChange}
+            />
+            <TextInput
+              type="tel"
+              label="Telepon"
+              placeholder="Masukkan nomor telepon"
+              value={address.phone}
+              name="phone"
+              onChange={handleChange}
+            />
+          </div>
           <TextareaInput
             label="Alamat"
             placeholder="Masukkan alamat lengkap"

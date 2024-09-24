@@ -21,6 +21,7 @@ const ProductOrder = () => {
   });
 
   const [address, setAddress] = useState({
+    label: "Rumah",
     name: "Mimoi",
     phone: "08123456789",
     street: "Jl. Kebon Jeruk No 7 Blok F",
@@ -100,7 +101,7 @@ const ProductOrder = () => {
             <div className="mb-6">
               <h3 className="text-base font-semibold">Alamat Anda</h3>
               {address ? (
-                <CustomerAddress address={address} />
+                <CustomerAddress address={address} isOrder={true} />
               ) : (
                 <>
                   <p className="text-gray-500">Belum ada alamat</p>
