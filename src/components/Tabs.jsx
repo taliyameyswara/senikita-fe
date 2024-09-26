@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 const Tabs = ({ tabs }) => {
-  const [activeTab, setActiveTab] = useState(
-    localStorage.getItem("activeTab") || tabs[0].name
-  );
+  // Cek jika localStorage ada, atau fallback ke tab pertama
+  const getInitialTab = () => {
+    const savedTab = localStorage.getItem("activeTab");
+    const isValidTab = tabs.some((tab) => tab.name === savedTab);
+    return isValidTab ? savedTab : tabs[0].name;
+  };
+
+  const [activeTab, setActiveTab] = useState(getInitialTab);
 
   useEffect(() => {
     localStorage.setItem("activeTab", activeTab);
   }, [activeTab]);
+
+  const currentTab = tabs.find((tab) => tab.name === activeTab) || tabs[0];
 
   return (
     <div className="w-full">
@@ -26,9 +33,7 @@ const Tabs = ({ tabs }) => {
           </button>
         ))}
       </div>
-      <div className="py-4">
-        {tabs.find((tab) => tab.name === activeTab).content}
-      </div>
+      <div className="py-4">{currentTab.content}</div>
     </div>
   );
 };
