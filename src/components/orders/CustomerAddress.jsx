@@ -61,6 +61,13 @@ const CustomerAddress = ({ address, isOrder }) => {
         width="w-1/2"
       >
         <div className="space-y-5">
+          <TextInput
+            label="Label Alamat"
+            placeholder="Masukkan label alamat. Contoh: Rumah, Kantor, dll."
+            value={address.label}
+            name="label"
+            onChange={handleChange}
+          />
           <div className="grid grid-cols-2 gap-2">
             <TextInput
               label="Nama Penerima"
