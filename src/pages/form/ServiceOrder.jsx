@@ -65,7 +65,7 @@ const ServiceOrder = () => {
   return (
     <div className="">
       <Navbar />
-      <div className="container mx-auto p-8">
+      <div className="container mx-auto p-8  lg:w-[60%] w-full">
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -92,7 +92,6 @@ const ServiceOrder = () => {
                 value={formData.eventName}
                 onChange={handleInputChange}
               />
-              {/* <div className="grid md:grid-cols-2 gap-4"> */}
               <TextInput
                 type="date"
                 label={
