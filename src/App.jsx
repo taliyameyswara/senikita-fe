@@ -19,8 +19,11 @@ import SearchResult from "./pages/home/SearchResult";
 import ProductDetails from "./pages/home/ProductDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 import DashboardUser from "./pages/user/DashboardUser";
+
 import DashboardTransaction from "./pages/user/transaction/DashboardTransaction";
-import TransactionDetail from "./pages/user/transaction/TransactionDetails";
+import ProductTransactionDetails from "./pages/user/transaction/product/ProductTransactionDetails";
+import ServiceTransactionDetails from "./pages/user/transaction/service/ServiceTransactionDetails";
+
 import DashboardSeniman from "./pages/seniman/DashboardSeniman";
 import KesenianList from "./pages/seniman/kesenian/KesenianList";
 import AddProduct from "./pages/seniman/kesenian/product/AddProduct";
@@ -32,6 +35,7 @@ import ServiceOrder from "./pages/form/ServiceOrder";
 import Cart from "./pages/home/Cart";
 import UserProfile from "./pages/user/profile/UserProfile";
 import SenimanProfile from "./pages/seniman/profile/SenimanProfile";
+import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 
 function App() {
   return (
@@ -83,8 +87,12 @@ function App() {
           element={<DashboardTransaction />}
         />
         <Route
-          path="/user/dashboard/transaction/details"
-          element={<TransactionDetail />}
+          path="/user/dashboard/transaction/product/details"
+          element={<ProductTransactionDetails />}
+        />
+        <Route
+          path="/user/dashboard/transaction/service/details"
+          element={<ServiceTransactionDetails />}
         />
 
         {/* profile */}
@@ -116,6 +124,7 @@ function App() {
 
         {/* profile */}
         <Route path="/seniman/dashboard/profil" element={<SenimanProfile />} />
+        <Route path="/seniman/dashboard/order" element={<SenimanOrder />} />
 
         <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
       </Routes>

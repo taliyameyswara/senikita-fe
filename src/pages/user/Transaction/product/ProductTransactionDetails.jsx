@@ -1,17 +1,17 @@
 import React from "react";
-import Breadcrumbs from "../../../components/Breadcrumbs";
-import UserDashboardLayout from "../../../layouts/UserDashboardLayout";
-import ProductTransactionCard from "../../../components/transaction/ProductTransactionCard";
-import { ProductData } from "../../../utils/ProductData";
-import StatusDisplay from "../../../components/transaction/StatusDisplay";
-import { formatNumber } from "../../../utils/formatNumber";
+import Breadcrumbs from "../../../../components/Breadcrumbs";
+import UserDashboardLayout from "../../../../layouts/UserDashboardLayout";
+import ProductTransactionCard from "./ProductTransactionCard";
+import { ProductData } from "../../../../utils/ProductData";
+import StatusDisplay from "../StatusDisplay";
+import { formatNumber } from "../../../../utils/formatNumber";
 
 const TransactionDetail = () => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/user/dashboard" },
     { label: "Daftar Transaksi", to: "/user/dashboard/transaction" },
-    { label: "Detail Transaksi", to: "/user/dashboard/transaction/detail" },
+    { label: "Detail Transaksi", to: "/user/dashboard/transaction/details" },
   ];
   return (
     <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi">
@@ -52,6 +52,17 @@ const TransactionDetail = () => {
             ))}
           </div>
 
+          {/* Notes */}
+          <div className="mb-2">
+            <div className="font-semibold mb-1">Catatan</div>
+            <div className="text-gray-500">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam unde
+              rerum facere magni blanditiis quidem cumque placeat porro cum,
+              error veniam? Tenetur, in corrupti. Magnam ad corporis eaque
+              perspiciatis in!
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
             {/* Shipping */}
             <div className="">
@@ -64,10 +75,10 @@ const TransactionDetail = () => {
                 </div>
                 <div className="">
                   <div className="">SiCepat - Reguler</div>
-                  <div className="">TLJ8726438271231</div>
+                  <div className="font-nunito font-light">TLJ8726438271231</div>
                   <div className="">
-                    <div className="font-semibold">Nama Penerima</div>
-                    <div className="">0887613472</div>
+                    <div className="font-semibold">Mimoi</div>
+                    <div className="font-nunito font-light">0887613472</div>
                     <div className="">
                       Jl. Imam Bonjol No.207, Pendrikan Kidul
                     </div>
