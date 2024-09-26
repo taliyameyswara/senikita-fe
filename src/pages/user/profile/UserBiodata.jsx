@@ -18,20 +18,18 @@ const UserBiodata = () => {
     phoneNumber: "",
     birthDate: "",
     gender: "",
-    password: "", // State for password
+    password: "",
   });
-  const [newPassword, setNewPassword] = useState(""); // New password state
-  const [confirmPassword, setConfirmPassword] = useState(""); // Confirm password state
-  const [passwordError, setPasswordError] = useState(""); // State for password error message
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  // Function to open modal
   const openModal = (field, title, subtitle) => {
     setFieldToUpdate(field);
     setModalTitle(title);
     setModalSubtitle(subtitle);
     setIsModalOpen(true);
 
-    // Reset new password fields when opening modal
     if (field === "password") {
       setNewPassword("");
       setConfirmPassword("");
@@ -39,12 +37,10 @@ const UserBiodata = () => {
     }
   };
 
-  // Function to close modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // Function to handle profile picture upload
   const handleProfilePictureChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -56,7 +52,6 @@ const UserBiodata = () => {
     }
   };
 
-  // Function to save data from modal
   const handleSubmit = () => {
     if (fieldToUpdate === "password") {
       if (newPassword !== confirmPassword) {
@@ -69,32 +64,39 @@ const UserBiodata = () => {
   };
 
   return (
-    <div>
+    <div className="">
+      {/* Profile Section */}
       <div className="grid grid-cols-10 xl:gap-5 lg:gap-4 gap-2">
         {/* Profile Picture */}
-        <div className="xl:col-span-3 lg:col-span-4 col-span-10 mb-5">
-          <div className="border px-5 py-4 rounded-xl">
-            <div className="font-semibold">Foto Profil</div>
-            <div className="rounded-xl overflow-hidden mt-2">
-              <img
-                src={
-                  formData.profilePicture ||
-                  "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
-                }
-                alt="Profile"
-                className="w-full h-48 object-cover"
-              />
-            </div>
-            <div className="">
-              <button className="border px-5 py-2 rounded-xl text-sm font-semibold mt-3 flex w-full justify-center">
-                Ubah Foto Profil
-              </button>
-              <p className="text-sm text-gray-400 mt-3 flex">
-                Ukuran foto maksimal 500KB. Format file yang diperbolehkan: .JPG
-                .JPEG .PNG .GIF
-              </p>
-            </div>
-          </div>
+        <div className="xl:col-span-3 lg:col-span-4 col-span-10 border px-5 py-4 rounded-xl">
+          <div className="font-semibold mb-2">Foto Profil</div>
+          <img
+            src={
+              formData.profilePicture ||
+              "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
+            }
+            alt="Profile"
+            className="w-full h-48 object-cover rounded-xl"
+          />
+          <input
+            type="file"
+            id="profilePictureInput"
+            className="hidden"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+          />
+          <button
+            onClick={() =>
+              document.getElementById("profilePictureInput").click()
+            }
+            className="border px-5 py-2 rounded-xl text-sm font-semibold mt-3 flex w-full justify-center"
+          >
+            Ubah Foto Profil
+          </button>
+          <p className="text-sm text-gray-400 mt-3">
+            Ukuran foto maksimal 500KB. Format file yang diperbolehkan: .JPG
+            .JPEG .PNG .GIF
+          </p>
           {/* Password Button */}
           <button
             onClick={() =>
@@ -110,174 +112,172 @@ const UserBiodata = () => {
           </button>
         </div>
 
-        {/*  Biodata */}
-        <div className="xl:col-span-7 lg:col-span-6 col-span-10">
-          {/* Personal Data Content */}
-          <div className="border px-5 py-4 rounded-xl">
-            <div className="font-semibold text-black text-lg mb-4">Biodata</div>
-            <div className="grid grid-cols-12 gap-y-6 text-sm xl:text-base">
-              {/* Biodata Labels */}
-              <div className="xl:col-span-3 col-span-4">
-                <div className="flex flex-col gap-4 text-gray-600">
-                  <div>Nama Lengkap</div>
-                  <div>Username</div>
-                  <div>Tanggal Lahir</div>
-                  <div>Jenis Kelamin</div>
-                </div>
+        {/* Biodata Section */}
+        <div className="xl:col-span-7 lg:col-span-6 col-span-10 border px-5 py-4 rounded-xl">
+          {/* Personal Info */}
+          <div className="font-semibold text-black text-lg mb-4">Biodata</div>
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-y-4 mt-2">
+              <div className=" text-gray-600">Nama Lengkap</div>
+              <div className="col-span-2 flex items-center">
+                {formData.fullName}
+                <button
+                  onClick={() =>
+                    openModal(
+                      "fullName",
+                      "Ubah Nama Lengkap",
+                      "Pastikan nama lengkap benar."
+                    )
+                  }
+                  className="ml-3 text-tertiary"
+                >
+                  Ubah
+                </button>
               </div>
 
-              {/* Biodata Values */}
-              <div className="col-span-7">
-                <div className="flex flex-col gap-4">
-                  <div>{formData.fullName}</div>
-                  <div>
-                    {formData.username ? (
-                      <div className="flex gap-2">
-                        {formData.username}
-                        <button
-                          onClick={() =>
-                            openModal(
-                              "username",
-                              "Ubah Username",
-                              "Pastikan username Anda valid."
-                            )
-                          }
-                          className="text-tertiary"
-                        >
-                          Ubah
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          openModal(
-                            "username",
-                            "Tambah Username",
-                            "Pastikan username Anda valid."
-                          )
-                        }
-                        className="text-tertiary"
-                      >
-                        Tambah Username
-                      </button>
-                    )}
-                  </div>
-                  <div>
-                    {formData.birthDate ? (
-                      <div className="flex gap-2">
-                        {formData.birthDate}
-                        <button
-                          onClick={() =>
-                            openModal(
-                              "birthDate",
-                              "Ubah Tanggal Lahir",
-                              "Pastikan tanggal lahir sudah benar."
-                            )
-                          }
-                          className="text-tertiary"
-                        >
-                          Ubah
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          openModal(
-                            "birthDate",
-                            "Tambah Tanggal Lahir",
-                            "Pastikan tanggal lahir sudah benar."
-                          )
-                        }
-                        className="text-tertiary"
-                      >
-                        Tambah Tanggal Lahir
-                      </button>
-                    )}
-                  </div>
-                  <div>
-                    {formData.gender ? (
-                      <div className="flex gap-2">
-                        {formData.gender}
-                        <button
-                          onClick={() =>
-                            openModal(
-                              "gender",
-                              "Ubah Jenis Kelamin",
-                              "Silakan pilih jenis kelamin Anda."
-                            )
-                          }
-                          className="text-tertiary"
-                        >
-                          Ubah
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          openModal(
-                            "gender",
-                            "Tambah Jenis Kelamin",
-                            "Silakan pilih jenis kelamin Anda."
-                          )
-                        }
-                        className="text-tertiary"
-                      >
-                        Tambah Jenis Kelamin
-                      </button>
-                    )}
-                  </div>
-                </div>
+              <div className="text-gray-600">Username</div>
+              <div className="col-span-2">
+                {formData.username ? (
+                  <>
+                    {formData.username}
+                    <button
+                      onClick={() =>
+                        openModal(
+                          "username",
+                          "Ubah Username",
+                          "Pastikan username Anda valid."
+                        )
+                      }
+                      className="ml-3 text-tertiary"
+                    >
+                      Ubah
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      openModal(
+                        "username",
+                        "Tambah Username",
+                        "Pastikan username Anda valid."
+                      )
+                    }
+                    className="text-tertiary"
+                  >
+                    Tambah Username
+                  </button>
+                )}
+              </div>
+
+              <div className="text-gray-600">Tanggal Lahir</div>
+              <div className="col-span-2">
+                {formData.birthDate ? (
+                  <>
+                    {formData.birthDate}
+                    <button
+                      onClick={() =>
+                        openModal(
+                          "birthDate",
+                          "Ubah Tanggal Lahir",
+                          "Pastikan tanggal lahir sudah benar."
+                        )
+                      }
+                      className="ml-3 text-tertiary"
+                    >
+                      Ubah
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      openModal(
+                        "birthDate",
+                        "Tambah Tanggal Lahir",
+                        "Pastikan tanggal lahir sudah benar."
+                      )
+                    }
+                    className="text-tertiary"
+                  >
+                    Tambah Tanggal Lahir
+                  </button>
+                )}
+              </div>
+
+              <div className="text-gray-600">Jenis Kelamin</div>
+              <div className="col-span-2">
+                {formData.gender ? (
+                  <>
+                    {formData.gender}
+                    <button
+                      onClick={() =>
+                        openModal(
+                          "gender",
+                          "Ubah Jenis Kelamin",
+                          "Silakan pilih jenis kelamin Anda."
+                        )
+                      }
+                      className="ml-3 text-tertiary"
+                    >
+                      Ubah
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      openModal(
+                        "gender",
+                        "Tambah Jenis Kelamin",
+                        "Silakan pilih jenis kelamin Anda."
+                      )
+                    }
+                    className="text-tertiary"
+                  >
+                    Tambah Jenis Kelamin
+                  </button>
+                )}
               </div>
             </div>
+          </div>
 
-            <div className="font-semibold text-black text-lg my-4 mt-5">
-              Kontak
-            </div>
-            <div className="grid grid-cols-12 gap-y-6">
-              <div className="xl:col-span-3 col-span-4">
-                <div className="flex flex-col gap-4 text-gray-600 text-sm xl:text-base">
-                  <div>Email</div>
-                  <div>Nomor Telepon</div>
-                </div>
-              </div>
+          {/* Contact Info */}
+          <div className="text-lg font-semibold my-4">Kontak</div>
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-y-4 mt-2">
+              <div className="text-gray-600">Email</div>
+              <div className="col-span-2">{formData.email}</div>
 
-              <div className="col-span-7">
-                <div className="flex flex-col gap-4 text-sm xl:text-base">
-                  {/* Contact */}
-                  <div>{formData.email}</div>
-                  <div>
-                    {formData.phoneNumber ? (
-                      <div className="flex gap-2">
-                        {formData.phoneNumber}
-                        <button
-                          onClick={() =>
-                            openModal(
-                              "phoneNumber",
-                              "Ubah Nomor Telepon",
-                              "Pastikan nomor telepon Anda valid."
-                            )
-                          }
-                          className="text-tertiary"
-                        >
-                          Ubah
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() =>
-                          openModal(
-                            "phoneNumber",
-                            "Tambah Nomor Telepon",
-                            "Pastikan nomor telepon Anda valid."
-                          )
-                        }
-                        className="text-tertiary"
-                      >
-                        Tambah Nomor Telepon
-                      </button>
-                    )}
-                  </div>
-                </div>
+              <div className="text-gray-600">Nomor Telepon</div>
+              <div className="col-span-2">
+                {formData.phoneNumber ? (
+                  <>
+                    {formData.phoneNumber}
+                    <button
+                      onClick={() =>
+                        openModal(
+                          "phoneNumber",
+                          "Ubah Nomor Telepon",
+                          "Pastikan nomor telepon Anda valid."
+                        )
+                      }
+                      className="ml-3 text-tertiary"
+                    >
+                      Ubah
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() =>
+                      openModal(
+                        "phoneNumber",
+                        "Tambah Nomor Telepon",
+                        "Pastikan nomor telepon Anda valid."
+                      )
+                    }
+                    className="text-tertiary"
+                  >
+                    Tambah Nomor Telepon
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -305,51 +305,55 @@ const UserBiodata = () => {
           <div className="flex gap-3">
             <label
               htmlFor="male"
-              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-xl"
+              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
             >
-              <span>Laki-laki</span>
               <input
                 type="radio"
                 id="male"
                 name="gender"
-                value="male"
-                checked={formData.gender === "male"}
-                onChange={(e) => setFormData({ ...formData, gender: "male" })}
+                value="Laki-laki"
+                checked={formData.gender === "Laki-laki"}
+                onChange={() =>
+                  setFormData({ ...formData, gender: "Laki-laki" })
+                }
               />
+              <span>Laki-laki</span>
             </label>
             <label
               htmlFor="female"
-              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-xl"
+              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
             >
-              <span>Perempuan</span>
               <input
                 type="radio"
                 id="female"
                 name="gender"
-                value="female"
-                checked={formData.gender === "female"}
-                onChange={(e) => setFormData({ ...formData, gender: "female" })}
+                value="Perempuan"
+                checked={formData.gender === "Perempuan"}
+                onChange={() =>
+                  setFormData({ ...formData, gender: "Perempuan" })
+                }
               />
+              <span>Perempuan</span>
             </label>
           </div>
         ) : fieldToUpdate === "password" ? (
-          <div>
-            <div>
-              <div className="mb-5">
-                <PasswordInput
-                  label="Masukkan Password Baru"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
-              </div>
+          <>
+            <div className="mb-4">
               <PasswordInput
-                label="Konfirmasi Password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                label="Password Baru"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
-              {passwordError && <p className="text-red-500">{passwordError}</p>}
             </div>
-          </div>
+            <PasswordInput
+              label="Konfirmasi Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            {passwordError && (
+              <p className="text-red-500 text-sm">{passwordError}</p>
+            )}
+          </>
         ) : (
           <TextInput
             label={modalTitle}
