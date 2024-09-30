@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import UserDashboardLayout from "../../../layouts/UserDashboardLayout";
-import DropdownFilter from "../../../components/DropdownFilter";
-import ProductTransactionCard from "../../../components/transaction/ProductTransactionCard";
+import Tabs from "../../../components/Tabs";
+import ProductTransaction from "../transaction/product/ProductTransaction";
+import ServiceTransaction from "./service/ServiceTransaction";
 import { ProductData } from "../../../utils/ProductData";
-import CardHeader from "../../../components/transaction/CardHeader";
-import CardButton from "../../../components/transaction/CardButton";
 
 const DashboardTransaction = () => {
   const breadcrumbItems = [
@@ -18,10 +17,22 @@ const DashboardTransaction = () => {
 
   const [selectedType, setSelectedType] = useState("");
 
-  // Filter product data based on selected type
   const filterByType = ProductData.filter((product) => {
     return selectedType ? product.type === selectedType : true;
   });
+
+  const tabs = [
+    {
+      name: "produk-kesenian",
+      label: "Produk Kesenian",
+      content: <ProductTransaction />,
+    },
+    {
+      name: "jasa-kesenian",
+      label: "Jasa Kesenian",
+      content: <ServiceTransaction />,
+    },
+  ];
 
   return (
     <UserDashboardLayout pageTitle="Dashboard | Transaksi">
@@ -36,43 +47,11 @@ const DashboardTransaction = () => {
           {/* Title */}
           <div className="text-xl font-semibold">Daftar Transaksi</div>
 
-          {/* Filter by Type */}
+          {/* Tabs untuk Produk dan Jasa */}
           <div className="flex gap-2">
-            <div className="">
-              <DropdownFilter
-                title={"Jenis Kesenian"}
-                options={types}
-                selectedOption={selectedType}
-                setSelectedOption={setSelectedType}
-                label="Semua Jenis Kesenian"
-              />
+            <div className="w-full">
+              <Tabs tabs={tabs} />
             </div>
-          </div>
-
-          {/* Product List */}
-          <div className="mt-2">
-            {filterByType.map((product, index) => {
-              const transactionStatus = product.status || "diproses"; // Default status if undefined
-
-              return (
-                <ProductTransactionCard
-                  key={index}
-                  product={product}
-                  header={
-                    <CardHeader
-                      product={product}
-                      transactionStatus={transactionStatus}
-                    />
-                  }
-                  button={
-                    <CardButton
-                      buttonLink={`/user/dashboard/transaction/details`}
-                      buttonLabel="Lihat Detail Transaksi"
-                    />
-                  }
-                />
-              );
-            })}
           </div>
         </div>
       </div>

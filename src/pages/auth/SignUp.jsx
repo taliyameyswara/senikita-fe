@@ -1,33 +1,21 @@
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
-import { toast } from 'react-toastify';
-// import { register as registerApi } from '../../api/auth';
-import { useAuthApi } from '../../api/auth';
-
-
+import { toast } from "react-toastify";
+import { useAuthApi } from "../../api/auth";
+import PasswordInput from "../../components/form-input/PasswordInput";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { setEmailOTP } = useContext(UserContext);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const { register: registerApi } = useAuthApi();
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
 
   const isFormValid = name && email && password && confirmPassword;
 
@@ -35,41 +23,36 @@ const SignUp = () => {
     e.preventDefault();
     setIsLoading(true); // Set loading to true
 
-
     if (password.length < 8) {
-      toast.error('Password minimal 8 karakter');
+      toast.error("Password minimal 8 karakter");
       setIsLoading(false);
       return;
     }
 
-    if (
-      password !== confirmPassword
-    ) {
-      toast.error('Password tidak sama');
+    if (password !== confirmPassword) {
+      toast.error("Password tidak sama");
       setIsLoading(false);
       return;
     }
-
 
     try {
       const result = await registerApi(name, email, password);
-
       const { success, message } = result;
-      toast[success ? 'success' : 'error'](success ? 'Silahkan isi otp' : message);
+      toast[success ? "success" : "error"](
+        success ? "Silahkan isi otp" : message
+      );
 
       if (success) {
         setEmailOTP(email);
-        navigate('/otp');
+        navigate("/otp");
       }
     } catch (error) {
       console.log(error);
-      toast.error('Terjadi kesalahan');
+      toast.error("Terjadi kesalahan");
     } finally {
       setIsLoading(false);
     }
-
-
-  }
+  };
 
   return (
     <>
@@ -131,7 +114,6 @@ const SignUp = () => {
               />
             </div>
 
-
             {/* email */}
             <div>
               <label
@@ -151,69 +133,21 @@ const SignUp = () => {
               />
             </div>
 
-
-
             {/* password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
-                  placeholder="Masukkan Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <div
-                  className="absolute inset-y-0 flex items-center cursor-pointer right-4"
-                  onClick={togglePasswordVisibility}
-                >
-                  {showPassword ? (
-                    <IoEyeOffOutline className="text-lg text-gray-400" />
-                  ) : (
-                    <IoEyeOutline className="text-lg text-gray-400" />
-                  )}
-                </div>
-              </div>
-            </div>
+            <PasswordInput
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
             {/* confirm password */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Konfirmasi Password
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
-                  placeholder="Konfirmasi Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-                <div
-                  className="absolute inset-y-0 flex items-center cursor-pointer right-4"
-                  onClick={toggleConfirmPasswordVisibility}
-                >
-                  {showConfirmPassword ? (
-                    <IoEyeOffOutline className="text-lg text-gray-400" />
-                  ) : (
-                    <IoEyeOutline className="text-lg text-gray-400" />
-                  )}
-                </div>
-              </div>
-            </div>
+            <PasswordInput
+              label="Konfirmasi Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
 
             {/* forgot password */}
             <div className="text-sm text-primary">
@@ -226,18 +160,18 @@ const SignUp = () => {
             <div>
               <button
                 type="submit"
-                className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
-                  ? "bg-primary hover:bg-primary-dark"
-                  : "bg-gray-300 cursor-not-allowed"
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
-                disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
+                className={`w-full py-3 text-white font-semibold rounded-xl ${
+                  isFormValid
+                    ? "bg-primary hover:bg-primary-dark"
+                    : "bg-gray-300 cursor-not-allowed"
+                } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                disabled={!isFormValid || isLoading}
               >
-                {isLoading
-                  ?
+                {isLoading ? (
                   <div className="w-6 h-6 border-2 border-white border-solid rounded-full border-t-transparent animate-spin"></div>
-                  :
+                ) : (
                   "Daftar"
-                }
+                )}
               </button>
             </div>
           </form>

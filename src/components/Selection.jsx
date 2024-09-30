@@ -80,7 +80,7 @@ const Selection = ({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 rounded-xl z-10 overflow-y-auto">
+        <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-300 z-[999] rounded-xl overflow-y-auto">
           <ul className="py-1 max-h-full overflow-y-auto">
             {options.map((option) => (
               <li
