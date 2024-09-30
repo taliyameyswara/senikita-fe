@@ -1,7 +1,13 @@
 import React from "react";
-import { formatNumber } from "../../utils/formatNumber";
+import { formatNumber } from "../../../../utils/formatNumber";
 
-const ProductTransactionCard = ({ product, header, button }) => {
+const ProductTransactionCard = ({
+  product,
+  quantity = product.quantity,
+  provider,
+  header,
+  button,
+}) => {
   return (
     <div className="p-4 bg-white border rounded-xl mb-4">
       {/* Header */}
@@ -20,13 +26,13 @@ const ProductTransactionCard = ({ product, header, button }) => {
 
         {/* Details */}
         <div>
-          <div className="text-xs text-tertiary">Sanggar Tari Puspita</div>
+          <div className="text-xs text-tertiary">{provider}</div>
           <h3 className="font-semibold md:text-lg">{product.name}</h3>
-          {product.type === "Produk" && (
-            <div className="text-xs font-nunito font-light text-gray-500">
-              1 barang x {formatNumber(product.price)}
-            </div>
-          )}
+          {/* {product.type === "Produk" && ( */}
+          <div className="text-xs font-nunito font-light text-gray-500">
+            {quantity} item x {formatNumber(product.price)}
+          </div>
+          {/* )} */}
           <p className="text-gray-900 font-semibold font-nunito">
             {formatNumber(product.price)}
           </p>

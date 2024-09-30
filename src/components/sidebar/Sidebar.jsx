@@ -169,7 +169,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
         {/* Sidebar Links */}
         <div className="space-y-8">
           {userRole === "seniman" && (
-            <Link to="/user/balance">
+            <Link to="/seniman/dashboard/balance">
               <div className="mb-5">
                 <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
                   <div className="p-3 m-2 rounded-full bg-tertiary/20">
