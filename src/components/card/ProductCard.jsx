@@ -32,7 +32,7 @@ const ProductCard = ({ product, type }) => {
   const categoryName = category.name;
   const shopName = shop.name;
   const region = shop.region;
-  const slug = createSlug(name) + createSlug(shopName);
+  const slug = createSlug(name) + "-" + createSlug(shopName);
   const settings = {
     dots: true,
     infinite: true,
