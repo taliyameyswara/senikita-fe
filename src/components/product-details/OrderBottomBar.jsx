@@ -1,18 +1,25 @@
 import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import TotalCounter from "../../components/TotalCounter";
+import LikeButton from "../LikeButton";
+import { useAxiosInstance } from "../../config/axiosConfig";
 
 const OrderBottomBar = ({ product }) => {
+  const axiosInstance = useAxiosInstance();
+  if (!product) {
+    return <div>Loading</div>
+  }
+
   const [quantity, setQuantity] = useState(1);
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 lg:px-24 grid grid-cols-12 gap-2 items-center md:text-base text-sm z-50">
+    <div className="fixed bottom-0 left-0 right-0 z-50 grid items-center grid-cols-12 gap-2 p-4 text-sm bg-white border-t border-gray-200 shadow-lg lg:px-24 md:text-base">
       {/* left section */}
       <div className="hidden lg:block lg:col-span-5">
         <div className="flex items-center gap-2">
           <img
             src={product.thumbnail}
             alt={product.name}
-            className="rounded-full w-12 h-12"
+            className="w-12 h-12 rounded-full"
           />
           <div className="">{product.name}</div>
         </div>
@@ -22,17 +29,26 @@ const OrderBottomBar = ({ product }) => {
       </div>
 
       {/* right section */}
-      <div className="flex gap-2 lg:col-span-4 col-span-12 items-center">
-        <button className="bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-xl w-full">
+      <div className="flex items-center col-span-12 gap-2 lg:col-span-4">
+        <button className="w-full px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-dark rounded-xl">
           Beli Sekarang
         </button>
-        <button className="bg-secondary hover:bg-secondary-dark text-white font-semibold py-3 px-6 rounded-xl w-full">
+        <button className="w-full px-6 py-3 font-semibold text-white bg-secondary hover:bg-secondary-dark rounded-xl">
           <div className="flex items-center justify-center gap-1">
             <IoCartOutline className="text-xl text-white" />
             <span className="">Keranjang</span>
           </div>
         </button>
+
+        {'is_bookmarked' in product
+          ? (
+            <LikeButton />
+          )
+          : ("")
+        }
+
       </div>
+
     </div>
   );
 };

@@ -136,20 +136,18 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
   return (
     <div>
       <div
-        className={`fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
-          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         aria-hidden="true"
       ></div>
 
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar  shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-64"
-        }`}
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar  shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${sidebarOpen ? "translate-x-0" : "-translate-x-64"
+          }`}
       >
-        <div className="flex justify-between pr-3 sm:px-2 mb-5">
+        <div className="flex justify-between pr-3 mb-5 sm:px-2">
           <button
             ref={trigger}
             className="lg:hidden text-primary"
@@ -174,10 +172,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
             <Link to="/user/balance">
               <div className="mb-5">
                 <div className="bg-white flex rounded-xl p-2 border-[0.5px]">
-                  <div className="bg-tertiary/20 p-3 m-2 rounded-full">
+                  <div className="p-3 m-2 rounded-full bg-tertiary/20">
                     <IoWalletOutline className="text-xl text-primary" />
                   </div>
-                  <div className="flex flex-row gap-20 items-center">
+                  <div className="flex flex-row items-center gap-20">
                     <div>
                       <div className="text-sm">Saldo</div>
                       <div className="font-bold font-nunito">Rp 0</div>
@@ -195,10 +193,9 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
             {linksToDisplay.map((data) => (
               <li
                 key={data.id}
-                className={`mb-0.5 last:mb-0 hover:bg-tertiary/10 hover:text-primary hover:rounded-xl ${
-                  pathname === data.link &&
+                className={`mb-0.5 last:mb-0 hover:bg-tertiary/10 hover:text-primary hover:rounded-xl ${pathname === data.link &&
                   "bg-tertiary/10 rounded-xl text-primary"
-                }`}
+                  }`}
               >
                 <NavLink
                   end
@@ -207,7 +204,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
                 >
                   <div className="flex items-center p-3 px-3.5">
                     <div className="text-xl">{data.icon}</div>
-                    <span className="ml-3 text-sm font-medium duration-200  2xl:opacity-100">
+                    <span className="ml-3 text-sm font-medium duration-200 2xl:opacity-100">
                       {data.name}
                     </span>
                   </div>

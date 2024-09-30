@@ -7,37 +7,40 @@ import { IoLocationOutline } from "react-icons/io5";
 import { BsTruck } from "react-icons/bs";
 
 const ProductDetailSection = ({ product }) => {
+  const imageProducts = product.images && product.images.length > 0
+    ? [product.thumbnail, ...product.images.map(image => image.picture)]
+    : [product.thumbnail];
   return (
-    <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-6 items-start">
+    <div className="grid items-start grid-cols-1 gap-3 mt-4 lg:grid-cols-2 md:gap-6">
       {/* image slider */}
-      <ImageSlider imageUrls={product.images} />
+      <ImageSlider imageUrls={imageProducts} />
 
       {/* product details */}
       <div className="flex flex-col">
         {/* price */}
-        <span className="md:text-3xl text-2xl font-bold text-primary font-nunito">
+        <span className="text-2xl font-bold md:text-3xl text-primary font-nunito">
           {formatNumber(product.price)}
         </span>
-        <h1 className="md:text-3xl text-2xl text-secondary font-crimson md:my-2 my-1">
+        <h1 className="my-1 text-2xl md:text-3xl text-secondary font-crimson md:my-2">
           {product.name}
         </h1>
 
         {/* sold + rating */}
-        <div className="flex gap-2 text-sm mb-2">
+        <div className="flex gap-2 mb-2 text-sm">
           <div className="">
             Terjual <span className="font-nunito">{product.sold}</span>
           </div>
           <div className="">•</div>
           <div className="flex items-center gap-1">
-            <FaStar className="text-yellow-500 mb-1" />
+            <FaStar className="mb-1 text-yellow-500" />
             <div className="text-sm font-nunito">{product.rating}</div>
-            <div className="text-sm font-nunito text-gray-500">
-              ({product.ratingAmount} Rating)
+            <div className="text-sm text-gray-500 font-nunito">
+              ({product.ratings.length} Rating)
             </div>
           </div>
         </div>
 
-        {/* details + store */}
+        {/* details + shop */}
         <div className="flex flex-col gap-3">
           <div className="text-sm">
             {/* stock */}
@@ -49,13 +52,13 @@ const ProductDetailSection = ({ product }) => {
             <div className="">
               <span className="text-gray-500">Kategori:</span>
               <span className="ml-1 font-semibold text-primary">
-                {product.category}
+                {product.category_name}
               </span>
             </div>
           </div>
 
           {/* description */}
-          <ReadMore description={product.description} />
+          <ReadMore description={product.desc} />
 
           {/* shipping */}
           <div className="text-sm">
@@ -67,7 +70,9 @@ const ProductDetailSection = ({ product }) => {
                 <div className="">
                   Dikirim dari {""}
                   <span className="font-semibold">
-                    {product.store[0].region}
+                    {product.shop.region}
+                    {/* {product.shop} */}
+                    {/* Menunggu Backend */}
                   </span>
                 </div>
               </div>
@@ -76,7 +81,7 @@ const ProductDetailSection = ({ product }) => {
                 <BsTruck />
                 <div className="">
                   Estimasi ongkir {""}
-                  <span className="font-nunito font-light">
+                  <span className="font-light font-nunito">
                     {formatNumber(26000)} - {formatNumber(30000)}
                   </span>
                 </div>

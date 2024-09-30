@@ -5,8 +5,8 @@ import Review from "../../components/review/Review";
 
 const ReviewSection = ({ review }) => {
   return (
-    <div className="p-6 bg-white rounded-xl border my-6">
-      <div className="grid lg:grid-cols-3 grid-cols-1 gap-10">
+    <div className="p-6 my-6 bg-white border rounded-xl">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
         <RatingAccumulation review={review} />
         <Review review={review} />
       </div>

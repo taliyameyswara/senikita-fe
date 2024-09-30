@@ -85,7 +85,7 @@ const AddService = () => {
         postFormData.append('thumbnail', formData.images[0].file);
       }
       formData.images.slice(1).forEach((image, index) => {
-        postFormData.append(`images[${index}]`, image.file);
+        postFormData.append(`service_image[]`, image.file);
       });
       setLoading(true);
 
@@ -279,9 +279,9 @@ const AddService = () => {
                       images,
                     }))
                   }
-                  maxImages={9}
+                  maxImages={5}
                   acceptedFormats={[".jpg", ".jpeg", ".png"]}
-                  minSize={300}
+                  minSize={100}
                   optimalSize={1200}
                 />
               </div>

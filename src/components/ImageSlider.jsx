@@ -42,7 +42,7 @@ const ImageSlider = ({ imageUrls }) => {
           <img
             src={imageUrls[i]}
             alt={`Thumbnail ${i + 1}`}
-            className="object-cover rounded-lg h-full"
+            className="object-cover h-full rounded-lg"
           />
         </a>
       );
@@ -61,13 +61,13 @@ const ImageSlider = ({ imageUrls }) => {
 
   return (
     <>
-      <div className="slider-container max-w-full relative">
+      <div className="relative max-w-full slider-container">
         <Slider {...settings}>
           {imageUrls.map((url, index) => (
             <img
               src={url}
               onClick={() => handleImageClick(index)}
-              className="rounded-xl object-cover w-full h-60 md:h-96"
+              className="object-cover w-full rounded-xl h-60 md:h-96"
             />
           ))}
         </Slider>

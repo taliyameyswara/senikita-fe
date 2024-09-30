@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 
-const LikeButton = ({ iconSize = "text-sm md:text-base" }) => {
+const LikeButton = ({ iconSize = "text-md md:text-xl" }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const toggleLike = () => {
@@ -10,7 +10,7 @@ const LikeButton = ({ iconSize = "text-sm md:text-base" }) => {
 
   return (
     <button
-      className="bg-white p-2 rounded-full border hover:bg-gray-100"
+      className="p-3 bg-white border rounded-full hover:bg-gray-100"
       onClick={toggleLike}
     >
       {isLiked ? (

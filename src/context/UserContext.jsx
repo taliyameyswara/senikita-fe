@@ -37,6 +37,8 @@ const UserProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('user'); // Remove user object from localStorage
         localStorage.removeItem('email'); // Remove email if necessary
+        localStorage.removeItem('token'); // Remove email if necessary
+        localStorage.removeItem('role'); // Remove email if necessary
     };
 
     const setEmailOTP = (email) => {

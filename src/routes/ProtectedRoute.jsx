@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 // Fungsi untuk mengecek apakah user sudah login berdasarkan keberadaan token
 const isAuthenticated = () => {

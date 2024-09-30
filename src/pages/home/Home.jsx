@@ -1,44 +1,62 @@
+import { useState, useEffect } from "react";
 import Hero from "../../components/hero/Hero";
 import ProductList from "../../components/card/ProductList";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import { ProductData } from "../../utils/ProductData";
 import { useAxiosInstance } from '../../config/axiosConfig';
-import { useContext, useEffect } from "react";
-import { useAuthApi } from "../../api/auth";
-import { UserContext } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+
 const Home = () => {
-  const { refreshToken } = useAuthApi();
-  const { refresh, logout } = useContext(UserContext);
-  const navigate = useNavigate();
+  const axiosInstance = useAxiosInstance();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); // State for loading
+  const [service, setService] = useState([]);
+  useEffect(() => {
+    axiosInstance.get("/random-product")
+      .then((res) => {
+        setProducts(res.data.data);
+        setLoading(false); // Stop loading after data is received
+      }).catch((err) => {
+        console.log(err);
+        setLoading(false); // Stop loading even if there's an error
+      });
+
+    axiosInstance.get("/random-services")
+      .then((res) => {
+        setService(res.data.data);
+        setLoading(false); // Stop loading after data is received
+      }).catch((err) => {
+        console.log(err);
+        setLoading(false); // Stop loading even if there's an error
+      });
+  }, []);
 
   useEffect(() => {
-    console.log("Component mounted - attempting to refresh token");
+    console.log(products)
+    console.log(service)
+  })
 
-    // const handleRefreshToken = async () => {
-    //   const response = await refreshToken();
-    //   if (response.success) {
-    //     refresh(response.data); // Set user data after refreshing token
-    //   } else {
-    //     logout(); // Perform logout if token refresh fails
-    //     navigate("/login");
-    //   }
-    // };
-
-    // handleRefreshToken(); // Call the function
-  }, []); // 
   return (
     <div>
-      <div className="">
-        <Navbar />
-        <Hero />
-        <ProductList
-          title={"Produk dan Jasa Kesenian di Sekitar Anda"}
-          products={ProductData}
-        />
-        <Footer />
-      </div>
+      <Navbar />
+      <Hero />
+      {loading ? (
+        <div>Loading...</div> // Display this while loading
+      ) : (
+        <>
+          <ProductList
+            title={"Produk Kesenian di Sekitar Anda"}
+            products={products}
+            type={"Product"}
+          />
+          <ProductList
+            title={"Jasa Kesenian di Sekitar Anda"}
+            products={service}
+            type={"Service"}
+          />
+        </>
+      )}
+      <Footer />
     </div>
   );
 };

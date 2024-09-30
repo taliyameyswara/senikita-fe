@@ -17,6 +17,7 @@ import VerificationLists from "./pages/admin/Verification/VerificationLists";
 
 import SearchResult from "./pages/home/SearchResult";
 import ProductDetails from "./pages/home/ProductDetails";
+import ServiceDetails from "./pages/home/ServiceDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 import DashboardUser from "./pages/user/DashboardUser";
 import DashboardTransaction from "./pages/user/transaction/DashboardTransaction";
@@ -30,6 +31,8 @@ import EditService from "./pages/seniman/Kesenian/service/EditService";
 import ProductOrder from "./pages/form/ProductOrder";
 import ServiceOrder from "./pages/form/ServiceOrder";
 import Cart from "./pages/home/Cart";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import DashboardWishlist from "./pages/user/Wishlist/DashboardWishlist";
 
 function App() {
   return (
@@ -66,7 +69,8 @@ function App() {
 
         {/* Route for home */}
         <Route path="/searchresult" element={<SearchResult />} />
-        <Route path="/productdetails" element={<ProductDetails />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/service/:id" element={<ServiceDetails />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
         <Route path="/productorder" element={<ProductOrder />} />
         <Route path="/serviceorder" element={<ServiceOrder />} />
@@ -81,6 +85,10 @@ function App() {
         <Route
           path="/user/dashboard/transaction/details"
           element={<TransactionDetail />}
+        />
+        <Route
+          path="/user/dashboard/wishlist"
+          element={<DashboardWishlist />}
         />
 
         {/* seniman */}
@@ -105,7 +113,15 @@ function App() {
           element={<EditService />}
         />
 
-        <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
+
+
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
+
+        </Route>
+
+
       </Routes>
       <ToastContainer />
     </Router>

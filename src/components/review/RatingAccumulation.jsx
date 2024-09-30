@@ -2,7 +2,12 @@ import { FaStar } from "react-icons/fa";
 
 const RatingAccumulation = ({ review }) => {
   if (!review || review.length === 0) {
-    return null;
+    return (
+      <div className="col-span-1">
+        <h2 className="mb-2 text-lg font-semibold md:text-xl">Ulasan Pembeli</h2>
+        <div className="font-nunito">Belum ada ulasan.</div>
+      </div>
+    );
   }
 
   const totalReview = review.length;
@@ -41,12 +46,12 @@ const RatingAccumulation = ({ review }) => {
 
   return (
     <div className="col-span-1">
-      <h2 className="md:text-xl text-lg font-semibold mb-2">Ulasan Pembeli</h2>
+      <h2 className="mb-2 text-lg font-semibold md:text-xl">Ulasan Pembeli</h2>
       <div className="mb-4 font-nunito">
         <div className="flex items-end gap-2 mb-2">
           <div className="flex items-center">
             <FaStar className="text-yellow-500 text-3xl mb-[0.5]" />
-            <div className="text-4xl font-bold ml-2">
+            <div className="ml-2 text-4xl font-bold">
               {averageRating.toFixed(1)}
             </div>
           </div>
@@ -67,7 +72,7 @@ const RatingAccumulation = ({ review }) => {
       </div>
 
       {/* Rating Bar Accumulation */}
-      <div className="space-y-2 mt-4">
+      <div className="mt-4 space-y-2">
         {[5, 4, 3, 2, 1].map((rating) => {
           const count = ratingCounts[rating - 1];
           return (
@@ -75,13 +80,13 @@ const RatingAccumulation = ({ review }) => {
               key={rating}
               className="flex items-center font-light font-nunito"
             >
-              <span className="mr-2 flex items-center gap-1">
+              <span className="flex items-center gap-1 mr-2">
                 {renderStars(rating)}
                 <div>{rating}</div>
               </span>
-              <span className="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden relative">
+              <span className="relative flex-1 h-3 overflow-hidden bg-gray-200 rounded-full">
                 <div
-                  className="bg-yellow-500 h-full absolute top-0 left-0"
+                  className="absolute top-0 left-0 h-full bg-yellow-500"
                   style={{ width: `${(count / totalReview) * 100}%` }}
                 ></div>
               </span>

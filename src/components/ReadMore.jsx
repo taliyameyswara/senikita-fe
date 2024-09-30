@@ -1,50 +1,20 @@
 import React, { useState, useEffect } from "react";
 
-const ReadMore = ({ description }) => {
+const ReadMore = ({ description = "", maxLength = 400 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const [truncatedContent, setTruncatedContent] = useState(description);
 
-  const maxLength = 400; // max char
-
   useEffect(() => {
-    if (description.props.children) {
-      const totalLength = description.props.children.reduce(
-        (acc, child) => acc + (typeof child === "string" ? child.length : 0),
-        0
-      );
-
-      if (totalLength > maxLength) {
-        setIsTruncated(true);
-        setTruncatedContent(truncateDescription(description, maxLength));
-      }
+    // Check if the description needs truncation
+    if (description.length > maxLength) {
+      setIsTruncated(true);
+      setTruncatedContent(description.substring(0, maxLength) + "...");
+    } else {
+      setIsTruncated(false);
+      setTruncatedContent(description);
     }
-  }, [description]);
-
-  const truncateDescription = (desc, maxLength) => {
-    let charCount = 0;
-    const truncatedChildren = React.Children.toArray(
-      desc.props.children
-    ).reduce((acc, child) => {
-      if (charCount >= maxLength) return acc;
-
-      if (typeof child === "string") {
-        const remainingChars = maxLength - charCount;
-        if (child.length > remainingChars) {
-          acc.push(child.substring(0, remainingChars) + "...");
-          charCount = maxLength;
-        } else {
-          acc.push(child);
-          charCount += child.length;
-        }
-      } else {
-        acc.push(child);
-      }
-      return acc;
-    }, []);
-
-    return <>{truncatedChildren}</>;
-  };
+  }, [description, maxLength]);
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -52,11 +22,12 @@ const ReadMore = ({ description }) => {
 
   return (
     <div>
-      <p className="text-sm">{isExpanded ? description : truncatedContent}</p>
+      {/* <p className="">{isExpanded ? description : truncatedContent}</p> */}
+      <p className="text-sm" dangerouslySetInnerHTML={{ __html: isExpanded ? description : truncatedContent }} />
       {isTruncated && (
         <button
           onClick={toggleDescription}
-          className="text-tertiary hover:underline text-sm font-semibold"
+          className="text-sm font-semibold text-tertiary hover:underline"
         >
           {isExpanded ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
         </button>
@@ -66,3 +37,4 @@ const ReadMore = ({ description }) => {
 };
 
 export default ReadMore;
+

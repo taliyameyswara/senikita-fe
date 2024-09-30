@@ -79,7 +79,7 @@ const AddProduct = () => {
       }
 
       formData.images.slice(1).forEach((image, index) => {
-        postFormData.append(`images[${index}]`, image.file);
+        postFormData.append(`product_images[]`, image.file);
       });
       setLoading(true);
 
@@ -254,9 +254,9 @@ const AddProduct = () => {
                       images,
                     }))
                   }
-                  maxImages={9}
+                  maxImages={5}
                   acceptedFormats={[".jpg", ".jpeg", ".png"]}
-                  minSize={300}
+                  minSize={100}
                   optimalSize={1200}
                 />
               </div>

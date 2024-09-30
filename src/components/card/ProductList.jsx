@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
 import ProductCard from "./ProductCard";
 import Heading from "../Heading";
 import Slider from "react-slick";
 import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5";
 
-const ProductList = ({ title, products }) => {
+const ProductList = ({ title, products, type }) => {
+  const sliderRef = useRef(null);
+
   const ArrowButton = ({ onClick, direction }) => (
     <button
-      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${
-        direction === "left" ? "mr-2" : "ml-2"
-      }`}
+      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${direction === "left" ? "mr-2" : "ml-2"
+        }`}
       onClick={onClick}
     >
       {direction === "left" ? (
@@ -46,24 +47,25 @@ const ProductList = ({ title, products }) => {
   };
 
   return (
-    <div className="px-6 container mb-6">
+    <div className="container px-6 mb-6">
       <div className="flex items-center justify-between">
         <Heading title={title} />
         <div className="flex items-start">
           <ArrowButton
             direction="left"
-            onClick={() => document.querySelector(".slick-prev")?.click()}
+            onClick={() => sliderRef.current.slickPrev()} // Use ref to go to previous slide
           />
           <ArrowButton
             direction="right"
-            onClick={() => document.querySelector(".slick-next")?.click()}
+            onClick={() => sliderRef.current.slickNext()} // Use ref to go to next slide
           />
         </div>
       </div>
-      <Slider {...settings}>
+      <Slider ref={sliderRef} {...settings}> {/* Attach ref to Slider */}
         {products.map((product, index) => (
           <div key={index}>
-            <ProductCard product={product} />
+            <ProductCard product={product}
+              type={type} />
           </div>
         ))}
       </Slider>

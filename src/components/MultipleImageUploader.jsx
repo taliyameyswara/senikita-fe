@@ -5,9 +5,9 @@ import { RiImageAddLine } from "react-icons/ri";
 const MultipleImageUploader = ({
   images,
   setImages,
-  maxImages = 9, // Maximum 9 additional images + 1 main image
+  maxImages = 5,
   acceptedFormats = [".jpg", ".jpeg", ".png"],
-  minSize = 300, // Minimum image size
+  minSize = 100, // Minimum image size
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -63,9 +63,9 @@ const MultipleImageUploader = ({
   };
 
   return (
-    <div className="border p-5 rounded-xl">
-      <div className="font-semibold text-lg">Upload Gambar Produk</div>
-      <div className=" text-sm text-gray-400">
+    <div className="p-5 border rounded-xl">
+      <div className="text-lg font-semibold">Upload Gambar Produk</div>
+      <div className="text-sm text-gray-400 ">
         Pilih foto produk atau tarik dan letakkan hingga 9 foto sekaligus di
         sini dengan minimal 1 foto utama (thumbnail).
       </div>
@@ -74,13 +74,12 @@ const MultipleImageUploader = ({
         menarik perhatian pembeli.
       </div>
 
-      <div className="grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-4 ">
+      <div className="grid grid-cols-2 gap-4 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 ">
         {Array.from({ length: maxImages + 1 }).map((_, index) => (
           <div
             key={index}
-            className={`relative w-32 h-32 rounded-xl flex items-center justify-center ${
-              images[index] ? "" : "border border-dashed border-gray-300"
-            }`}
+            className={`relative w-32 h-32 rounded-xl flex items-center justify-center ${images[index] ? "" : "border border-dashed border-gray-300"
+              }`}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
@@ -89,11 +88,11 @@ const MultipleImageUploader = ({
                 <img
                   src={images[index].preview}
                   alt={`Preview ${index + 1}`}
-                  className="w-full h-full object-cover rounded-xl"
+                  className="object-cover w-full h-full rounded-xl"
                 />
                 <button
                   onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 bg-customRed text-white text-sm rounded-full p-1"
+                  className="absolute p-1 text-sm text-white rounded-full top-2 right-2 bg-customRed"
                 >
                   <IoClose className="text-lg" />
                 </button>
@@ -102,7 +101,7 @@ const MultipleImageUploader = ({
               <>
                 <label
                   htmlFor={`fileInput-${index}`}
-                  className="flex flex-col justify-center items-center gap-2 font-nunito font-light text-center text-gray-400 cursor-pointer"
+                  className="flex flex-col items-center justify-center gap-2 font-light text-center text-gray-400 cursor-pointer font-nunito"
                 >
                   <RiImageAddLine className="text-4xl" />
                   {index === 0 ? "Thumbnail" : `Foto ${index}`}

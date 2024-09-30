@@ -31,7 +31,7 @@ const SearchResult = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => (
           <div key={index}>
-            <ProductCard product={product} />
+            <ProductCard product={product} type={"Product"} />
           </div>
         ))}
       </div>
@@ -43,7 +43,7 @@ const SearchResult = () => {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => (
           <div key={index}>
-            <ProductCard product={product} />
+            <ProductCard product={product} type={"Service"} />
           </div>
         ))}
       </div>
@@ -113,7 +113,7 @@ const SearchResult = () => {
             {/* mobile */}
             <div className="block md:hidden">
               <ToggleButton icon={<IoFilterOutline />} title="Filter">
-                <div className="grid grid-rows-3 mt-3 gap-3">
+                <div className="grid grid-rows-3 gap-3 mt-3">
                   <SearchInput
                     name="Filter karakter"
                     apiUrl="https://rickandmortyapi.com/api/character"
@@ -139,7 +139,7 @@ const SearchResult = () => {
             </div>
 
             {/* desktop */}
-            <div className="hidden md:grid md:grid-cols-3 gap-3 items-end">
+            <div className="items-end hidden gap-3 md:grid md:grid-cols-3">
               <SearchInput
                 apiUrl="https://rickandmortyapi.com/api/character"
                 placeholder="Filter Daerah"
