@@ -4,24 +4,29 @@ import { BsTruck } from "react-icons/bs";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { FaRegCalendarCheck, FaRegClock, FaTimesCircle } from "react-icons/fa";
 
-// Status for product transactions
+// Product status map
 const productStatusMap = {
   diproses: {
     icon: <IoIosHourglass />,
-    text: "Diproses",
+    text: "Produk Diproses",
     bgClass:
       "bg-yellow-300/20 border-[0.5px] border-yellow-600/30 text-yellow-600",
   },
   dikirim: {
     icon: <BsTruck />,
-    text: "Dikirim",
+    text: "Produk Dikirim",
     bgClass: "bg-blue-300/20 border-[0.5px] border-blue-500/30 text-blue-500",
   },
   selesai: {
     icon: <IoCheckmarkDone />,
-    text: "Selesai",
+    text: "Produk Selesai",
     bgClass:
       "bg-green-300/20 border-[0.5px] border-green-600/30 text-green-600",
+  },
+  dibatalkan: {
+    icon: <FaTimesCircle />,
+    text: "Produk Dibatalkan",
+    bgClass: "bg-red-300/20 border-[0.5px] border-red-600/30 text-red-600",
   },
   unknown: {
     icon: <IoIosHourglass />,
@@ -30,40 +35,39 @@ const productStatusMap = {
   },
 };
 
-// Status for service transactions
+// Service status map
 const serviceStatusMap = {
   menunggu_konfirmasi: {
     icon: <FaRegClock />,
-    text: "Menunggu Konfirmasi",
+    text: "Jasa Menunggu Konfirmasi",
     bgClass:
       "bg-yellow-300/20 border-[0.5px] border-yellow-600/30 text-yellow-600",
   },
-  diproses: {
-    icon: <IoIosHourglass />,
-    text: "Diproses",
+  dikonfirmasi: {
+    icon: <IoCheckmarkDone />,
+    text: "Jasa Dikonfirmasi",
     bgClass:
-      "bg-yellow-300/20 border-[0.5px] border-yellow-600/30 text-yellow-600",
+      "bg-green-300/20 border-[0.5px] border-green-600/30 text-green-600",
   },
   dijadwalkan: {
     icon: <FaRegCalendarCheck />,
-    text: "Dijadwalkan",
+    text: "Jasa Dijadwalkan",
     bgClass: "bg-blue-300/20 border-[0.5px] border-blue-500/30 text-blue-500",
-  },
-  dalam_pelaksanaan: {
-    icon: <BsTruck />,
-    text: "Dalam Pelaksanaan",
-    bgClass:
-      "bg-purple-300/20 border-[0.5px] border-purple-500/30 text-purple-500",
   },
   selesai: {
     icon: <IoCheckmarkDone />,
-    text: "Selesai",
+    text: "Jasa Selesai",
     bgClass:
       "bg-green-300/20 border-[0.5px] border-green-600/30 text-green-600",
   },
   dibatalkan: {
     icon: <FaTimesCircle />,
-    text: "Dibatalkan",
+    text: "Jasa Dibatalkan",
+    bgClass: "bg-red-300/20 border-[0.5px] border-red-600/30 text-red-600",
+  },
+  ditolak: {
+    icon: <FaTimesCircle />,
+    text: "Jasa Ditolak",
     bgClass: "bg-red-300/20 border-[0.5px] border-red-600/30 text-red-600",
   },
   unknown: {
@@ -76,8 +80,10 @@ const serviceStatusMap = {
 const StatusDisplay = ({ transactionStatus, type }) => {
   const statusInfo =
     type === "service"
-      ? serviceStatusMap[transactionStatus] || serviceStatusMap.unknown
-      : productStatusMap[transactionStatus] || productStatusMap.unknown;
+      ? serviceStatusMap[transactionStatus.toLowerCase()] ||
+        serviceStatusMap.unknown
+      : productStatusMap[transactionStatus.toLowerCase()] ||
+        productStatusMap.unknown;
 
   return (
     <div className="flex items-center gap-2">

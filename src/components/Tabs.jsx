@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 
 const Tabs = ({ tabs }) => {
-  // Cek jika localStorage ada, atau fallback ke tab pertama
   const getInitialTab = () => {
     const savedTab = localStorage.getItem("activeTab");
     const isValidTab = tabs.some((tab) => tab.name === savedTab);

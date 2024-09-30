@@ -305,7 +305,7 @@ const UserBiodata = () => {
           <div className="flex gap-3">
             <label
               htmlFor="male"
-              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
+              className="flex items-center flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
             >
               <input
                 type="radio"
@@ -321,7 +321,7 @@ const UserBiodata = () => {
             </label>
             <label
               htmlFor="female"
-              className="flex items-center justify-between flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
+              className="flex items-center flex-1 p-3 py-2 space-x-2 border border-gray-300 rounded-lg"
             >
               <input
                 type="radio"

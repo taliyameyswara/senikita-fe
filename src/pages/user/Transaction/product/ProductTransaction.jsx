@@ -8,7 +8,8 @@ const ProductTransaction = () => {
   return (
     <div className="space-y-4">
       {ProductData.map((product, index) => {
-        const transactionStatus = product.status || "diproses";
+        const paymentStatus = product.paymentStatus || "Selesai";
+        const shippingStatus = product.shippingStatus || "diproses";
 
         return (
           <ProductTransactionCard
@@ -17,8 +18,9 @@ const ProductTransaction = () => {
             header={
               <CardHeader
                 item={product}
-                transactionStatus={transactionStatus}
-                isService={false}
+                payment={paymentStatus}
+                shipping={shippingStatus}
+                type={"product"}
               />
             }
             button={

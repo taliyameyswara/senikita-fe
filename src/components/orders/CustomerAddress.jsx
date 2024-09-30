@@ -70,7 +70,7 @@ const CustomerAddress = ({ address, isOrder }) => {
           />
           <div className="grid grid-cols-2 gap-2">
             <TextInput
-              label="Nama Penerima"
+              label="Nama Penerima/Penanggung Jawab"
               placeholder="Masukkan nama"
               value={address.name}
               name="name"
@@ -125,7 +125,7 @@ const CustomerAddress = ({ address, isOrder }) => {
             />
           </div>
           <TextareaInput
-            label="Catatan Pengiriman (Opsional)"
+            label="Catatan Alamat (Opsional)"
             placeholder="Masukkan catatan Anda di sini..."
             value={address.note}
             name="note"

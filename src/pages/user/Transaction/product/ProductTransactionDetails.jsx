@@ -1,10 +1,13 @@
 import React from "react";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
 import UserDashboardLayout from "../../../../layouts/UserDashboardLayout";
-import ProductTransactionCard from "./ProductTransactionCard";
+import ProductCardDetail from "./ProductCardDetail";
 import { ProductData } from "../../../../utils/ProductData";
-import StatusDisplay from "../StatusDisplay";
-import { formatNumber } from "../../../../utils/formatNumber";
+
+import ShippingInfo from "./ShippingInfo";
+import PaymentDetail from "../PaymentDetail";
+import OrderInfo from "../OrderInfo";
+import OrderNotes from "./OrderNotes";
 
 const TransactionDetail = () => {
   const breadcrumbItems = [
@@ -25,89 +28,38 @@ const TransactionDetail = () => {
           {/* Title */}
           <div className="text-xl font-semibold ">Detail Transaksi</div>
 
-          <div className="">
-            <div className="flex gap-2">
-              <div className="font-semibold">Pesanan</div>
-              <div className="">
-                <StatusDisplay transactionStatus="diproses" />
-              </div>
-            </div>
-            <div className="flex gap-6">
-              <div className="text-gray-500">
-                <div className="">No. Invoice</div>
-                <div className="">Tanggal Pembelian</div>
-              </div>
-              <div className="">
-                <div className="font-nunito">INV982618638271</div>
-                <div className="font-nunito">13 Agustus 2024, 09.45 WIB</div>
-              </div>
-            </div>
-          </div>
+          <OrderInfo
+            payment="Selesai"
+            shipping="Diproses"
+            invoiceNumber="INV982618638271"
+            purchaseDate="13 Agustus 2024, 09.45 WIB"
+          />
 
           {/* Product Detail */}
-          <div className="mt-2">
-            <div className="font-semibold mb-1">Detail Produk</div>
-            {ProductData.slice(0, 1).map((product, index) => (
-              <ProductTransactionCard key={index} product={product} />
-            ))}
-          </div>
+          <ProductCardDetail
+            products={ProductData.slice(0, 1)}
+            provider={"Sanggar Tari Puspita"}
+          />
 
           {/* Notes */}
-          <div className="mb-2">
-            <div className="font-semibold mb-1">Catatan</div>
-            <div className="text-gray-500">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam unde
-              rerum facere magni blanditiis quidem cumque placeat porro cum,
-              error veniam? Tenetur, in corrupti. Magnam ad corporis eaque
-              perspiciatis in!
-            </div>
-          </div>
+          <OrderNotes notes="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel, quaerat enim fuga praesentium assumenda in eius ex. Aut porro odit, odio dolore corrupti veritatis perspiciatis voluptatem, explicabo velit optio earum?" />
 
           <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
-            {/* Shipping */}
-            <div className="">
-              <div className="font-semibold">Info Pengiriman</div>
-              <div className="flex gap-8">
-                <div className="text-gray-500">
-                  <div className="">Kurir</div>
-                  <div className="">No. Resi</div>
-                  <div className="">Alamat</div>
-                </div>
-                <div className="">
-                  <div className="">SiCepat - Reguler</div>
-                  <div className="font-nunito font-light">TLJ8726438271231</div>
-                  <div className="">
-                    <div className="font-semibold">Mimoi</div>
-                    <div className="font-nunito font-light">0887613472</div>
-                    <div className="">
-                      Jl. Imam Bonjol No.207, Pendrikan Kidul
-                    </div>
-                    <div className="">Kota Semarang, Jawa Tengah</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ShippingInfo
+              courier="SiCepat - Reguler"
+              trackingNumber="TLJ8726438271231"
+              recipientName="Mimoi"
+              phone="0887613472"
+              address="Jl. Imam Bonjol No.207, Pendrikan Kidul"
+              city="Kota Semarang"
+              province="Jawa Tengah"
+            />
 
-            {/* Payment Detail */}
-            <div className="mt-2">
-              <div className="font-semibold">Rincian Pembayaran</div>
-              <div className="flex gap-8">
-                <div className="text-gray-500">
-                  <div className="">Total Harga</div>
-                  <div className="">Total Ongkos Kirim</div>
-                  <div className="font-semibold text-primary">
-                    Total Pembayaran
-                  </div>
-                </div>
-                <div className="">
-                  <div className="">{formatNumber(1500000)}</div>
-                  <div className="">{formatNumber(10000)}</div>
-                  <div className="font-semibold text-primary">
-                    {formatNumber(1510000)}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <PaymentDetail
+              totalPrice={1500000}
+              shippingCost={10000}
+              totalPayment={1510000}
+            />
           </div>
         </div>
       </div>

@@ -36,6 +36,7 @@ import Cart from "./pages/home/Cart";
 import UserProfile from "./pages/user/profile/UserProfile";
 import SenimanProfile from "./pages/seniman/profile/SenimanProfile";
 import SenimanOrder from "./pages/seniman/order/SenimanOrder";
+import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 
 function App() {
   return (
@@ -98,7 +99,7 @@ function App() {
         {/* profile */}
         <Route path="/user/dashboard/profil" element={<UserProfile />} />
 
-        {/* seniman */}
+        {/* SENIMAN */}
         <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
 
         {/* kesenian */}
@@ -121,6 +122,8 @@ function App() {
           path="/seniman/dashboard/kesenian/updateservice"
           element={<EditService />}
         />
+
+        <Route path="seniman/dashboard/balance" element={<SenimanBalance />} />
 
         {/* profile */}
         <Route path="/seniman/dashboard/profil" element={<SenimanProfile />} />

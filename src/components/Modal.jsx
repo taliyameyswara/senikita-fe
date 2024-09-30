@@ -9,6 +9,7 @@ const Modal = ({
   handleSubmit,
   children,
   width = "w-2/3",
+  isForm = true,
 }) => {
   useEffect(() => {
     // Disable background scroll when modal is open
@@ -49,7 +50,9 @@ const Modal = ({
       onClick={handleClickOutside}
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-      <div className={`bg-white rounded-xl ${width} modal-content`}>
+      <div
+        className={`bg-white rounded-xl ${width} max-w-4xl max-h-[90vh] flex flex-col`}
+      >
         {/* Header */}
         <div className="flex justify-between items-start p-5 border-b">
           <div className="flex flex-col gap-2 ">
@@ -62,20 +65,19 @@ const Modal = ({
         </div>
 
         {/* Modal content */}
-        <div className="max-h-[80vh] overflow-auto p-4 px-6">
-          <div className="mb-4">{children}</div>
+        <div className="flex-grow overflow-auto p-4 px-6">{children}</div>
 
-          {/* Footer buttons */}
-          <div className="flex justify-end">
+        {/* Footer buttons */}
+        {isForm && (
+          <div className="flex justify-end border-t p-4">
             <button
               onClick={handleSubmit}
-              className="bg-primary text-white font-semibold rounded-xl px-4 py-3 flex flex-grow justify-center"
+              className="bg-primary text-white font-semibold rounded-xl px-4 py-3 flex-grow"
             >
               Simpan
             </button>
           </div>
-        </div>
-        <div className="h-5 bg-white rounded-xl"></div>
+        )}
       </div>
     </div>
   );

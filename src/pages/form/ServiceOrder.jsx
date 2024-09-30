@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Stepper from "../../components/Stepper";
 import TextInput from "../../components/form-input/TextInput";
 import TextareaInput from "../../components/form-input/TextareaInput";
-import { AiOutlineCheck } from "react-icons/ai";
 import Navbar from "../../components/navbar/Navbar";
 import SearchInput from "../../components/form-input/SearchInput";
 import FileUpload from "../../components/FileUpload";
@@ -49,7 +48,9 @@ const ServiceOrder = () => {
   };
 
   const handleNextStep = () => {
-    setCurrentStep((prevStep) => prevStep + 1);
+    if (isStepValid()) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handlePreviousStep = () => {
@@ -58,14 +59,37 @@ const ServiceOrder = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Proses formData ke backend atau API disini.
     console.log(formData);
+    // Add your form submission logic here
+  };
+
+  const isStepValid = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          formData.eventName.trim() !== "" &&
+          formData.eventDate.trim() !== "" &&
+          formData.eventTime.trim() !== "" &&
+          formData.location.trim() !== "" &&
+          formData.city_id.trim() !== "" &&
+          formData.province.trim() !== ""
+        );
+      case 1:
+        return (
+          formData.specialRequest.trim() !== "" ||
+          formData.supportingFiles !== null // Supporting file is optional
+        );
+      case 2:
+        return formData.termsAccepted;
+      default:
+        return false;
+    }
   };
 
   return (
     <div className="">
       <Navbar />
-      <div className="container mx-auto p-8  lg:w-[60%] w-full">
+      <div className="container mx-auto p-8 lg:w-[60%] w-full">
         <Stepper
           steps={steps}
           currentStep={currentStep}
@@ -123,7 +147,6 @@ const ServiceOrder = () => {
                 value={formData.eventTime}
                 onChange={handleInputChange}
               />
-              {/* </div> */}
               <TextareaInput
                 label={
                   <>
@@ -237,35 +260,39 @@ const ServiceOrder = () => {
             </div>
           )}
 
-          <div className="mt-8 flex justify-between">
+          <div className="flex justify-between mt-8">
             {currentStep > 0 && (
               <button
-                type="button"
                 onClick={handlePreviousStep}
-                className="px-4 py-2 bg-gray-500 text-white rounded-md"
+                className="px-4 py-2 font-semibold border border-secondary text-secondary rounded-xl"
               >
                 Sebelumnya
               </button>
             )}
+
             {currentStep < steps.length - 1 ? (
               <button
-                type="button"
                 onClick={handleNextStep}
-                className="px-4 py-2 bg-primary text-white rounded-md"
+                disabled={!isStepValid()}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
                 Selanjutnya
               </button>
             ) : (
               <button
-                type="submit"
-                className={`px-4 py-2 ${
-                  formData.termsAccepted
-                    ? "bg-green-500"
-                    : "bg-green-300 cursor-not-allowed"
-                } text-white rounded-md`}
-                disabled={!formData.termsAccepted}
+                onClick={handleSubmit}
+                disabled={!isStepValid()}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
-                Submit
+                Selesai
               </button>
             )}
           </div>

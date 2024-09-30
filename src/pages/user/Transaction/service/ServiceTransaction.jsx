@@ -8,7 +8,8 @@ const ServiceTransaction = () => {
   return (
     <div className="space-y-4">
       {ServiceData.map((service, index) => {
-        const transactionStatus = service.status || "diproses";
+        const paymentStatus = service.paymentStatus || "";
+        const shippingStatus = service.shippingStatus || "ditolak";
         return (
           <ServiceTransactionCard
             key={service.id || index}
@@ -16,8 +17,9 @@ const ServiceTransaction = () => {
             header={
               <CardHeader
                 item={service}
-                transactionStatus={transactionStatus}
-                isService={true}
+                payment={paymentStatus}
+                shipping={shippingStatus}
+                type={"service"}
               />
             }
             button={

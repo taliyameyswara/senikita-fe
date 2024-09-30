@@ -22,11 +22,16 @@ const ReadMore = ({ description = "", maxLength = 400 }) => {
 
   return (
     <div>
-      <p className="">{isExpanded ? description : truncatedContent}</p>
+      <p
+        className="text-sm"
+        dangerouslySetInnerHTML={{
+          __html: isExpanded ? description : truncatedContent,
+        }}
+      />
       {isTruncated && (
         <button
           onClick={toggleDescription}
-          className="text-tertiary hover:underline text-sm font-semibold"
+          className="text-sm font-semibold text-tertiary hover:underline"
         >
           {isExpanded ? "Lihat Lebih Sedikit" : "Lihat Selengkapnya"}
         </button>
