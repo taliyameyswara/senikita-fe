@@ -11,7 +11,7 @@ const PriceInput = ({ label, placeholder, value, name, onChange }) => {
   const handleInputChange = (e) => {
     const rawValue = e.target.value.replace(/,/g, "");
     if (!isNaN(rawValue) && rawValue.trim() !== "") {
-      const numberValue = parseFloat(rawValue); // Convert to float
+      const numberValue = parseFloat(rawValue);
       onChange({
         target: {
           name: name,
@@ -20,7 +20,6 @@ const PriceInput = ({ label, placeholder, value, name, onChange }) => {
       });
       setFormattedValue(formatNumber(rawValue));
     } else {
-      // Optional: Handle invalid input
       onChange({
         target: {
           name: name,
@@ -34,7 +33,7 @@ const PriceInput = ({ label, placeholder, value, name, onChange }) => {
     <div className="">
       <label className="text-sm font-semibold">{label}</label>
       <div className="flex items-center mt-1">
-        <span className="px-3 py-2.5 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-gray-500">
+        <span className="px-3 py-2 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl text-gray-500">
           Rp
         </span>
         <input
