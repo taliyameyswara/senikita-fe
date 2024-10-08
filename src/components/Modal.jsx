@@ -51,7 +51,7 @@ const Modal = ({
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
       <div
-        className={`bg-white rounded-xl ${width} max-w-4xl max-h-[90vh] flex flex-col`}
+        className={`bg-white rounded-xl ${width} max-w-4xl max-h-[90vh] flex flex-col modal-content`}
       >
         {/* Header */}
         <div className="flex justify-between items-start p-5 border-b">

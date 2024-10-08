@@ -5,41 +5,43 @@ import ReviewSection from "../../components/product-details/ReviewSection";
 import ArtistProfileSection from "../../components/product-details/ArtistProfileSection";
 import ProductList from "../../components/card/ProductList";
 import { useState, useEffect } from "react";
-import { useAxiosInstance } from '../../config/axiosConfig';
+import { useAxiosInstance } from "../../config/axiosConfig";
 import { useParams } from "react-router-dom";
 import ServiceDetailSection from "../../components/product-details/ServiceDetailSection";
 import OrderBottomBarService from "../../components/product-details/OrderBottomBarService";
 
 const ServiceDetails = () => {
   const { id } = useParams();
-  const serviceId = id.split('-')[0];  // Ekstrak hanya ID dari URL
+  const serviceId = id.split("-")[0]; // Ekstrak hanya ID dari URL
   const axiosInstance = useAxiosInstance();
   const [service, setService] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true); // State for loading
 
   useEffect(() => {
-    axiosInstance.get("/random-services")
+    axiosInstance
+      .get("/random-services")
       .then((res) => {
         setProducts(res.data.data);
         setLoading(false); // Stop loading after data is received
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         setLoading(false); // Stop loading even if there's an error
       });
 
-    axiosInstance.get(`service/${serviceId}`)
+    axiosInstance
+      .get(`service/${serviceId}`)
       .then((res) => {
-        console.log(res.data.service)
+        // console.log(res.data.service);
         setService(res.data.service);
         setLoading(false); // Stop loading after data is received
-      }).catch((err) => {
+      })
+      .catch((err) => {
         console.log(err);
         setLoading(false); // Stop loading even if there's an error
       });
   }, []);
-
-
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -51,7 +53,11 @@ const ServiceDetails = () => {
     {
       label: "Detail Produk",
       target: "section1",
-      content: service ? <ServiceDetailSection service={service} /> : <div>No Product Details Available</div>,
+      content: service ? (
+        <ServiceDetailSection service={service} />
+      ) : (
+        <div>No Product Details Available</div>
+      ),
     },
     {
       label: "Ulasan",
@@ -65,14 +71,9 @@ const ServiceDetails = () => {
     },
   ];
 
-  useEffect(() => {
-    console.log(service)
-  }, []);
-
   if (loading) {
-    return <div>Loading</div>
+    return <div>Loading</div>;
   }
-
 
   return (
     <>
@@ -81,7 +82,11 @@ const ServiceDetails = () => {
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
         <OrderBottomBarService service={service} />
-        <ProductList title={"Produk Lainnya"} products={products} type={"Product"} />
+        <ProductList
+          title={"Produk Lainnya"}
+          products={products}
+          type={"Product"}
+        />
       </div>
     </>
   );
