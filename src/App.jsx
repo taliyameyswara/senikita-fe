@@ -40,6 +40,7 @@ import UserProfile from "./pages/user/profile/UserProfile";
 import SenimanProfile from "./pages/seniman/profile/SenimanProfile";
 import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
+import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 
 function App() {
   return (

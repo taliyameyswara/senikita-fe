@@ -65,6 +65,7 @@ const ImageSlider = ({ imageUrls }) => {
         <Slider {...settings}>
           {imageUrls.map((url, index) => (
             <img
+              key={index}
               src={url}
               onClick={() => handleImageClick(index)}
               className="object-cover w-full rounded-xl h-60 md:h-96"
