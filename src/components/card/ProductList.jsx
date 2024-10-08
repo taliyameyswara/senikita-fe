@@ -9,8 +9,9 @@ const ProductList = ({ title, products, type }) => {
 
   const ArrowButton = ({ onClick, direction }) => (
     <button
-      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${direction === "left" ? "mr-2" : "ml-2"
-        }`}
+      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${
+        direction === "left" ? "mr-2" : "ml-2"
+      }`}
       onClick={onClick}
     >
       {direction === "left" ? (
@@ -50,25 +51,51 @@ const ProductList = ({ title, products, type }) => {
     <div className="container px-6 mb-6">
       <div className="flex items-center justify-between">
         <Heading title={title} />
-        <div className="flex items-start">
-          <ArrowButton
-            direction="left"
-            onClick={() => sliderRef.current.slickPrev()} // Use ref to go to previous slide
-          />
-          <ArrowButton
-            direction="right"
-            onClick={() => sliderRef.current.slickNext()} // Use ref to go to next slide
-          />
-        </div>
-      </div>
-      <Slider ref={sliderRef} {...settings}> {/* Attach ref to Slider */}
-        {products.map((product, index) => (
-          <div key={index}>
-            <ProductCard product={product}
-              type={type} />
+
+        {products.length > 1 && (
+          <div className="flex items-start md:hidden">
+            <ArrowButton
+              direction="left"
+              onClick={() => sliderRef.current.slickPrev()}
+            />
+            <ArrowButton
+              direction="right"
+              onClick={() => sliderRef.current.slickNext()}
+            />
           </div>
-        ))}
-      </Slider>
+        )}
+
+        {products.length >= 4 && (
+          <div className="hidden md:flex items-start">
+            <ArrowButton
+              direction="left"
+              onClick={() => sliderRef.current.slickPrev()}
+            />
+            <ArrowButton
+              direction="right"
+              onClick={() => sliderRef.current.slickNext()}
+            />
+          </div>
+        )}
+      </div>
+
+      {products.length <= 3 ? (
+        <div className="flex flex-wrap gap-4 justify-start">
+          {products.map((product, index) => (
+            <div key={index} className="w-full sm:w-1/2 md:w-1/4">
+              <ProductCard product={product} type={type} />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Slider ref={sliderRef} {...settings}>
+          {products.map((product, index) => (
+            <div key={index} className="">
+              <ProductCard product={product} type={type} />
+            </div>
+          ))}
+        </Slider>
+      )}
     </div>
   );
 };
