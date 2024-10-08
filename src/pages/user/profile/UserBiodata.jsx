@@ -1,25 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "../../../assets/avatar.png";
 import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
 import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
+import { useAxiosInstance } from '../../../config/axiosConfig';
 
 const UserBiodata = () => {
+  const axiosInstance = useAxiosInstance();
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [formData, setFormData] = useState({
+    profile_picture: "",
+    name: "",
+    username: "",
+    email: "",
+    call_number: "",
+    birth_date: "",
+    gender: "",
+    password: "",
+  });
+
+  useEffect(() => {
+    axiosInstance.get("/user/profile")
+      .then((res) => {
+        const userData = res.data.data;
+        setUserData(userData);
+        setFormData({
+          profile_picture: userData.profile_picture || "",
+          name: userData.name || "",
+          username: userData.username || "",
+          email: userData.email || "",
+          call_number: userData.call_number || "",
+          birth_date: userData.birth_date || "",
+          gender: userData.gender === "male" ? "Laki-laki" : "Perempuan",
+          password: "", // Password kosong untuk keamanan
+        });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
+
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalSubtitle, setModalSubtitle] = useState("");
   const [fieldToUpdate, setFieldToUpdate] = useState("");
-  const [formData, setFormData] = useState({
-    profilePicture: "",
-    fullName: "Taliya Meyswara",
-    username: "ttsfsan",
-    email: "taliyameyswara@gmail.com",
-    phoneNumber: "",
-    birthDate: "",
-    gender: "",
-    password: "",
-  });
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -46,54 +75,110 @@ const UserBiodata = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({ ...formData, profilePicture: reader.result });
+        // Set the new profile picture in formData
+        setFormData({ ...formData, profile_picture: file });
+
+        // Automatically submit the form once the image is selected
+        const formDataToSend = new FormData();
+        formDataToSend.append("profile_picture", file);
+        formDataToSend.append("_method", "PUT");
+
+        // Submit the profile picture change
+        axiosInstance({
+          method: "post",
+          url: "/user/edit-profile",
+          data: formDataToSend,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+          .then((response) => {
+            console.log("Profile picture updated successfully:", response.data);
+            // Optionally update the UI based on the response
+          })
+          .catch((error) => {
+            console.error("Error updating profile picture:", error);
+          });
       };
       reader.readAsDataURL(file);
     }
   };
 
+
+  // Submit data
   const handleSubmit = () => {
-    if (fieldToUpdate === "password") {
-      if (newPassword !== confirmPassword) {
-        setPasswordError("Password tidak cocok!");
-        return;
-      }
-      setFormData({ ...formData, password: newPassword });
+    const formDataToSend = new FormData();
+
+    // Append data to FormData
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("username", formData.username);
+    formDataToSend.append("call_number", formData.call_number);
+    formDataToSend.append("birth_date", formData.birth_date);
+    formDataToSend.append("birth_location", "Semarang"); // You can update based on the user input
+    formDataToSend.append("gender", formData.gender === "Laki-laki" ? "male" : "female");
+
+    // Handle profile picture if it is updated
+    if (formData.profile_picture instanceof File) {
+      formDataToSend.append("profile_picture", formData.profile_picture);
     }
-    closeModal();
+
+    formDataToSend.append("_method", "PUT");
+
+    // Send the formData to the API
+    axiosInstance({
+      method: "post",
+      url: "/user/edit-profile", // Endpoint to update profile
+      data: formDataToSend,
+      headers: {
+        "Content-Type": "multipart/form-data", // Ensure the correct headers are set
+      },
+    })
+      .then((response) => {
+        console.log("Profile updated successfully:", response.data);
+        closeModal();
+        // Optionally update the UI based on the response, e.g., refresh the profile
+      })
+      .catch((error) => {
+        console.error("Error updating profile:", error);
+      });
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div className="">
       {/* Profile Section */}
-      <div className="grid grid-cols-10 xl:gap-5 lg:gap-4 gap-2">
+      <div className="grid grid-cols-10 gap-2 xl:gap-5 lg:gap-4">
         {/* Profile Picture */}
-        <div className="xl:col-span-3 lg:col-span-4 col-span-10 border px-5 py-4 rounded-xl">
-          <div className="font-semibold mb-2">Foto Profil</div>
+        <div className="col-span-10 px-5 py-4 border xl:col-span-3 lg:col-span-4 rounded-xl">
+          <div className="mb-2 font-semibold">Foto Profil</div>
           <img
             src={
-              formData.profilePicture ||
+              formData.profile_picture ||
               "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
             }
             alt="Profile"
-            className="w-full h-48 object-cover rounded-xl"
+            className="object-cover w-full h-48 rounded-xl"
           />
           <input
             type="file"
-            id="profilePictureInput"
+            id="profile_pictureInput"
             className="hidden"
             accept="image/*"
             onChange={handleProfilePictureChange}
           />
           <button
             onClick={() =>
-              document.getElementById("profilePictureInput").click()
+              document.getElementById("profile_pictureInput").click()
             }
-            className="border px-5 py-2 rounded-xl text-sm font-semibold mt-3 flex w-full justify-center"
+            className="flex justify-center w-full px-5 py-2 mt-3 text-sm font-semibold border rounded-xl"
           >
             Ubah Foto Profil
           </button>
-          <p className="text-sm text-gray-400 mt-3">
+          <p className="mt-3 text-sm text-gray-400">
             Ukuran foto maksimal 500KB. Format file yang diperbolehkan: .JPG
             .JPEG .PNG .GIF
           </p>
@@ -106,25 +191,25 @@ const UserBiodata = () => {
                 "Silakan masukkan password baru."
               )
             }
-            className="border px-5 py-3 rounded-xl text-sm font-semibold mt-3 flex w-full justify-center"
+            className="flex justify-center w-full px-5 py-3 mt-3 text-sm font-semibold border rounded-xl"
           >
             {formData.password ? "Ubah Password" : "Buat Password"}
           </button>
         </div>
 
         {/* Biodata Section */}
-        <div className="xl:col-span-7 lg:col-span-6 col-span-10 border px-5 py-4 rounded-xl">
+        <div className="col-span-10 px-5 py-4 border xl:col-span-7 lg:col-span-6 rounded-xl">
           {/* Personal Info */}
-          <div className="font-semibold text-black text-lg mb-4">Biodata</div>
+          <div className="mb-4 text-lg font-semibold text-black">Biodata</div>
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-y-4 mt-2">
-              <div className=" text-gray-600">Nama Lengkap</div>
-              <div className="col-span-2 flex items-center">
-                {formData.fullName}
+            <div className="grid grid-cols-3 mt-2 gap-y-4">
+              <div className="text-gray-600 ">Nama Lengkap</div>
+              <div className="flex items-center col-span-2">
+                {formData.name}
                 <button
                   onClick={() =>
                     openModal(
-                      "fullName",
+                      "name",
                       "Ubah Nama Lengkap",
                       "Pastikan nama lengkap benar."
                     )
@@ -171,13 +256,13 @@ const UserBiodata = () => {
 
               <div className="text-gray-600">Tanggal Lahir</div>
               <div className="col-span-2">
-                {formData.birthDate ? (
+                {formData.birth_date ? (
                   <>
-                    {formData.birthDate}
+                    {formData.birth_date}
                     <button
                       onClick={() =>
                         openModal(
-                          "birthDate",
+                          "birth_date",
                           "Ubah Tanggal Lahir",
                           "Pastikan tanggal lahir sudah benar."
                         )
@@ -191,7 +276,7 @@ const UserBiodata = () => {
                   <button
                     onClick={() =>
                       openModal(
-                        "birthDate",
+                        "birth_date",
                         "Tambah Tanggal Lahir",
                         "Pastikan tanggal lahir sudah benar."
                       )
@@ -240,21 +325,21 @@ const UserBiodata = () => {
           </div>
 
           {/* Contact Info */}
-          <div className="text-lg font-semibold my-4">Kontak</div>
+          <div className="my-4 text-lg font-semibold">Kontak</div>
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-y-4 mt-2">
+            <div className="grid grid-cols-3 mt-2 gap-y-4">
               <div className="text-gray-600">Email</div>
               <div className="col-span-2">{formData.email}</div>
 
               <div className="text-gray-600">Nomor Telepon</div>
               <div className="col-span-2">
-                {formData.phoneNumber ? (
+                {formData.call_number ? (
                   <>
-                    {formData.phoneNumber}
+                    {formData.call_number}
                     <button
                       onClick={() =>
                         openModal(
-                          "phoneNumber",
+                          "call_number",
                           "Ubah Nomor Telepon",
                           "Pastikan nomor telepon Anda valid."
                         )
@@ -268,7 +353,7 @@ const UserBiodata = () => {
                   <button
                     onClick={() =>
                       openModal(
-                        "phoneNumber",
+                        "call_number",
                         "Tambah Nomor Telepon",
                         "Pastikan nomor telepon Anda valid."
                       )
@@ -293,12 +378,12 @@ const UserBiodata = () => {
         handleSubmit={handleSubmit}
         width="w-1/3"
       >
-        {fieldToUpdate === "birthDate" ? (
+        {fieldToUpdate === "birth_date" ? (
           <DateInput
             label={modalTitle}
-            value={formData.birthDate}
+            value={formData.birth_date}
             onChange={(e) =>
-              setFormData({ ...formData, birthDate: e.target.value })
+              setFormData({ ...formData, birth_date: e.target.value })
             }
           />
         ) : fieldToUpdate === "gender" ? (
@@ -351,7 +436,7 @@ const UserBiodata = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             {passwordError && (
-              <p className="text-red-500 text-sm">{passwordError}</p>
+              <p className="text-sm text-red-500">{passwordError}</p>
             )}
           </>
         ) : (

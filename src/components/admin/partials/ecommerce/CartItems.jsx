@@ -9,19 +9,19 @@ function CartItems() {
     <>
       <ul>
         {/* Cart item */}
-        <li className="sm:flex items-center py-6 border-b border-slate-200">
-          <a className="block mb-4 sm:mb-0 mr-5 md:w-32 xl:w-auto shrink-0" href="#0">
+        <li className="items-center py-6 border-b sm:flex border-slate-200">
+          <a className="block mb-4 mr-5 sm:mb-0 md:w-32 xl:w-auto shrink-0" href="#0">
             <img className="rounded-sm" src={Related01} width="200" height="142" alt="Product 01" />
           </a>
           <div className="grow">
             <a href="#0">
-              <h3 className="text-lg font-semibold text-slate-800 mb-1">The Complete Front-End Development Course!</h3>
+              <h3 className="mb-1 text-lg font-semibold text-slate-800">The Complete Front-End Development Course!</h3>
             </a>
-            <div className="text-sm mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
+            <div className="mb-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
             {/* Product meta */}
-            <div className="flex flex-wrap justify-between items-center">
+            <div className="flex flex-wrap items-center justify-between">
               {/* Rating and price */}
-              <div className="flex flex-wrap items-center space-x-2 mr-2">
+              <div className="flex flex-wrap items-center mr-2 space-x-2">
                 {/* Rating */}
                 <div className="flex items-center space-x-2">
                   {/* Stars */}
@@ -71,19 +71,19 @@ function CartItems() {
           </div>
         </li>
         {/* Cart item */}
-        <li className="sm:flex items-center py-6 border-b border-slate-200">
-          <a className="block mb-4 sm:mb-0 mr-5 md:w-32 xl:w-auto shrink-0" href="#0">
+        <li className="items-center py-6 border-b sm:flex border-slate-200">
+          <a className="block mb-4 mr-5 sm:mb-0 md:w-32 xl:w-auto shrink-0" href="#0">
             <img className="rounded-sm" src={Related02} width="200" height="142" alt="Product 02" />
           </a>
           <div className="grow">
             <a href="#0">
-              <h3 className="text-lg font-semibold text-slate-800 mb-1">Web Development Ultimate Course 2021</h3>
+              <h3 className="mb-1 text-lg font-semibold text-slate-800">Web Development Ultimate Course 2021</h3>
             </a>
-            <div className="text-sm mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
+            <div className="mb-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
             {/* Product meta */}
-            <div className="flex flex-wrap justify-between items-center">
+            <div className="flex flex-wrap items-center justify-between">
               {/* Rating and price */}
-              <div className="flex flex-wrap items-center space-x-2 mr-2">
+              <div className="flex flex-wrap items-center mr-2 space-x-2">
                 {/* Rating */}
                 <div className="flex items-center space-x-2">
                   {/* Stars */}
@@ -133,19 +133,19 @@ function CartItems() {
           </div>
         </li>
         {/* Cart item */}
-        <li className="sm:flex items-center py-6 border-b border-slate-200">
-          <a className="block mb-4 sm:mb-0 mr-5 md:w-32 xl:w-auto shrink-0" href="#0">
+        <li className="items-center py-6 border-b sm:flex border-slate-200">
+          <a className="block mb-4 mr-5 sm:mb-0 md:w-32 xl:w-auto shrink-0" href="#0">
             <img className="rounded-sm" src={Related03} width="200" height="142" alt="Product 03" />
           </a>
           <div className="grow">
             <a href="#0">
-              <h3 className="text-lg font-semibold text-slate-800 mb-1">Full-Stack JavaScript Course!</h3>
+              <h3 className="mb-1 text-lg font-semibold text-slate-800">Full-Stack JavaScript Course!</h3>
             </a>
-            <div className="text-sm mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
+            <div className="mb-2 text-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</div>
             {/* Product meta */}
-            <div className="flex flex-wrap justify-between items-center">
+            <div className="flex flex-wrap items-center justify-between">
               {/* Rating and price */}
-              <div className="flex flex-wrap items-center space-x-2 mr-2">
+              <div className="flex flex-wrap items-center mr-2 space-x-2">
                 {/* Rating */}
                 <div className="flex items-center space-x-2">
                   {/* Stars */}

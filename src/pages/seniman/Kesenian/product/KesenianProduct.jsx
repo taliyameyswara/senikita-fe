@@ -210,7 +210,12 @@ const KesenianProduct = () => {
                 {/* Aksi */}
                 <td className="p-4 border-b">
                   <div className="flex space-x-2">
-                    <Link to={`/seniman/dashboard/kesenian/updateproduct`}>
+                    <Link
+                      to={`/seniman/dashboard/kesenian/updateproduct`}
+                      state={{
+                        product: product,
+                        }}
+                    >
                       <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
                         <BsPencil size={20} />
                       </button>

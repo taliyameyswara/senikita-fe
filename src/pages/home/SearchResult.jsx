@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Selection from "../../components/Selection";
 import Navbar from "../../components/navbar/Navbar";
 import Breadcrumbs from "../../components/Breadcrumbs";
@@ -10,12 +10,17 @@ import ToggleButton from "../../components/ToggleButton";
 import { FaStar } from "react-icons/fa";
 import { IoFilterOutline } from "react-icons/io5";
 import { ProductData } from "../../utils/ProductData";
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAxiosInstance } from "../../config/axiosConfig";
+
 
 const keyword = "seni tari";
-
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 const SearchResult = () => {
-  const products = ProductData;
-
+  // const products = ProductData;
+  const axiosInstance = useAxiosInstance();
   const [selectedCharacter, setSelectedCharacter] = useState(null);
 
   const handleCharacterChange = (selectedOption) => {
@@ -26,27 +31,74 @@ const SearchResult = () => {
     { label: "Hasil Pencarian", to: "/searchresult" },
   ];
 
+  const query = useQuery().get('search');
+  const page = useQuery().get('page') || 1;
+  const [products, setProducts] = useState([]);
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(1); // Total halaman dari API
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Fungsi untuk memanggil kedua API secara bersamaan
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Memanggil kedua API secara bersamaan menggunakan Promise.all
+        const [productsResponse, servicesResponse] = await Promise.all([
+          axiosInstance.get(`products?search=${query}&page=${page}`),
+          axiosInstance.get(`service?search=${query}&page=${page}`)
+        ]);
+
+        setProducts(productsResponse.data.data.data);
+        setServices(servicesResponse.data.data.data);
+
+        // Ambil total halaman (misalkan dari respons produk)
+        setTotalPages(productsResponse.data.data.last_page);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [query, page]);
+
   const ProductContent = () => (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product, index) => (
-          <div key={index}>
-            <ProductCard product={product} type={"Product"} />
+        {products && products.length > 0 ? (
+          products.map((product, index) => (
+            <div key={index}>
+              <ProductCard product={product} type={"Product"} />
+            </div>
+          ))
+        ) : (
+          <div className="text-center col-span-full">
+            <p>No products available</p>
           </div>
-        ))}
+        )}
       </div>
+
     </div>
   );
 
   const ServiceContent = () => (
     <div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products.map((product, index) => (
-          <div key={index}>
-            <ProductCard product={product} type={"Service"} />
+        {services && services.length > 0 ? (
+          services.map((service, index) => (
+            <div key={index}>
+              <ProductCard product={service} type={"Service"} />
+            </div>
+          ))
+        ) : (
+          <div className="text-center col-span-full">
+            <p>No services available</p>
           </div>
-        ))}
+        )}
       </div>
+
     </div>
   );
 
@@ -97,6 +149,22 @@ const SearchResult = () => {
     setSelectedRatingOptions(selected);
   };
 
+  const handleNextPage = () => {
+    if (Number(page) < totalPages) {
+      navigate(`/search?search=${query}&page=${Number(page) + 1}`);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (Number(page) > 1) {
+      navigate(`/search?search=${query}&page=${Number(page) - 1}`);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Navbar />
@@ -106,7 +174,7 @@ const SearchResult = () => {
         {/* heading and filter */}
         <div className="flex-row justify-between md:items-center">
           {/* heading */}
-          <Heading title={`Hasil Pencarian untuk '${keyword}'`} />
+          <Heading title={`Hasil Pencarian untuk '${query}'`} />
 
           {/* filter */}
           <div className="mb-3">
@@ -162,6 +230,41 @@ const SearchResult = () => {
           </div>
         </div>
         <Tabs tabs={tabs} />
+
+        <div className="flex items-center justify-center mt-4 space-x-4">
+          {/* Pagination controls */}
+          <button
+            onClick={handlePreviousPage}
+            disabled={Number(page) === 1}
+            className={`px-4 py-2 text-white rounded-md ${Number(page) === 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-primary"
+              }`}
+          >
+            Previous
+          </button>
+
+          <span className="text-lg font-semibold">
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            onClick={handleNextPage}
+            disabled={Number(page) === totalPages}
+            className={`px-4 py-2 text-white rounded-md ${Number(page) === totalPages
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-primary"
+              }`}
+          >
+            Next
+          </button>
+        </div>
+
+
+      </div>
+      <div>
+        {/* Pagination controls */}
+
       </div>
     </div>
   );

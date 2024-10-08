@@ -14,6 +14,7 @@ import DropdownNav from "./DropdownNav";
 import Avatar from "../../assets/avatar.png";
 import { UserContext } from "../../context/UserContext";
 import Header from "../../components/sidebar/Header";
+import { useNavigate } from 'react-router-dom';
 
 const CategoryLinks = [
   { id: 1, name: "Seni Lukis", link: "/#" },
@@ -46,6 +47,20 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
       link: "/#",
     },
   ];
+
+  const [query, setQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate(`/search?search=${query}`);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
 
   return (
     <div className="md:mb-20 mb-36">
@@ -90,6 +105,9 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   type="text"
                   placeholder="Cari kesenian.."
                   className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={handleKeyPress}
                 />
               </div>
             </div>
@@ -302,6 +320,10 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     type="text"
                     placeholder="Cari kesenian.."
                     className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyPress}
+
                   />
                 </div>
               </div>

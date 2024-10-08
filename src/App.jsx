@@ -47,14 +47,15 @@ function App() {
       {/* <ToastContainer> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* route for public after login */}
+
+        {/* Route yang gabisa diakses ketika sudah login */}
         <Route element={<PublicRoutes />}>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/otp" element={<OTPVerification />} />
         </Route>
 
-        {/* route for admin */}
+        {/* Route untuk admin */}
         <Route element={<AdminRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
           {/* user */}
@@ -75,80 +76,82 @@ function App() {
         <Route path="*" element={<NotFound />} />
 
         {/* Route for home */}
-        <Route path="/searchresult" element={<SearchResult />} />
+        <Route path="/search" element={<SearchResult />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/service/:id" element={<ServiceDetails />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
-        <Route path="/productorder" element={<ProductOrder />} />
-        <Route path="/serviceorder" element={<ServiceOrder />} />
-        <Route path="/cart" element={<Cart />} />
-
-        {/* user  dashboard*/}
-        <Route path="/user/dashboard" element={<DashboardUser />} />
-
-        {/* transaction */}
-        <Route
-          path="/user/dashboard/transaction"
-          element={<DashboardTransaction />}
-        />
-        <Route
-          path="/user/dashboard/transaction/product/details"
-          element={<ProductTransactionDetails />}
-        />
-        <Route
-          path="/user/dashboard/transaction/service/details"
-          element={<ServiceTransactionDetails />}
-        />
-        <Route
-          path="/user/dashboard/wishlist"
-          element={<DashboardWishlist />}
-        />
-
-        {/* profile */}
-        <Route path="/user/dashboard/profil" element={<UserProfile />} />
-
-        {/* SENIMAN */}
-        <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
-
-        {/* kesenian */}
-        <Route path="/seniman/dashboard/kesenian" element={<KesenianList />} />
-        {/* product */}
-        <Route
-          path="/seniman/dashboard/kesenian/addproduct"
-          element={<AddProduct />}
-        />
-        <Route
-          path="/seniman/dashboard/kesenian/updateproduct"
-          element={<EditProduct />}
-        />
-        {/* service */}
-        <Route
-          path="/seniman/dashboard/kesenian/addservice"
-          element={<AddService />}
-        />
-        <Route
-          path="/seniman/dashboard/kesenian/updateservice"
-          element={<EditService />}
-        />
 
 
 
 
+
+
+        {/* Route yang bisa diakses setelah login */}
         <Route element={<ProtectedRoute />}>
           <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
 
+          {/* SENIMAN */}
+          <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
+          {/* kesenian */}
+          <Route path="/seniman/dashboard/kesenian" element={<KesenianList />} />
+          {/* product */}
+          <Route
+            path="/seniman/dashboard/kesenian/addproduct"
+            element={<AddProduct />}
+          />
+          <Route
+            path="/seniman/dashboard/kesenian/updateproduct"
+            element={<EditProduct />}
+          />
+          {/* service */}
+          <Route
+            path="/seniman/dashboard/kesenian/addservice"
+            element={<AddService />}
+          />
+          <Route
+            path="/seniman/dashboard/kesenian/updateservice"
+            element={<EditService />}
+          />
+          <Route path="/seniman/dashboard/profil" element={<SenimanProfile />} />
+          <Route path="/seniman/dashboard/order" element={<SenimanOrder />} />
+          <Route path="seniman/dashboard/balance" element={<SenimanBalance />} />
+
+
+
+
+          {/* user */}
+          {/* dashboard */}
+          <Route path="/user/dashboard" element={<DashboardUser />} />
+          {/* transaction */}
+          <Route
+            path="/user/dashboard/transaction"
+            element={<DashboardTransaction />}
+          />
+          <Route
+            path="/user/dashboard/transaction/product/details"
+            element={<ProductTransactionDetails />}
+          />
+          <Route
+            path="/user/dashboard/transaction/service/details"
+            element={<ServiceTransactionDetails />}
+          />
+          <Route
+            path="/user/dashboard/wishlist"
+            element={<DashboardWishlist />}
+          />
+          {/* profil */}
+          <Route path="/user/dashboard/profil" element={<UserProfile />} />
+
+          <Route path="/productorder" element={<ProductOrder />} />
+          <Route path="/serviceorder" element={<ServiceOrder />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
 
 
-        <Route path="seniman/dashboard/balance" element={<SenimanBalance />} />
-
-        {/* profile */}
-        <Route path="/seniman/dashboard/profil" element={<SenimanProfile />} />
-        <Route path="/seniman/dashboard/order" element={<SenimanOrder />} />
-
-        {/* <Route path="/daftar/seniman" element={<ArtProviderRegister />} /> */}
       </Routes>
-      <ToastContainer />
+      <ToastContainer
+        autoClose={1200}
+      />
     </Router>
   );
 }

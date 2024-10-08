@@ -17,7 +17,6 @@ const Home = () => {
         setProducts(res.data.data);
         setLoading(false); // Stop loading after data is received
       }).catch((err) => {
-        console.log(err);
         setLoading(false); // Stop loading even if there's an error
       });
 
@@ -26,15 +25,11 @@ const Home = () => {
         setService(res.data.data);
         setLoading(false); // Stop loading after data is received
       }).catch((err) => {
-        console.log(err);
         setLoading(false); // Stop loading even if there's an error
       });
   }, []);
 
-  useEffect(() => {
-    console.log(products)
-    console.log(service)
-  })
+
 
   return (
     <div>

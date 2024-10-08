@@ -114,8 +114,8 @@ const Cart = () => {
     setSelectedProducts((prevSelected) =>
       isAllSelected
         ? prevSelected.filter(
-            (productName) => !storeProducts.includes(productName)
-          )
+          (productName) => !storeProducts.includes(productName)
+        )
         : [...prevSelected, ...storeProducts]
     );
   };
@@ -141,18 +141,18 @@ const Cart = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto p-6">
+      <div className="container p-6 mx-auto">
         <Heading title={`${products.length} item di keranjang Anda`} />
-        <div className="grid lg:grid-cols-5 grid-cols-1 gap-10 mb-6">
+        <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5">
           <div className="col-span-3 space-y-5">
             {Object.keys(groupedProducts).map((storeName, index) => (
-              <div key={index} className="border rounded-xl p-4">
-                <div className="flex gap-2 items-start">
+              <div key={index} className="p-4 border rounded-xl">
+                <div className="flex items-start gap-2">
                   {/* checkbox */}
                   <div className="">
                     <input
                       type="checkbox"
-                      className="rounded border border-gray-300 text-primary bg-white focus:ring-primary h-4 w-4 primary focus:ring-1"
+                      className="w-4 h-4 bg-white border border-gray-300 rounded text-primary focus:ring-primary primary focus:ring-1"
                       onChange={() => handleStoreSelect(storeName)}
                       checked={groupedProducts[storeName].every((product) =>
                         selectedProducts.includes(product.productName)
@@ -160,7 +160,7 @@ const Cart = () => {
                     />
                   </div>
                   {/* info toko */}
-                  <div className="flex gap-2 items-center">
+                  <div className="flex items-center gap-2">
                     <img
                       src={groupedProducts[storeName][0].storeAvatar}
                       alt={storeName}
@@ -177,11 +177,11 @@ const Cart = () => {
 
                 {/* Produk */}
                 {groupedProducts[storeName].map((product, idx) => (
-                  <div key={idx} className="flex gap-2 items-start">
+                  <div key={idx} className="flex items-start gap-2">
                     <div className="mt-2">
                       <input
                         type="checkbox"
-                        className="rounded border border-gray-300 text-primary bg-white focus:ring-primary h-4 w-4 primary focus:ring-1"
+                        className="w-4 h-4 bg-white border border-gray-300 rounded text-primary focus:ring-primary primary focus:ring-1"
                         checked={selectedProducts.includes(product.productName)}
                         onChange={() =>
                           handleProductSelect(product.productName)
@@ -199,7 +199,7 @@ const Cart = () => {
                             >
                               <div className="flex items-center gap-1">
                                 <FaTrashCan className="text-gray-400" />
-                                <span className="text-gray-400 text-sm">
+                                <span className="text-sm text-gray-400">
                                   Hapus
                                 </span>
                               </div>
@@ -211,14 +211,14 @@ const Cart = () => {
                               {product.isLiked ? (
                                 <div className="flex items-center gap-1">
                                   <IoHeart className="text-customRed" />
-                                  <span className="text-customRed text-sm">
+                                  <span className="text-sm text-customRed">
                                     Wishlist
                                   </span>
                                 </div>
                               ) : (
                                 <div className="flex items-center gap-1">
                                   <IoHeartOutline className="text-gray-400" />
-                                  <span className="text-gray-400 text-sm">
+                                  <span className="text-sm text-gray-400">
                                     Wishlist
                                   </span>
                                 </div>
@@ -269,13 +269,13 @@ const Cart = () => {
           </div>
 
           {/* Order Summary */}
-          <div className="col-span-2 sticky top-20">
+          <div className="sticky col-span-2 top-20">
             <OrderSummary
               productTotal={totalPrice}
               shippingCost={totalShippingCost}
               serviceFee={serviceFee}
             />
-            <button className="w-full mt-6 bg-primary text-white py-3 rounded-xl font-semibold">
+            <button className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl">
               Beli{" "}
               <span className="font-nunito">({selectedProducts.length})</span>
             </button>

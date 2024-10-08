@@ -26,9 +26,9 @@ const UserProfile = () => {
   ];
   return (
     <UserDashboardLayout>
-      <div className="flex flex-col gap-2 border p-3 rounded-xl">
+      <div className="flex flex-col gap-2 p-3 border rounded-xl">
         {/* Breadcrumb */}
-        <div className="border p-3 py-5 rounded-xl bg-gray-50">
+        <div className="p-3 py-5 border rounded-xl bg-gray-50">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
         <div className="flex flex-col gap-2 p-3">

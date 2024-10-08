@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Breadcrumbs from "../../../../components/Breadcrumbs";
 import SenimanDashboardLayout from "../../../../layouts/SenimanDashboardLayout";
 import Stepper from "../../../../components/Stepper";
@@ -7,26 +8,45 @@ import Selection from "../../../../components/Selection";
 import MultipleImageUploader from "../../../../components/MultipleImageUploader";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import { useAxiosInstance } from "../../../../config/axiosConfig";
+import DropdownFilter from "../../../../components/DropdownFilter";
+import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import PriceInput from "../../../../components/form-input/PriceInput";
+import SelectionOne from "../../../../components/SelectionOne";
+import { toast } from "react-toastify";
 
 const EditProduct = () => {
+  const location = useLocation();
+  const product = location.state?.product || {};
+
+  const imageUrls = product.images ? product.images.map(image => image.picture) : [];
+  const images = [product.thumbnail, ...imageUrls];
+  console.log(images);
+  console.log(product)
+
+
+
+  const axiosInstance = useAxiosInstance();
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [loading, setLoading] = useState(false); // State untuk loading
+  const navigate = useNavigate();
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/seniman/dashboard" },
     { label: "Daftar Kesenian", to: "/seniman/dashboard/kesenian" },
-    { label: "Tambah Produk", to: "/seniman/dashboard/kesenian/addproduct" },
+    { label: "Edit Produk", to: "/seniman/dashboard/kesenian/addproduct" },
   ];
 
   const steps = ["Informasi Produk", "Foto Produk", "Publish"];
   const [currentStep, setCurrentStep] = useState(0);
 
   const [formData, setFormData] = useState({
-    categories: [],
-    productName: "",
-    description: "",
-    price: 0,
-    stock: 1,
-    images: [],
+    category_id: product.category_id || [],
+    name: product.name || "",
+    desc: product.desc || "",
+    price: product.price || 0,
+    stock: product.stock || 1,
+    images: images || [],  // Gunakan URL gambar yang diterima
     agreeTerms: false,
   });
 
@@ -42,8 +62,8 @@ const EditProduct = () => {
     });
   };
 
-  const handleDescriptionChange = (value) => {
-    setFormData((prevFormData) => ({ ...prevFormData, description: value }));
+  const handledescChange = (value) => {
+    setFormData((prevFormData) => ({ ...prevFormData, desc: value }));
   };
 
   const handleCheckboxChange = () => {
@@ -55,7 +75,44 @@ const EditProduct = () => {
 
   const handleSubmit = () => {
     if (isStepValid()) {
-      console.log("Product submitted:", formData);
+
+      const postFormData = new FormData();
+
+      postFormData.append('category_id', formData.category_id);
+      postFormData.append('name', formData.name);
+      postFormData.append('desc', formData.desc);
+      postFormData.append('price', formData.price);
+      postFormData.append('stock', formData.stock);
+
+      if (formData.images[0]) {
+        postFormData.append('thumbnail', formData.images[0].file);
+      }
+
+      formData.images.slice(1).forEach((image, index) => {
+        postFormData.append(`product_images[]`, image.file);
+      });
+      setLoading(true);
+
+      // Mengirim data ke server menggunakan axiosInstance
+      axiosInstance
+        .post("/user/shop/products", postFormData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // Mengatur header untuk multipart/form-data
+          },
+        })
+        .then((response) => {
+
+          toast.success("Produk berhasil ditambahkan");
+          navigate("/seniman/dashboard/kesenian");
+        })
+        .catch((error) => {
+          toast.error("Gagal menambahkan produk");
+          console.log(error);
+
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -63,11 +120,11 @@ const EditProduct = () => {
     switch (currentStep) {
       case 0:
         return (
-          formData.productName.trim().length > 0 &&
-          formData.description.trim().length > 0 &&
+          formData.name.trim().length > 0 &&
+          formData.desc.trim().length > 0 &&
           formData.price > 0 &&
           formData.stock > 0 &&
-          formData.categories.length > 0
+          formData.category_id.length > 0
         );
       case 1:
         return formData.images.length > 0;
@@ -78,6 +135,26 @@ const EditProduct = () => {
     }
   };
 
+  useEffect(() => {
+    axiosInstance
+      .get("/category")
+      .then((response) => {
+        console.log(response.data.data.data);
+        const category_id = response.data.data.data.map((category) => ({
+          value: category.id.toString(),
+          label: category.name,
+        }));
+        setCategoryOptions(category_id);
+      })
+      .catch((err) => {
+      })
+      .finally(() => {
+      });
+  }, []);
+
+  if (loading) {
+    return FullPageLoader();
+  }
   return (
     <SenimanDashboardLayout pageTitle="Dashboard Seniman | Daftar Kesenian">
       <div className="flex flex-col gap-2 p-3 border rounded-xl">
@@ -92,13 +169,13 @@ const EditProduct = () => {
               steps={steps}
               currentStep={currentStep}
               stepperTitle="Edit Produk"
-              stepperSubtitle="Perbarui informasi produk yang akan dijual"
+              stepperSubtitle="Lengkapi informasi produk yang akan dijual"
             />
             {currentStep === 0 && (
               <div>
                 {/* Step 1: Informasi Produk */}
                 <div className="mb-5">
-                  <Selection
+                  <SelectionOne
                     name={
                       <>
                         <div className="mt-5 text-sm font-semibold text-black">
@@ -106,28 +183,26 @@ const EditProduct = () => {
                         </div>
                       </>
                     }
-                    options={[
-                      { label: "Seni Musik", value: "musik" },
-                      { label: "Seni Tari", value: "tari" },
-                      { label: "Seni Rupa", value: "rupa" },
-                    ]}
-                    selectedOptions={formData.categories}
+                    options={categoryOptions}
+                    selectedOptions={formData.category_id}
                     onSelect={(options) =>
                       setFormData((prevFormData) => ({
                         ...prevFormData,
-                        categories: options,
+                        category_id: options,
                       }))
                     }
                     placeholder="Pilih Kategori"
                   />
                 </div>
 
+
+
                 <div className="mb-5">
                   <TextInput
                     label="Nama Produk"
                     placeholder="Masukkan nama produk"
-                    value={formData.productName}
-                    name="productName"
+                    value={formData.name}
+                    name="name"
                     onChange={handleInputChange}
                   />
                 </div>
@@ -138,8 +213,8 @@ const EditProduct = () => {
                   </label>
                   <ReactQuill
                     theme="snow"
-                    value={formData.description}
-                    onChange={handleDescriptionChange}
+                    value={formData.desc}
+                    onChange={handledescChange}
                     modules={{
                       toolbar: [
                         ["bold", "italic", "underline", "strike"],
@@ -189,9 +264,9 @@ const EditProduct = () => {
                       images,
                     }))
                   }
-                  maxImages={9}
+                  maxImages={5}
                   acceptedFormats={[".jpg", ".jpeg", ".png"]}
-                  minSize={300}
+                  minSize={100}
                   optimalSize={1200}
                 />
               </div>
