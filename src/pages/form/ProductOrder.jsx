@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShippingOptions from "../../components/orders/ShippingOptions";
@@ -8,17 +7,18 @@ import { IoAddOutline } from "react-icons/io5";
 import Navbar from "../../components/navbar/Navbar";
 import FooterLogo from "../../components/footer/FooterLogo";
 import TextareaInput from "../../components/form-input/TextareaInput";
-import ProductOrderCard from "../../components/orders/ProductOrderCard";
+// import ProductOrderCard from "../../components/orders/ProductOrderCard";
+import ProductTransactionCard from "../../pages/user/transaction/product/ProductTransactionCard";
 
 const ProductOrder = () => {
   const [product, setProduct] = useState({
     storeName: "Toko Kesenian",
     storeAvatar: "https://via.placeholder.com/100",
     storeLocation: "Bandung",
-    productName: "Lukisan Abstrak Khas Jawa Barat",
-    productThumbnail:
+    name: "Lukisan Abstrak Khas Jawa Barat",
+    thumbnail:
       "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg",
-    productPrice: 1500000,
+    price: 1500000,
   });
 
   const [address, setAddress] = useState({
@@ -65,10 +65,16 @@ const ProductOrder = () => {
               </div>
 
               {/* Produk */}
-              <ProductOrderCard
+              {/* <ProductOrderCard
                 product={product}
                 setTotalPrice={setTotalPrice}
-              />
+              /> */}
+
+              {/* Product Detail */}
+              <div className="mt-3">
+                <ProductTransactionCard product={product} quantity={1} />
+              </div>
+
               <div className="flex flex-wrap w-full gap-2">
                 <div>
                   <button

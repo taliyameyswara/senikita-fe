@@ -3,7 +3,7 @@ import { formatNumber } from "../../../../utils/formatNumber";
 
 const ProductTransactionCard = ({
   product,
-  quantity = product.quantity,
+  quantity,
   provider,
   header,
   button,
@@ -13,14 +13,14 @@ const ProductTransactionCard = ({
       {/* Header */}
       {header}
 
-      {/* Product/Service Details */}
-      <div className="flex gap-3">
+      {/* Product Details */}
+      <div className="flex gap-3 items-center">
         {/* Image */}
-        <div className="">
+        <div>
           <img
             className="w-20 h-20 object-cover rounded-lg"
-            src="https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
-            alt="Product"
+            src={product.thumbnail}
+            alt={product.name}
           />
         </div>
 
