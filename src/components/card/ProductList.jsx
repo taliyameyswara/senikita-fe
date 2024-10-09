@@ -48,7 +48,7 @@ const ProductList = ({ title, products, type }) => {
   };
 
   return (
-    <div className="container px-6 mb-6">
+    <div className="container px-6">
       <div className="flex items-center justify-between">
         <Heading title={title} />
 
