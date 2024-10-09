@@ -54,6 +54,7 @@ const Modal = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
       <div
+        ref={modalRef}
         className={`bg-white rounded-xl ${width} max-w-4xl max-h-[90vh] flex flex-col modal-content`}
       >
         {/* Header */}

@@ -65,17 +65,16 @@ const AddProduct = () => {
 
   const handleSubmit = () => {
     if (isStepValid()) {
-
       const postFormData = new FormData();
 
-      postFormData.append('category_id', formData.category_id);
-      postFormData.append('name', formData.name);
-      postFormData.append('desc', formData.desc);
-      postFormData.append('price', formData.price);
-      postFormData.append('stock', formData.stock);
+      postFormData.append("category_id", formData.category_id);
+      postFormData.append("name", formData.name);
+      postFormData.append("desc", formData.desc);
+      postFormData.append("price", formData.price);
+      postFormData.append("stock", formData.stock);
 
       if (formData.images[0]) {
-        postFormData.append('thumbnail', formData.images[0].file);
+        postFormData.append("thumbnail", formData.images[0].file);
       }
 
       formData.images.slice(1).forEach((image, index) => {
@@ -91,14 +90,12 @@ const AddProduct = () => {
           },
         })
         .then((response) => {
-
           toast.success("Produk berhasil ditambahkan");
           navigate("/seniman/dashboard/kesenian");
         })
         .catch((error) => {
           toast.error("Gagal menambahkan produk");
           console.log(error);
-
         })
         .finally(() => {
           setLoading(false);
@@ -136,10 +133,8 @@ const AddProduct = () => {
         }));
         setCategoryOptions(category_id);
       })
-      .catch((err) => {
-      })
-      .finally(() => {
-      });
+      .catch((err) => {})
+      .finally(() => {});
   }, []);
 
   if (loading) {
@@ -184,8 +179,6 @@ const AddProduct = () => {
                     placeholder="Pilih Kategori"
                   />
                 </div>
-
-
 
                 <div className="mb-5">
                   <TextInput
@@ -247,6 +240,22 @@ const AddProduct = () => {
               <div>
                 {/* Step 2: Foto Produk */}
                 <MultipleImageUploader
+                  title={
+                    <>
+                      <div className="text-lg font-semibold">
+                        Upload Gambar Produk
+                      </div>
+                      <div className="text-sm text-gray-400 ">
+                        Pilih foto produk atau tarik dan letakkan hingga 5 foto
+                        sekaligus di sini dengan minimal 1 foto utama
+                        (thumbnail).
+                      </div>
+                      <div className="mb-4 text-sm text-gray-400">
+                        Upload min 3 foto produk yang menarik dan berbeda satu
+                        sama lain untuk menarik perhatian pembeli.
+                      </div>
+                    </>
+                  }
                   images={formData.images}
                   setImages={(images) =>
                     setFormData((prevFormData) => ({
@@ -337,10 +346,11 @@ const AddProduct = () => {
                 <button
                   onClick={handleNextStep}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${isStepValid()
-                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                    }`}
+                  className={`px-4 py-2 rounded-xl ${
+                    isStepValid()
+                      ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                      : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
                 >
                   Selanjutnya
                 </button>
@@ -348,10 +358,11 @@ const AddProduct = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${isStepValid()
-                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                    }`}
+                  className={`px-4 py-2 rounded-xl ${
+                    isStepValid()
+                      ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                      : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
                 >
                   Selesai
                 </button>
