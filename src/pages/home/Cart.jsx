@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ShippingOptions from "../../components/orders/ShippingOptions";
 import OrderSummary from "../../components/orders/OrderSummary";
 import { FaTrashCan } from "react-icons/fa6";
@@ -9,37 +9,101 @@ import ProductOrderCard from "../../components/orders/ProductOrderCard";
 import Heading from "../../components/Heading";
 import { CgNotes } from "react-icons/cg";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
-
+import { useAxiosInstance } from "../../config/axiosConfig";
+import Spinner from "../../components/loading/Spinner";
 const Cart = () => {
-  const [products, setProducts] = useState([
-    {
-      storeName: "Toko Kesenian",
-      storeAvatar: "https://via.placeholder.com/100",
-      storeLocation: "Bandung",
-      productName: "Lukisan Abstrak Khas Jawa Barat",
-      productThumbnail:
-        "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg",
-      productPrice: 1500000,
-    },
-    {
-      storeName: "Toko Kesenian",
-      storeAvatar: "https://via.placeholder.com/100",
-      storeLocation: "Bandung",
-      productName: "Patung Kayu Khas Jawa",
-      productThumbnail:
-        "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg",
-      productPrice: 500000,
-    },
-    {
-      storeName: "Toko Seni Bali",
-      storeAvatar: "https://via.placeholder.com/100",
-      storeLocation: "Denpasar",
-      productName: "Lukisan Pemandangan Bali",
-      productThumbnail:
-        "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg",
-      productPrice: 2000000,
-    },
-  ]);
+  const axiosInstance = useAxiosInstance();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getCartItems = () => {
+    axiosInstance.get('user/cart')
+      .then((response) => {
+        // Memasukkan qty ke dalam setiap produk
+        const updatedProducts = response.data.data.map((item) => ({
+          ...item,
+          quantity: item.qty // Menyimpan qty ke dalam property quantity
+        }));
+        setProducts(updatedProducts);
+        console.log(updatedProducts);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+
+
+  // delete cart-items
+  const handleDeleteCart = (cartItemId) => {
+    axiosInstance.delete(`user/cart/items/${cartItemId}`)
+      .then((response) => {
+
+      })
+      .catch((error) => {
+        console.error('Error deleting data:', error);
+      })
+      .finally(() => {
+
+        // setLoading(false);
+
+      });
+  };
+
+  // Fungsi untuk memperbarui quantity ke jumlah yang spesifik
+  const updateCartItemQuantity = (cartItemId, newQuantity) => {
+    axiosInstance
+      .put(`user/cart/items/${cartItemId}`, { qty: newQuantity })
+      .then((response) => {
+
+      })
+      .catch((error) => {
+        console.error('Error updating quantity:', error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+  // Fungsi untuk menambah quantity
+  const incrementCartItemQuantity = (cartItemId) => {
+    axiosInstance
+      .put(`user/cart/items/increment/${cartItemId}`)
+      .then((response) => {
+
+      })
+      .catch((error) => {
+        console.error('Error incrementing quantity:', error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+  // Fungsi untuk mengurangi quantity
+  const decrementCartItemQuantity = (cartItemId) => {
+    axiosInstance
+      .put(`user/cart/items/decrement/${cartItemId}`)
+      .then((response) => {
+
+      })
+      .catch((error) => {
+        console.error('Error decrementing quantity:', error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+  };
+
+
+
+
+  useEffect(() => {
+    getCartItems();
+  }, []);
 
   // State to track selected products
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -66,13 +130,7 @@ const Cart = () => {
 
   const handleNotesChange = (e) => setNotesValue(e.target.value);
 
-  const handleRemoveProduct = (productToRemove) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter(
-        (product) => product.productName !== productToRemove.productName
-      )
-    );
-  };
+
 
   const toggleLike = (productName) => {
     setProducts((prevProducts) =>
@@ -138,6 +196,10 @@ const Cart = () => {
       0
     );
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <div>
       <Navbar />
@@ -162,7 +224,7 @@ const Cart = () => {
                   {/* info toko */}
                   <div className="flex items-center gap-2">
                     <img
-                      src={groupedProducts[storeName][0].storeAvatar}
+                      src={groupedProducts[storeName][0].storeAvatar ?? "https://via.placeholder.com/100"}
                       alt={storeName}
                       className="w-8 h-8 rounded-lg"
                     />
@@ -191,11 +253,12 @@ const Cart = () => {
                     <div className="flex-grow ">
                       <ProductOrderCard
                         product={product}
-                        onQuantityChange={handleQuantityChange}
+
+                        onQuantityChange={(cartItemId, newQuantity) => updateCartItemQuantity(cartItemId, newQuantity)}
                         button={
                           <>
                             <button
-                              onClick={() => handleRemoveProduct(product)}
+                              onClick={() => handleDeleteCart(product.cart_item_id)}
                             >
                               <div className="flex items-center gap-1">
                                 <FaTrashCan className="text-gray-400" />
@@ -226,7 +289,7 @@ const Cart = () => {
                             </button>
                           </>
                         }
-                        onRemoveProduct={handleRemoveProduct}
+                      // onRemoveProduct={handleRemoveProduct}
                       />
                     </div>
                   </div>
@@ -289,4 +352,4 @@ const Cart = () => {
 };
 
 export default Cart;
-``;
+

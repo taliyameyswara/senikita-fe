@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ShippingOptions from "../../components/orders/ShippingOptions";
@@ -43,13 +44,13 @@ const ProductOrder = () => {
   return (
     <div>
       <Navbar />
-      <div className="container mx-auto p-6">
-        <div className="grid lg:grid-cols-5 grid-cols-1  gap-10 mb-6 ">
+      <div className="container p-6 mx-auto">
+        <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5 ">
           {/* Info Produk */}
           <div className="col-span-3 space-y-5">
-            <div className="border rounded-xl p-4">
+            <div className="p-4 border rounded-xl">
               {/* Toko */}
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <img
                   src={product.storeAvatar}
                   alt={product.storeName}
@@ -106,7 +107,7 @@ const ProductOrder = () => {
                 <>
                   <p className="text-gray-500">Belum ada alamat</p>
                   <div className="mt-2">
-                    <button className="border border-primary text-primary font-semibold hover:bg-primary hover:text-white transition duration-100 p-3 py-2 rounded-xl text-sm">
+                    <button className="p-3 py-2 text-sm font-semibold transition duration-100 border border-primary text-primary hover:bg-primary hover:text-white rounded-xl">
                       Tambah Alamat
                     </button>
                   </div>
@@ -122,7 +123,7 @@ const ProductOrder = () => {
               shippingCost={shippingCost}
               serviceFee={serviceFee}
             />
-            <button className="w-full mt-6 bg-primary text-white py-3 rounded-xl font-semibold">
+            <button className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl">
               Checkout
             </button>
           </div>

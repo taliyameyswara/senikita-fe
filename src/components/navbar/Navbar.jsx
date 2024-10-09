@@ -156,12 +156,12 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     </ul>
                   </DropdownNav>
                   {/* cart */}
-                  <button className="relative p-3">
+                  <Link to={"/cart"} className="relative p-3">
                     <IoCartOutline className="text-2xl text-secondary" />
                     <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                       20
                     </div>
-                  </button>
+                  </Link>
                   {/* message */}
                   <button className="relative p-3">
                     <IoChatboxOutline className="text-2xl text-secondary" />
