@@ -15,7 +15,6 @@ const Hero = () => {
 
   return (
     <div className="container px-6 pt-10 relative">
-      {/* <div className="bg-gradient-to-t from-primary to-tertiary py-64 rounded-2xl relative overflow-hidden"> */}
       <div className="py-20 md:py-28 rounded-3xl relative ">
         <div
           className="
@@ -49,6 +48,7 @@ const Hero = () => {
                 src={HeroImage}
                 alt=""
                 className="h-full -rotate-3 scale-x-[-1]"
+                style={{ userSelect: "none", pointerEvents: "none" }}
               />
             </div>
           </div>
@@ -64,37 +64,11 @@ const Hero = () => {
                 </span>
               </h1>
               <p className="">
-                Marketplace pertama yang mempertemukan produk dan jasa kesenian
-                di Indonesia, tempat untuk menemukan berbagai karya seni dan
-                layanan dari seniman lokal di Indonesia.
+                Senikita merupakan marketplace pertama yang mempertemukan produk
+                dan jasa kesenian di Indonesia, tempat untuk menemukan berbagai
+                karya seni dan layanan dari seniman lokal di Indonesia.
               </p>
             </div>
-            {/* <div className="flex w-[90%] gap-5 mt-2">
-              <div className="flex gap-2 text-white mt-2 bg-white/10 p-3 rounded-xl">
-                <div className="mt-1">
-                  <LuSparkle />
-                </div>
-                <div className="">
-                  <h1 className="font-semibold">Produk Kesenian</h1>
-                  <p>
-                    Terdapat 100+ produk kesenian terdaftar dari berbagai daerah
-                    di Indonesia
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-2 text-white mt-2 bg-white/10 p-3 rounded-xl">
-                <div className="mt-1">
-                  <LuSparkle />
-                </div>
-                <div className="">
-                  <h1 className="font-semibold">Jasa Kesenian</h1>
-                  <p>
-                    Terdapat 100+ produk kesenian terdaftar dari berbagai daerah
-                    di Indonesia
-                  </p>
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
