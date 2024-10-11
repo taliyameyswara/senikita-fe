@@ -3,11 +3,13 @@ import { IoClose } from "react-icons/io5";
 import { RiImageAddLine } from "react-icons/ri";
 
 const MultipleImageUploader = ({
+  title,
   images,
   setImages,
   maxImages = 5,
   acceptedFormats = [".jpg", ".jpeg", ".png"],
   minSize = 100, // Minimum image size
+  hasThumbnail = true, // Parameter untuk menentukan thumbnail
 }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -33,11 +35,11 @@ const MultipleImageUploader = ({
         if (width < minSize || height < minSize) {
           setError(`Ukuran gambar minimal adalah ${minSize}x${minSize}px.`);
         } else {
-          if (newImages.length < maxImages + 1) {
+          if (newImages.length < maxImages) {
             newImages.push({ file, preview: img.src });
             setImages(newImages);
           } else {
-            setError(`Maksimal ${maxImages + 1} gambar.`);
+            setError(`Maksimal ${maxImages} gambar.`);
           }
         }
       };
@@ -64,22 +66,15 @@ const MultipleImageUploader = ({
 
   return (
     <div className="p-5 border rounded-xl">
-      <div className="text-lg font-semibold">Upload Gambar Produk</div>
-      <div className="text-sm text-gray-400 ">
-        Pilih foto produk atau tarik dan letakkan hingga 9 foto sekaligus di
-        sini dengan minimal 1 foto utama (thumbnail).
-      </div>
-      <div className="mb-4 text-sm text-gray-400">
-        Upload min 3 foto produk yang menarik dan berbeda satu sama lain untuk
-        menarik perhatian pembeli.
-      </div>
+      {title}
 
       <div className="grid grid-cols-2 gap-4 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 ">
-        {Array.from({ length: maxImages + 1 }).map((_, index) => (
+        {Array.from({ length: maxImages }).map((_, index) => (
           <div
             key={index}
-            className={`relative w-32 h-32 rounded-xl flex items-center justify-center ${images[index] ? "" : "border border-dashed border-gray-300"
-              }`}
+            className={`relative w-32 h-32 rounded-xl flex items-center justify-center ${
+              images[index] ? "" : "border border-dashed border-gray-300"
+            }`}
             onDrop={handleDrop}
             onDragOver={(e) => e.preventDefault()}
           >
@@ -104,7 +99,9 @@ const MultipleImageUploader = ({
                   className="flex flex-col items-center justify-center gap-2 font-light text-center text-gray-400 cursor-pointer font-nunito"
                 >
                   <RiImageAddLine className="text-4xl" />
-                  {index === 0 ? "Thumbnail" : `Foto ${index}`}
+                  {hasThumbnail && index === 0
+                    ? "Thumbnail"
+                    : `Foto ${index + 1}`}
                 </label>
                 <input
                   type="file"

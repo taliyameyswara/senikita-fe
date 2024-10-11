@@ -8,7 +8,7 @@ const RenderStatus = ({ payment, shipping, type }) => {
 
   if (shippingStatus === "menunggu_konfirmasi") {
     return (
-      <StatusDisplay transactionStatus="menunggu_konfirmasi" type={type} />
+      <StatusDisplay transactionStatus="menunggu_konfirmasi" type={"service"} />
     );
   }
 
@@ -16,7 +16,15 @@ const RenderStatus = ({ payment, shipping, type }) => {
     return (
       <>
         <PaymentStatus transactionStatus={payment} />
-        <StatusDisplay transactionStatus={shipping} type={type} />
+        <StatusDisplay transactionStatus={shipping} type={"service"} />
+      </>
+    );
+  }
+
+  if (paymentStatus === "pending") {
+    return (
+      <>
+        <PaymentStatus transactionStatus={payment} />
       </>
     );
   }
@@ -24,7 +32,7 @@ const RenderStatus = ({ payment, shipping, type }) => {
   if (shippingStatus === "ditolak") {
     return (
       <>
-        <StatusDisplay transactionStatus={shipping} type={type} />
+        <StatusDisplay transactionStatus={shipping} type={"service"} />
       </>
     );
   }
@@ -33,6 +41,14 @@ const RenderStatus = ({ payment, shipping, type }) => {
     return (
       <>
         <PaymentStatus transactionStatus={payment} />
+        <StatusDisplay transactionStatus={shipping} type={"service"} />
+      </>
+    );
+  }
+
+  if (paymentStatus === "selesai" && shippingStatus === "selesai") {
+    return (
+      <>
         <StatusDisplay transactionStatus={shipping} type={type} />
       </>
     );

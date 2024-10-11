@@ -25,9 +25,22 @@ const NextArrow = ({ onClick }) => (
 );
 
 const ProductCard = ({ product, type }) => {
-  const { id, category, shop, name, price, rating_count, sold, images, thumbnail } = product;
+  const {
+    id,
+    category,
+    shop,
+    name,
+    price,
+    rating_count,
+    sold,
+    images,
+    thumbnail,
+  } = product;
   const createSlug = (name) => {
-    return name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    return name
+      .toLowerCase()
+      .replace(/ /g, "-")
+      .replace(/[^\w-]+/g, "");
   };
   const categoryName = category.name;
   const shopName = shop.name;
@@ -54,15 +67,18 @@ const ProductCard = ({ product, type }) => {
       </div>
     ),
   };
-  const imageSlider = images && images.length > 0
-    ? [thumbnail, ...images.map(image => image.picture)]
-    : [thumbnail];
-
-
+  const imageSlider =
+    images && images.length > 0
+      ? [thumbnail, ...images.map((image) => image.picture)]
+      : [thumbnail];
 
   return (
-    <Link to={type === 'Product' ? `/product/${id}-${slug}` : `/service/${id}-${slug}`}>
-      <div className="mb-2 mr-2 overflow-hidden bg-white rounded-xl md:mr-4 md:mb-4">
+    <Link
+      to={
+        type === "Product" ? `/product/${id}-${slug}` : `/service/${id}-${slug}`
+      }
+    >
+      <div className="mb-2 mr-2 overflow-hidden  rounded-xl md:mr-4 md:mb-4">
         {/* image slider */}
         <div className="relative overflow-hidden group rounded-xl">
           {images && images.length > 0 ? (
