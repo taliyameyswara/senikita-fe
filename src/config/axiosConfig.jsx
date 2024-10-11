@@ -30,8 +30,10 @@ const createAxiosInstance = () => {
             const { status } = error.response;
 
             if (status === 401) {
-                logout();
-                window.location.href = '/login';
+                if (window.location.pathname !== '/login') {
+                    logout();
+                    window.location.href = '/login';
+                }
             }
             if (status === 403) {
                 window.location.href = '/not-authorized';

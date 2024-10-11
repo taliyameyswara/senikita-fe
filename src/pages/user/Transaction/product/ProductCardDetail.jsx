@@ -3,7 +3,7 @@ import ProductTransactionCard from "./ProductTransactionCard";
 const ProductCardDetail = ({ products, provider }) => {
   return (
     <div className="mt-2">
-      <div className="font-semibold mb-1">Detail Produk</div>
+      <div className="mb-1 font-semibold">Detail Produk</div>
       {products.map((product, index) => (
         <ProductTransactionCard
           key={index}

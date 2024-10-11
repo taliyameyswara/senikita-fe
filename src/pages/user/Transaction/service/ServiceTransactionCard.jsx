@@ -1,9 +1,9 @@
 import React from "react";
 import { formatNumber } from "../../../../utils/formatNumber";
 
-const ServiceTransactionCard = ({ service, header, button }) => {
+const ServiceTransactionCard = ({ service, header, button, provider, quantity }) => {
   return (
-    <div className="p-4 bg-white border rounded-xl mb-4">
+    <div className="p-4 mb-4 bg-white border rounded-xl">
       {/* Header */}
       {header}
 
@@ -12,18 +12,18 @@ const ServiceTransactionCard = ({ service, header, button }) => {
         {/* Image */}
         <div className="">
           <img
-            className="w-20 h-20 object-cover rounded-lg"
-            src={service.image}
+            className="object-cover w-20 h-20 rounded-lg"
+            src={service.thumbnail}
             alt="Service"
           />
         </div>
 
         {/* Details */}
         <div>
-          <div className="text-xs text-tertiary">{service.providerName}</div>
+          <div className="text-xs text-tertiary">{provider}</div>
           <h3 className="font-semibold md:text-lg">{service.name}</h3>
-          <p className="text-gray-900 font-semibold font-nunito">
-            {formatNumber(service.price)}
+          <p className="font-semibold text-gray-900 font-nunito">
+            {quantity} item x {formatNumber(service.price)}
           </p>
         </div>
       </div>

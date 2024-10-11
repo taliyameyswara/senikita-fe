@@ -6,8 +6,9 @@ import TextareaInput from "../form-input/TextareaInput";
 import TextInput from "../form-input/TextInput";
 import SearchInput from "../form-input/SearchInput";
 import { GrLocation } from "react-icons/gr";
+import { FaTrashCan } from "react-icons/fa6";
 
-const CustomerAddress = ({ address, isOrder }) => {
+const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima openDeleteModal sebagai prop
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -18,39 +19,34 @@ const CustomerAddress = ({ address, isOrder }) => {
   };
 
   return (
-    <div className="border border-gray-200 p-5 rounded-xl mt-3">
+    <div className="p-5 mt-3 border border-gray-200 rounded-xl">
       <div className="flex justify-between">
         <div className="">
           <span className="p-1.5 rounded-lg text-sm bg-tertiary/10 text-primary font-semibold">
-            {address.label}
+            {address.label_address}
           </span>
-          <p className="mt-1 font-semibold text-lg">{address.name} </p>
-          <p className="font-nunito font-light">{address.phone}</p>
-          <div className="text-sm text-gray-500 font-light">
+          <p className="mt-1 text-lg font-semibold">{address.name} </p>
+          <p className="font-light font-nunito">{address.phone}</p>
+          <div className="text-sm font-light text-gray-500">
             <p>{address.street}</p>
             <p>
-              {address.city}, {address.province}
+              {address.city?.name}, {address.province?.name}
             </p>
             <p> ({address.note})</p>
           </div>
           <button onClick={openModal} className="mt-3">
-            <div className="p-2 px-4 border text-sm  rounded-lg flex gap-2 items-center ">
+            <div className="flex items-center gap-2 p-2 px-4 text-sm border rounded-lg ">
               <FiEdit />
               Ubah Alamat
             </div>
           </button>
+          <button onClick={() => openDeleteModal(address)} className="mt-3 ml-2">
+            <div className="flex items-center gap-2 p-2 px-4 text-sm border rounded-lg ">
+              <FaTrashCan className="text-gray-400" />
+              Hapus
+            </div>
+          </button>
         </div>
-        {!isOrder && (
-          <div className="flex items-start">
-            <label className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                checked
-                className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary"
-              />
-            </label>
-          </div>
-        )}
       </div>
 
       <Modal
@@ -64,7 +60,7 @@ const CustomerAddress = ({ address, isOrder }) => {
           <TextInput
             label="Label Alamat"
             placeholder="Masukkan label alamat. Contoh: Rumah, Kantor, dll."
-            value={address.label}
+            value={address.label_address}
             name="label"
             onChange={handleChange}
           />
@@ -88,12 +84,12 @@ const CustomerAddress = ({ address, isOrder }) => {
           <TextareaInput
             label="Alamat"
             placeholder="Masukkan alamat lengkap"
-            value={address.street}
+            value={address.address_detail}
             name="street"
             onChange={handleChange}
           />
 
-          <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             <SearchInput
               label={
                 <div className="text-sm font-semibold text-black">Provinsi</div>
@@ -102,9 +98,9 @@ const CustomerAddress = ({ address, isOrder }) => {
               dataKey="provinces"
               apiUrl="/provinces"
               mapData={(item) => item.name}
-              value={address.province}
+              value={address.province_id}
               handleSelect={(selected) =>
-                handleChange({ target: { name: "province", value: selected } })
+                handleChange({ target: { name: "province_id", value: selected } })
               }
             />
             <SearchInput
@@ -114,16 +110,23 @@ const CustomerAddress = ({ address, isOrder }) => {
                 </div>
               }
               placeholder="Pilih kabupaten/kota"
-              apiUrl={`/cities-by-province/${address.province}`}
+              apiUrl={`/cities-by-province/${address.province_id}`}
               dataKey="cities"
               mapData={(item) => item.name}
-              value={address.city}
+              value={address.city_id}
               handleSelect={(selected) =>
-                handleChange({ target: { name: "city", value: selected } })
+                handleChange({ target: { name: "city_id", value: selected } })
               }
-              disabled={!address.province}
+              disabled={!address.province_id}
             />
           </div>
+          <TextInput
+            label="Kode Pos"
+            placeholder="Masukkan kode pos"
+            value={address.postal_code}
+            name="phone"
+            onChange={handleChange}
+          />
           <TextareaInput
             label="Catatan Alamat (Opsional)"
             placeholder="Masukkan catatan Anda di sini..."

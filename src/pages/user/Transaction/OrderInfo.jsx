@@ -10,7 +10,8 @@ const OrderInfo = ({
 }) => {
   return (
     <div className="">
-      <div className="flex flex-wrap md:flex-nowrap gap-2 mb-2">
+      <div className="flex flex-wrap gap-2 mb-2 md:flex-nowrap">
+
         <RenderStatus payment={payment} shipping={shipping} type={type} />
       </div>
       <div className="flex gap-6">

@@ -3,7 +3,7 @@ import ServiceTransactionCard from "./ServiceTransactionCard";
 const ServiceCardDetail = ({ services, provider }) => {
   return (
     <div className="mt-2">
-      <div className="font-semibold mb-1">Detail Jasa</div>
+      <div className="mb-1 font-semibold">Detail Jasa</div>
       {services.map((service, index) => (
         <ServiceTransactionCard
           key={index}

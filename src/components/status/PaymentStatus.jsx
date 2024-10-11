@@ -29,7 +29,7 @@ const PaymentStatus = ({ transactionStatus }) => {
 
   return (
     <div>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center gap-2">
         <div
           className={`${statusInfo.bgClass} p-1 px-2 rounded-lg flex gap-1 items-center text-xs font-semibold`}
         >

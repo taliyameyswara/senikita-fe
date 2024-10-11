@@ -25,16 +25,23 @@ const LogIn = () => {
     e.preventDefault();
     setIsLoading(true); // Set loading to true
 
+    console.log("Form submitted"); // Log untuk memastikan fungsi dijalankan
+    console.log("Email:", email);
+    console.log("Password:", password);
+
     try {
       const result = await loginApi(email, password);
+      console.log("API Response:", result); // Periksa response dari API
+
       if (result.code === 403) {
+        console.log("OTP Required");
         setEmailOTP(email);
         setIsLoading(false);
         navigate("/otp");
-
         return;
       }
       if (result.success) {
+        console.log("Login success", result.data);
         toast.success("Login berhasil!");
         login(result.data);
         if (result.data.role === 1) {
@@ -42,15 +49,19 @@ const LogIn = () => {
         } else {
           navigate("/");
         }
-      } else {
-        toast.error("Login gagal! Periksa kembali email dan password Anda.");
+      }
+      if (result.success === false) {
+        console.log("Login failed", result.message);
+        toast.error(result.message);
       }
     } catch (error) {
+      console.log("Server error:", error);
       toast.error("Terjadi kesalahan pada server.");
     } finally {
       setIsLoading(false); // Set loading to false after process
     }
   };
+
 
   return (
     <>
@@ -131,11 +142,10 @@ const LogIn = () => {
               <div>
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white font-semibold rounded-xl ${
-                    isFormValid
-                      ? "bg-primary hover:bg-primary-dark"
-                      : "bg-gray-300 cursor-not-allowed"
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                  className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
+                    ? "bg-primary hover:bg-primary-dark"
+                    : "bg-gray-300 cursor-not-allowed"
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
                   disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
                 >
                   {isLoading ? (

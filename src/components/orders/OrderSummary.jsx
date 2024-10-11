@@ -2,34 +2,52 @@ import React from "react";
 import { formatNumber } from "../../utils/formatNumber";
 
 const OrderSummary = ({ productTotal, shippingCost, serviceFee }) => {
-  const total = productTotal + shippingCost + serviceFee;
-
+  const total =
+    (productTotal > 0 ? productTotal : 0) +
+    (shippingCost > 0 ? shippingCost : 0) +
+    (serviceFee > 0 ? serviceFee : 0);
   return (
     <div className="">
-      <h3 className="text-lg font-semibold mb-3">Ringkasan Belanja</h3>
-      <div className="flex justify-between">
-        <span>Total Harga</span>
-        <span className="font-nunito font-light">
-          {formatNumber(productTotal)}
-        </span>
-      </div>
-      <div className="flex justify-between">
-        <span>Total Ongkir</span>
-        <span className="font-nunito font-light">
-          {formatNumber(shippingCost)}
-        </span>
-      </div>
-      <div className="flex justify-between">
-        <span>Biaya Layanan</span>
-        <span className="font-nunito font-light">
-          {formatNumber(serviceFee)}
-        </span>
-      </div>
-      <hr className="my-3" />
-      <div className="flex justify-between font-semibold text-lg">
-        <span>Total Belanja</span>
-        <span className="font-nunito font-semibold">{formatNumber(total)}</span>
-      </div>
+      <h3 className="mb-3 text-lg font-semibold">Ringkasan Belanja</h3>
+
+      {productTotal > 0 && (
+        <div className="flex justify-between">
+          <span>Total Harga</span>
+          <span className="font-light font-nunito">
+            {formatNumber(productTotal)}
+          </span>
+        </div>
+      )}
+
+      {shippingCost > 0 && (
+        <div className="flex justify-between">
+          <span>Total Ongkir</span>
+          <span className="font-light font-nunito">
+            {formatNumber(shippingCost)}
+          </span>
+        </div>
+      )}
+
+      {serviceFee > 0 && (
+        <div className="flex justify-between">
+          <span>Biaya Layanan</span>
+          <span className="font-light font-nunito">
+            {formatNumber(serviceFee)}
+          </span>
+        </div>
+      )}
+
+      {(productTotal > 0 || shippingCost > 0 || serviceFee > 0) && (
+        <>
+          <hr className="my-3" />
+          <div className="flex justify-between text-lg font-semibold">
+            <span>Total Belanja</span>
+            <span className="font-semibold font-nunito">
+              {formatNumber(total)}
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 };

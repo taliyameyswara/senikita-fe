@@ -9,16 +9,16 @@ const ProductTransactionCard = ({
   button,
 }) => {
   return (
-    <div className="p-4 bg-white border rounded-xl mb-4">
+    <div className="p-4 mb-4 bg-white border rounded-xl">
       {/* Header */}
       {header}
 
       {/* Product Details */}
-      <div className="flex gap-3 items-center">
+      <div className="flex items-center gap-3">
         {/* Image */}
         <div>
           <img
-            className="w-20 h-20 object-cover rounded-lg"
+            className="object-cover w-20 h-20 rounded-lg"
             src={product.thumbnail}
             alt={product.name}
           />
@@ -29,12 +29,12 @@ const ProductTransactionCard = ({
           <div className="text-xs text-tertiary">{provider}</div>
           <h3 className="font-semibold md:text-lg">{product.name}</h3>
           {/* {product.type === "Produk" && ( */}
-          <div className="text-xs font-nunito font-light text-gray-500">
+          <div className="text-xs font-light text-gray-500 font-nunito">
             {quantity} item x {formatNumber(product.price)}
           </div>
           {/* )} */}
-          <p className="text-gray-900 font-semibold font-nunito">
-            {formatNumber(product.price)}
+          <p className="font-semibold text-gray-900 font-nunito">
+            {formatNumber(product.price * quantity)}
           </p>
         </div>
       </div>

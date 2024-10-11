@@ -12,48 +12,49 @@ const ServiceOrderDetails = ({ eventDetails }) => {
 
   return (
     <div className="mb-2">
-      <div className="font-semibold mb-1">Detail Acara</div>
+      <div className="mb-1 font-semibold">Detail Acara</div>
       <table className="w-full">
         <tbody>
           <tr className="align-top">
             <td className="text-gray-500">Nama Acara</td>
-            <td>{eventDetails.eventName}</td>
+            <td>{eventDetails.activity_name}</td>
           </tr>
           <tr className="align-top">
             <td className="text-gray-500">Tanggal Acara</td>
-            <td>{eventDetails.eventDate}</td>
+            <td>{eventDetails.activity_date}</td>
           </tr>
           <tr className="align-top">
             <td className="text-gray-500">Waktu Acara</td>
-            <td>{eventDetails.eventTime}</td>
+            <td>{eventDetails.activity_time}</td>
           </tr>
           <tr className="align-top">
             <td className="text-gray-500">Lokasi</td>
-            <td>{`${eventDetails.location}, ${eventDetails.city}, ${eventDetails.province}`}</td>
+            <td>{`${eventDetails.address}, ${eventDetails.city.name}, ${eventDetails.province.name}`}</td>
           </tr>
           <tr className="align-top">
             <td className="text-gray-500">Peserta</td>
-            <td>{eventDetails.participants}</td>
+            <td>{eventDetails.attendee}</td>
           </tr>
           <tr className="align-top">
             <td className="text-gray-500">Catatan</td>
-            <td>{eventDetails.note}</td>
+            <td>{eventDetails.description}</td>
           </tr>
-          <tr className="align-top">
+          {/* {eventDetails.optional_document?.length > 0 && ("ada")} */}
+          {/* <tr className="align-top">
             <td className="text-gray-500">Permintaan Khusus</td>
             <td>{eventDetails.specialRequest}</td>
-          </tr>
+          </tr> */}
           {/* File Display Section */}
-          <tr className="align-top">
+          {/* <tr className="align-top">
             <td className="text-gray-500">File Pendukung</td>
             <td>
-              {eventDetails.files.length > 0 ? (
+              {eventDetails.optional_document.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   {eventDetails.files.map((file, index) => (
                     <button
                       onClick={() => handleFileButtonClick(file)}
                       key={index}
-                      className="flex items-center gap-2 p-2 border rounded-lg mb-2"
+                      className="flex items-center gap-2 p-2 mb-2 border rounded-lg"
                     >
                       <FaRegFile className="text-gray-500" />
                       <div className="flex flex-col items-start">
@@ -71,7 +72,7 @@ const ServiceOrderDetails = ({ eventDetails }) => {
                 </span>
               )}
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </div>

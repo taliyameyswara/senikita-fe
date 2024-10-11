@@ -129,11 +129,11 @@ function App() {
             element={<DashboardTransaction />}
           />
           <Route
-            path="/user/dashboard/transaction/product/details"
+            path="/user/dashboard/transaction/product/details/:id"
             element={<ProductTransactionDetails />}
           />
           <Route
-            path="/user/dashboard/transaction/service/details"
+            path="/user/dashboard/transaction/service/details/:id"
             element={<ServiceTransactionDetails />}
           />
           <Route
@@ -143,8 +143,8 @@ function App() {
           {/* profil */}
           <Route path="/user/dashboard/profil" element={<UserProfile />} />
 
-          <Route path="/productorder" element={<ProductOrder />} />
-          <Route path="/serviceorder" element={<ServiceOrder />} />
+          <Route path="/product-order" element={<ProductOrder />} />
+          <Route path="/service-order" element={<ServiceOrder />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
 

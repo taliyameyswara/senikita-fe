@@ -12,6 +12,9 @@ export default {
         // Custom color
         'grey-custom': '#F1F5F9',
         customRed: "#CD5151",
+        customGreen: "#119083",
+        brick: "#A8412A",
+        lightBrick: "#EE680D",
       },
     },
 

@@ -12,7 +12,7 @@ const OrderBottomBar = ({ product }) => {
 
   const [quantity, setQuantity] = useState(1);
   const [isLiked, setIsLiked] = useState(product ? product.is_bookmarked : false);
-
+  console.log(quantity)
   useEffect(() => {
     if (product) {
       setIsLiked(product.is_bookmarked);

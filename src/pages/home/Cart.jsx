@@ -11,10 +11,23 @@ import { CgNotes } from "react-icons/cg";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import Spinner from "../../components/loading/Spinner";
+import { useNavigate } from "react-router-dom";
+
 const Cart = () => {
+  const navigate = useNavigate();
+
   const axiosInstance = useAxiosInstance();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handlePurchase = () => {
+    const selectedItems = products.filter((product) =>
+      selectedProducts.includes(product.productName)
+    );
+
+    // Navigasi ke halaman ProductOrder dan kirim data produk yang dipilih
+    navigate("/product-order", { state: { selectedItems } });
+  };
 
   const getCartItems = () => {
     axiosInstance.get('user/cart')
@@ -41,14 +54,14 @@ const Cart = () => {
   const handleDeleteCart = (cartItemId) => {
     axiosInstance.delete(`user/cart/items/${cartItemId}`)
       .then((response) => {
-
+        getCartItems();
       })
       .catch((error) => {
         console.error('Error deleting data:', error);
       })
       .finally(() => {
 
-        // setLoading(false);
+        setLoading(false);
 
       });
   };
@@ -295,7 +308,7 @@ const Cart = () => {
                   </div>
                 ))}
 
-                <div className="flex flex-wrap gap-2">
+                {/* <div className="flex flex-wrap gap-2">
                   <div>
                     <button
                       className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary"
@@ -326,7 +339,7 @@ const Cart = () => {
                       }
                     />
                   </div>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
@@ -335,12 +348,14 @@ const Cart = () => {
           <div className="sticky col-span-2 top-20">
             <OrderSummary
               productTotal={totalPrice}
-              shippingCost={totalShippingCost}
+              // shippingCost={}
               serviceFee={serviceFee}
             />
-            <button className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl">
-              Beli{" "}
-              <span className="font-nunito">({selectedProducts.length})</span>
+            <button
+              onClick={handlePurchase}
+              className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl"
+            >
+              Beli <span className="font-nunito">({selectedProducts.length})</span>
             </button>
           </div>
         </div>

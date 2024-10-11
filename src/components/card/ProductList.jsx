@@ -9,9 +9,8 @@ const ProductList = ({ title, products, type }) => {
 
   const ArrowButton = ({ onClick, direction }) => (
     <button
-      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${
-        direction === "left" ? "mr-2" : "ml-2"
-      }`}
+      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${direction === "left" ? "mr-2" : "ml-2"
+        }`}
       onClick={onClick}
     >
       {direction === "left" ? (
@@ -66,7 +65,7 @@ const ProductList = ({ title, products, type }) => {
         )}
 
         {products.length >= 4 && (
-          <div className="hidden md:flex items-start">
+          <div className="items-start hidden md:flex">
             <ArrowButton
               direction="left"
               onClick={() => sliderRef.current.slickPrev()}
@@ -80,7 +79,7 @@ const ProductList = ({ title, products, type }) => {
       </div>
 
       {products.length <= 3 ? (
-        <div className="flex flex-wrap gap-4 justify-start">
+        <div className="flex flex-wrap justify-start gap-4">
           {products.map((product, index) => (
             <div key={index} className="w-full sm:w-1/2 md:w-1/4">
               <ProductCard product={product} type={type} />

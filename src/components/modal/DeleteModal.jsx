@@ -1,4 +1,4 @@
-const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
+const DeleteModal = ({ isOpen, onClose, onConfirm, subtitle = "" }) => {
     if (!isOpen) return null;
 
     return (
@@ -14,7 +14,7 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }) => {
                     Konfirmasi Hapus
                 </h3>
                 <p className="py-2 mt-1 text-sm text-gray-500">
-                    Apakah Anda yakin ingin menghapus produk ini?
+                    {subtitle || "Apakah Anda yakin ingin menghapus produk ini?"}
                 </p>
                 <div className="flex justify-end mt-4">
                     <button

@@ -81,9 +81,9 @@ const StatusDisplay = ({ transactionStatus, type }) => {
   const statusInfo =
     type === "service"
       ? serviceStatusMap[transactionStatus.toLowerCase()] ||
-        serviceStatusMap.unknown
+      serviceStatusMap.unknown
       : productStatusMap[transactionStatus.toLowerCase()] ||
-        productStatusMap.unknown;
+      productStatusMap.unknown;
 
   return (
     <div className="flex items-center gap-2">
