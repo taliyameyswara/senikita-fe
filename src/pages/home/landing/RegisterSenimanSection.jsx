@@ -4,7 +4,7 @@ import SenimanRegister from "../../../assets/home/seniman-register.png";
 
 const RegisterSenimanSection = () => {
   return (
-    <div className="container px-6 mt-10">
+    <div className="container px-6 mt-20">
       <div className="flex gap-5">
         {/* 1 */}
         <div className="grid grid-cols-6 gap-10  bg-gradient-to-r from-primary to-tertiary p-5 py-24 rounded-[2rem] relative w-[60%] mx-auto">

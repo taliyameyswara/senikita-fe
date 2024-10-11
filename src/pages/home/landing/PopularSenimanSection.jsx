@@ -1,0 +1,129 @@
+import React, { useEffect, useState } from "react";
+import { useAxiosInstance } from "../../../config/axiosConfig";
+import Heading from "../../../components/Heading";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5"; // Import icons
+
+// Custom ArrowButton Component
+const ArrowButton = ({ onClick, direction }) => (
+  <button
+    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${
+      direction === "left" ? "-left-10" : "-right-10"
+    }`}
+    onClick={onClick}
+  >
+    {direction === "left" ? (
+      <IoArrowBackOutline size={20} />
+    ) : (
+      <IoArrowForwardOutline size={20} />
+    )}
+  </button>
+);
+
+const PopularSenimanSection = () => {
+  const axiosInstance = useAxiosInstance();
+  const [seniman, setSeniman] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSeniman = async () => {
+      try {
+        const response = await axiosInstance.get("/top-shop");
+        setSeniman(response.data.data);
+      } catch (err) {
+        console.error("Error fetching seniman data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSeniman();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  // Slider settings with custom arrows
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    nextArrow: <ArrowButton direction="right" />, // Custom next arrow
+    prevArrow: <ArrowButton direction="left" />, // Custom prev arrow
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <div>
+      <div className="relative -mt-20 bg-white rounded-t-3xl pt-10">
+        <div className="container mx-auto">
+          <div className="text-center">
+            <Heading title={"Seniman Paling Populer"} />
+            <div>Seniman dengan penjualan produk atau jasa terbanyak</div>
+          </div>
+
+          <Slider {...sliderSettings} className="mt-10 overflow-visible">
+            {seniman.map((seniman) => (
+              <div className="relative p-8" key={seniman.id}>
+                <div className="bg-white rounded-2xl border-[0.5px] shadow-md border-opacity-20 border-primary relative p-8 overflow-visible">
+                  <div className="absolute top-[-2rem] left-1/2 transform -translate-x-1/2 z-50">
+                    <img
+                      src={
+                        seniman.profile_picture ||
+                        "https://via.placeholder.com/100"
+                      }
+                      className="w-32 h-32 rounded-full shadow-lg border-primary/20 object-cover"
+                    />
+                  </div>
+
+                  <div className="mt-20 text-center">
+                    <div className="flex justify-center gap-2 mb-3">
+                      {seniman.categories.map((cat, index) => (
+                        <p
+                          key={index}
+                          className="text-xs bg-tertiary/10 text-primary p-1 px-2 rounded-full"
+                        >
+                          {cat.name}
+                        </p>
+                      ))}
+                    </div>
+                    <h3 className="text-xl font-semibold text-primary">
+                      {seniman.name}
+                    </h3>
+                    <p className="text-sm text-gray-600">{seniman.region}</p>
+
+                    <p className="mt-2 text-sm bg-customGreen/10 w-fit mx-auto px-2 text-customGreen">
+                      <span className="font-nunito">20</span> Penjualan
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PopularSenimanSection;

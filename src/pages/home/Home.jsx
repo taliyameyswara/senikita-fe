@@ -6,6 +6,12 @@ import Footer from "../../components/footer/Footer";
 import CategorySection from "./landing/CategorySection";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import RegisterSenimanSection from "./landing/RegisterSenimanSection";
+import PromotionSection from "./landing/PromotionSection";
+import GuideSection from "./landing/GuideSection";
+import RecentReviewSection from "./landing/RecentReviewSection";
+import PopularSenimanSection from "./landing/PopularSenimanSection";
+import FaqSection from "./landing/FaqSection";
+import ClientTestimoniSection from "./landing/ClientTestimoniSection";
 
 const Home = () => {
   const axiosInstance = useAxiosInstance();
@@ -53,8 +59,14 @@ const Home = () => {
             type={"Service"}
           />
 
-          <RegisterSenimanSection />
           <CategorySection />
+          <PromotionSection />
+          {/* <GuideSection /> */}
+          {/* <RecentReviewSection /> */}
+          <PopularSenimanSection />
+          <RegisterSenimanSection />
+          <ClientTestimoniSection />
+          <FaqSection />
         </>
       )}
       <Footer />
