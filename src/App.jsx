@@ -80,12 +80,8 @@ function App() {
         <Route path="/search" element={<SearchResult />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/service/:id" element={<ServiceDetails />} />
+        <Route path="/seniman/:id" element={<ProfileDetailSeniman />} />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
-
-
-
-
-
 
         {/* Route yang bisa diakses setelah login */}
         <Route element={<ProtectedRoute />}>
@@ -94,7 +90,10 @@ function App() {
           {/* SENIMAN */}
           <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
           {/* kesenian */}
-          <Route path="/seniman/dashboard/kesenian" element={<KesenianList />} />
+          <Route
+            path="/seniman/dashboard/kesenian"
+            element={<KesenianList />}
+          />
           {/* product */}
           <Route
             path="/seniman/dashboard/kesenian/addproduct"
@@ -113,12 +112,15 @@ function App() {
             path="/seniman/dashboard/kesenian/updateservice"
             element={<EditService />}
           />
-          <Route path="/seniman/dashboard/profil" element={<SenimanProfile />} />
+          <Route
+            path="/seniman/dashboard/profil"
+            element={<SenimanProfile />}
+          />
           <Route path="/seniman/dashboard/order" element={<SenimanOrder />} />
-          <Route path="seniman/dashboard/balance" element={<SenimanBalance />} />
-
-
-
+          <Route
+            path="seniman/dashboard/balance"
+            element={<SenimanBalance />}
+          />
 
           {/* user */}
           {/* dashboard */}
@@ -147,12 +149,8 @@ function App() {
           <Route path="/service-order" element={<ServiceOrder />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
-
-
       </Routes>
-      <ToastContainer
-        autoClose={1200}
-      />
+      <ToastContainer autoClose={1200} />
     </Router>
   );
 }

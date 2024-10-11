@@ -5,6 +5,11 @@ import ProductTransactionCard from "./ProductTransactionCard";
 import { ProductData } from "../../../../utils/ProductData";
 import { useEffect } from "react";
 import { useAxiosInstance } from "../../../../config/axiosConfig";
+import { FaStar } from "react-icons/fa";
+import Modal from "../../../../components/Modal";
+import ReviewForm from "../../../../components/ReviewForm";
+import { formatNumber } from "../../../../utils/formatNumber";
+
 const ProductTransaction = () => {
   const axios = useAxiosInstance();
   const [transactions, setTransactions] = useState([]);
@@ -26,6 +31,19 @@ const ProductTransaction = () => {
 
     fetchTransactions();
   }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState(null);
+
+  const openReviewModal = (product) => {
+    setCurrentProduct(product);
+    setIsModalOpen(true);
+  };
+
+  const closeReviewModal = () => {
+    setCurrentProduct(null);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="space-y-4">
@@ -50,14 +68,58 @@ const ProductTransaction = () => {
               />
             }
             button={
-              <CardButton
-                buttonLink={`/user/dashboard/transaction/product/details/${transaction.id}`}
-                buttonLabel="Lihat Detail Transaksi"
-              />
+
+              <div className="flex items-center justify-end w-full gap-3">
+                {shippingStatus === "selesai" &&
+                  paymentStatus === "selesai" && (
+                    <div
+                      onClick={() => openReviewModal(product)}
+                      className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary  text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer"
+                    >
+                      <FaStar className="text-yellow-400" />
+                      <div className="">Beri Ulasan</div>
+                    </div>
+                  )}
+                <CardButton
+                  buttonLink={`/user/dashboard/transaction/product/details/${transaction.id}`}
+                  buttonLabel="Lihat Detail Transaksi"
+                />
+              </div>
             }
           />
         );
       })}
+
+      {currentProduct && (
+        <Modal
+          isOpen={isModalOpen}
+          onClose={closeReviewModal}
+          title="Beri Ulasan"
+          subtitle={
+            <div className="flex gap-3 py-2">
+              <img
+                src={
+                  // currentProduct.thumbnail
+                  "https://via.placeholder.com/100"
+                }
+                alt={currentProduct.name}
+                className="object-cover w-12 h-12 rounded-lg"
+              />
+              <div className="flex flex-col">
+                <span className="font-semibold text-black">
+                  {currentProduct.name}
+                </span>
+                <span className="text-sm font-light text-black font-nunito">
+                  {formatNumber(currentProduct.price)}
+                </span>
+              </div>
+            </div>
+          }
+          handleSubmit={() => { }}
+        >
+          <ReviewForm />
+        </Modal>
+      )}
     </div>
   );
 };

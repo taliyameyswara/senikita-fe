@@ -7,6 +7,7 @@ const DropdownFilter = ({
   selectedOption, // Currently selected option
   setSelectedOption, // Function to set selected option
   label = "Filter", // Customizable label for the dropdown
+  width = "w-60", // Customizable width for the dropdown
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const trigger = useRef(null);
@@ -51,10 +52,11 @@ const DropdownFilter = ({
         <button
           ref={trigger}
           onClick={() => setIsOpen(!isOpen)}
-          className={`inline-flex justify-between w-60 px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${isOpen
-            ? "bg-tertiary/10 text-primary border border-opacity-20 border-primary"
-            : "bg-gray-50 hover:bg-gray-100 border "
-            }`}
+          className={`inline-flex justify-between ${width} px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${
+            isOpen
+              ? "bg-tertiary/10 text-primary border border-opacity-20 border-primary"
+              : "bg-gray-50 hover:bg-gray-100 border "
+          }`}
         >
           <div className="flex items-center gap-2">
             {icon}

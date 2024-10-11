@@ -6,22 +6,21 @@ import {
   IoStorefrontOutline,
   IoLogOutOutline,
   IoColorPaletteOutline,
+  IoChevronDownOutline,
 } from "react-icons/io5";
 import { IoMdSearch, IoMdHeartEmpty } from "react-icons/io";
-import { FaCaretDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import DropdownNav from "./DropdownNav";
 import Avatar from "../../assets/avatar.png";
 import { UserContext } from "../../context/UserContext";
 import Header from "../../components/sidebar/Header";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const CategoryLinks = [
   { id: 1, name: "Seni Lukis", link: "/#" },
   { id: 2, name: "Seni Tari", link: "/#" },
   { id: 3, name: "Seni Desain", link: "/#" },
 ];
-
 
 const auth = true;
 
@@ -36,9 +35,15 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
     },
     {
       id: 2,
-      title: user && user.isHaveStore === 1 ? "Dashboard Seniman" : "Daftar Menjadi Seniman",
+      title:
+        user && user.isHaveStore === 1
+          ? "Dashboard Seniman"
+          : "Daftar Menjadi Seniman",
       icon: <IoColorPaletteOutline />,
-      link: user && user.isHaveStore === 1 ? "/seniman/dashboard" : "/daftar/seniman",
+      link:
+        user && user.isHaveStore === 1
+          ? "/seniman/dashboard"
+          : "/daftar/seniman",
     },
     {
       id: 3,
@@ -48,7 +53,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
     },
   ];
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -56,16 +61,15 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-
   return (
     <div className="md:mb-20 mb-36">
       <nav className="fixed top-0 z-40 w-full duration-200 bg-white">
-        <div className="py-4 shadow">
+        <div className="py-4 ">
           {/* desktop nav */}
           <div className="container items-center justify-between hidden md:flex">
             {/* logo and category section */}
@@ -81,7 +85,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
               {/* category items */}
               <div className="hidden lg:block">
                 {/* dropdown */}
-                <DropdownNav title="Kategori" icon={<FaCaretDown />}>
+                <DropdownNav title="Kategori" icon={<IoChevronDownOutline />}>
                   <ul className="space-y-3">
                     {CategoryLinks.map((data) => (
                       <li key={data.id}>
@@ -131,7 +135,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                         </div>
                       </>
                     }
-                    icon={<FaCaretDown />}
+                    icon={<IoChevronDownOutline />}
                   >
                     {/* profile dropdown links */}
                     <ul className="space-y-3">
@@ -234,7 +238,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                           </div>
                         </>
                       }
-                      icon={<FaCaretDown />}
+                      icon={<IoChevronDownOutline />}
                     >
                       {/* profile dropdown links */}
                       <ul className="space-y-3">
@@ -299,7 +303,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
 
             {/* category items */}
             <div className="flex items-center">
-              <DropdownNav title={"Kategori"} icon={<FaCaretDown />}>
+              <DropdownNav title={"Kategori"} icon={<IoChevronDownOutline />}>
                 <ul className="space-y-3">
                   {CategoryLinks.map((data) => (
                     <li key={data.id}>
@@ -323,7 +327,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyPress}
-
                   />
                 </div>
               </div>

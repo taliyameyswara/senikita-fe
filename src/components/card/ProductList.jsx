@@ -4,7 +4,7 @@ import Heading from "../Heading";
 import Slider from "react-slick";
 import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5";
 
-const ProductList = ({ title, products, type }) => {
+const ProductList = ({ title, products, type, slidesToShow = 4 }) => {
   const sliderRef = useRef(null);
 
   const ArrowButton = ({ onClick, direction }) => (
@@ -24,7 +24,7 @@ const ProductList = ({ title, products, type }) => {
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: slidesToShow,
     initialSlide: 0,
     draggable: false,
     swipe: false,
@@ -47,7 +47,7 @@ const ProductList = ({ title, products, type }) => {
   };
 
   return (
-    <div className="container px-6 mb-6">
+    <div className="container px-6">
       <div className="flex items-center justify-between">
         <Heading title={title} />
 

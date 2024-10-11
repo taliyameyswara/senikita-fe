@@ -3,16 +3,18 @@ import { IoCartOutline } from "react-icons/io5";
 import TotalCounter from "../../components/TotalCounter";
 import LikeButton from "../LikeButton";
 import { useAxiosInstance } from "../../config/axiosConfig";
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const OrderBottomBar = ({ product }) => {
   const axiosInstance = useAxiosInstance();
   const navigate = useNavigate();
 
   const [quantity, setQuantity] = useState(1);
-  const [isLiked, setIsLiked] = useState(product ? product.is_bookmarked : false);
-  console.log(quantity)
+  const [isLiked, setIsLiked] = useState(
+    product ? product.is_bookmarked : false
+  );
+
   useEffect(() => {
     if (product) {
       setIsLiked(product.is_bookmarked);
@@ -24,12 +26,12 @@ const OrderBottomBar = ({ product }) => {
     try {
       if (isLiked) {
         await axiosInstance.delete(`/user/bookmark-product/${product.id}`);
-        toast.success('Produk berhasil dihapuskan dari bookmark');
+        toast.success("Produk berhasil dihapuskan dari wishlist");
       } else {
         await axiosInstance.post("/user/bookmark-product", {
           product_id: product.id,
         });
-        toast.success('Produk berhasil ditambahkan ke bookmark');
+        toast.success("Produk berhasil ditambahkan ke wishlist");
       }
       // Toggle liked state
       setIsLiked(!isLiked);
@@ -45,8 +47,8 @@ const OrderBottomBar = ({ product }) => {
         qty: quantity,
       });
       if (response.status === 201) {
-        toast.success('Produk berhasil ditambahkan ke keranjang');
-        navigate('/cart');
+        toast.success("Produk berhasil ditambahkan ke keranjang");
+        navigate("/cart");
       }
     } catch (error) {
       console.error("Failed to add product to cart", error);
@@ -86,8 +88,10 @@ const OrderBottomBar = ({ product }) => {
         <button className="w-full px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-dark rounded-xl">
           Beli Sekarang
         </button>
-        <button onClick={addCart}
-          className="w-full px-6 py-3 font-semibold text-white bg-secondary hover:bg-secondary-dark rounded-xl">
+        <button
+          onClick={addCart}
+          className="w-full px-6 py-3 font-semibold text-white bg-secondary hover:bg-secondary-dark rounded-xl"
+        >
           <div className="flex items-center justify-center gap-1">
             <IoCartOutline className="text-xl text-white" />
             <span>Keranjang</span>
@@ -96,7 +100,7 @@ const OrderBottomBar = ({ product }) => {
         <LikeButton
           isLiked={isLiked}
           onToggleLike={handleBookmark}
-          hidden={!('is_bookmarked' in product)}
+          hidden={!("is_bookmarked" in product)}
         />
       </div>
     </div>

@@ -73,16 +73,16 @@ const AddService = () => {
 
       const postFormData = new FormData();
 
-      postFormData.append('category_id', formData.category_id);
-      postFormData.append('name', formData.name);
-      postFormData.append('desc', formData.desc);
-      postFormData.append('price', formData.price);
-      postFormData.append('stock', formData.stock);
-      postFormData.append('person_amount', formData.person_amount);
-      postFormData.append('type', formData.type);
+      postFormData.append("category_id", formData.category_id);
+      postFormData.append("name", formData.name);
+      postFormData.append("desc", formData.desc);
+      postFormData.append("price", formData.price);
+      postFormData.append("stock", formData.stock);
+      postFormData.append("person_amount", formData.person_amount);
+      postFormData.append("type", formData.type);
 
       if (formData.images[0]) {
-        postFormData.append('thumbnail', formData.images[0].file);
+        postFormData.append("thumbnail", formData.images[0].file);
       }
       formData.images.slice(1).forEach((image, index) => {
         postFormData.append(`service_image[]`, image.file);
@@ -102,7 +102,6 @@ const AddService = () => {
         .catch((error) => {
           toast.error("Gagal menambahkan produk");
           console.log(error);
-
         })
         .finally(() => {
           setLoading(false);
@@ -115,10 +114,10 @@ const AddService = () => {
       case 0:
         return (
           formData.name.trim().length > 0 &&
-          formData.desc.trim().length > 0 &&
-          formData.price > 0 &&
-          formData.category_id.length > 0 &&
-          formData.person_amount > 0,
+            formData.desc.trim().length > 0 &&
+            formData.price > 0 &&
+            formData.category_id.length > 0 &&
+            formData.person_amount > 0,
           formData.type !== ""
         );
       case 1:
@@ -141,10 +140,8 @@ const AddService = () => {
         }));
         setCategoryOptions(category_id);
       })
-      .catch((err) => {
-      })
-      .finally(() => {
-      });
+      .catch((err) => {})
+      .finally(() => {});
   }, []);
 
   return (
@@ -244,7 +241,6 @@ const AddService = () => {
                   />
                 </div>
 
-
                 <div className="grid grid-cols-2 gap-5">
                   <div className="col-span-2 sm:col-span-1">
                     <PriceInput
@@ -265,13 +261,28 @@ const AddService = () => {
                     />
                   </div>
                 </div>
-
               </div>
             )}
             {currentStep === 1 && (
               <div>
                 {/* Step 2: Foto jasa */}
                 <MultipleImageUploader
+                  title={
+                    <>
+                      <div className="text-lg font-semibold">
+                        Upload Gambar Jasa
+                      </div>
+                      <div className="text-sm text-gray-400 ">
+                        Pilih foto jasa atau tarik dan letakkan hingga 5 foto
+                        sekaligus di sini dengan minimal 1 foto utama
+                        (thumbnail).
+                      </div>
+                      <div className="mb-4 text-sm text-gray-400">
+                        Upload min 3 foto jasa yang menarik dan berbeda satu
+                        sama lain untuk menarik perhatian pembeli.
+                      </div>
+                    </>
+                  }
                   images={formData.images}
                   setImages={(images) =>
                     setFormData((prevFormData) => ({
@@ -362,10 +373,11 @@ const AddService = () => {
                 <button
                   onClick={handleNextStep}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${isStepValid()
-                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                    }`}
+                  className={`px-4 py-2 rounded-xl ${
+                    isStepValid()
+                      ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                      : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
                 >
                   Selanjutnya
                 </button>
@@ -373,10 +385,11 @@ const AddService = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${isStepValid()
-                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                    }`}
+                  className={`px-4 py-2 rounded-xl ${
+                    isStepValid()
+                      ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                      : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
                 >
                   Selesai
                 </button>
