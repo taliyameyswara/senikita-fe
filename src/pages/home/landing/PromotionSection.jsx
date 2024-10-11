@@ -23,18 +23,19 @@ const PromotionSection = () => {
 
   return (
     <div className="mt-20">
-      <div className="bg-gradient-to-r from-primary to-tertiary py-10 pb-32 ">
+      <div className="bg-gradient-to-r from-primary to-tertiary py-10 ">
         {loading ? (
           <div>Loading...</div> // Display this while loading
         ) : (
           <div className="relative">
             <div className="container">
-              <div className="w-[70%] ">
+              <div className="w-[70%]">
                 <div className="bg-white rounded-2xl">
                   <ProductList
                     title={"Pementasan Cocok Untuk Acara Anda"}
                     products={service}
                     type={"Service"}
+                    slidesToShow={3}
                   />
                 </div>
               </div>
