@@ -31,7 +31,7 @@ const useStyles = createUseStyles(() => ({
     padding: "1rem",
     transition: "0.3s ease-in-out",
     width: "100%",
-    // height: "400px",
+    height: "400px",
     fontFamily: "Nunito, sans-serif",
     border: "1px solid #ddd",
     borderRadius: "20px",
@@ -67,7 +67,9 @@ const GradientChart = () => {
       <h2 className={classes.title}>
         Data Penjualan Produk dan Jasa per Bulan
       </h2>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height={300}>
+        {" "}
+        {/* Set a height here */}
         <AreaChart data={data}>
           <defs>
             <GradientColors />
@@ -81,14 +83,14 @@ const GradientChart = () => {
           <Area
             dataKey="productSales"
             type="monotone"
-            stroke="#EE680D"
+            stroke="#A8412A"
             strokeWidth={3}
             fill="url(#productSalesGradient)"
           />
           <Area
             dataKey="serviceSales"
             type="monotone"
-            stroke="#4dcfc2"
+            stroke="#119083"
             strokeWidth={3}
             fill="url(#serviceSalesGradient)"
           />

@@ -1,5 +1,7 @@
 import "./css/index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import LoadingBar from "react-top-loading-bar";
 import Home from "./pages/home/Home";
 import LogIn from "./pages/auth/LogIn";
 import OTPVerification from "./pages/auth/OTPVerification";
@@ -43,16 +45,22 @@ import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 
 function App() {
+  const [progress, setProgress] = useState(0);
   return (
     <Router>
       {/* <ToastContainer> */}
+      <LoadingBar
+        color="#8B5C21"
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home setProgress={setProgress} />} />
 
         {/* Route yang gabisa diakses ketika sudah login */}
         <Route element={<PublicRoutes />}>
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<LogIn />} />
+          <Route path="/login" element={<LogIn setProgress={setProgress} />} />
           <Route path="/otp" element={<OTPVerification />} />
         </Route>
 
@@ -78,9 +86,18 @@ function App() {
 
         {/* Route for home */}
         <Route path="/search" element={<SearchResult />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/service/:id" element={<ServiceDetails />} />
-        <Route path="/seniman/:id" element={<ProfileDetailSeniman />} />
+        <Route
+          path="/product/:id"
+          element={<ProductDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/service/:id"
+          element={<ServiceDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/seniman/:id"
+          element={<ProfileDetailSeniman setProgress={setProgress} />}
+        />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
 
         {/* Route yang bisa diakses setelah login */}

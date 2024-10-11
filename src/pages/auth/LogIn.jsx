@@ -10,7 +10,7 @@ import { UserContext } from "../../context/UserContext";
 import FooterLogo from "../../components/footer/FooterLogo";
 import PasswordInput from "../../components/form-input/PasswordInput";
 
-const LogIn = () => {
+const LogIn = ({ setProgress }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +24,7 @@ const LogIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Set loading to true
+    setProgress(20);
 
     console.log("Form submitted"); // Log untuk memastikan fungsi dijalankan
     console.log("Email:", email);
@@ -31,9 +32,11 @@ const LogIn = () => {
 
     try {
       const result = await loginApi(email, password);
+      setProgress(50);
       console.log("API Response:", result); // Periksa response dari API
 
       if (result.code === 403) {
+        setProgress(80);
         console.log("OTP Required");
         setEmailOTP(email);
         setIsLoading(false);
@@ -41,6 +44,7 @@ const LogIn = () => {
         return;
       }
       if (result.success) {
+        setProgress(100);
         console.log("Login success", result.data);
         toast.success("Login berhasil!");
         login(result.data);
@@ -51,17 +55,18 @@ const LogIn = () => {
         }
       }
       if (result.success === false) {
+        setProgress(100);
         console.log("Login failed", result.message);
         toast.error(result.message);
       }
     } catch (error) {
+      setProgress(100);
       console.log("Server error:", error);
       toast.error("Terjadi kesalahan pada server.");
     } finally {
       setIsLoading(false); // Set loading to false after process
     }
   };
-
 
   return (
     <>
@@ -142,10 +147,11 @@ const LogIn = () => {
               <div>
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
-                    ? "bg-primary hover:bg-primary-dark"
-                    : "bg-gray-300 cursor-not-allowed"
-                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                  className={`w-full py-3 text-white font-semibold rounded-xl ${
+                    isFormValid
+                      ? "bg-primary hover:bg-primary-dark"
+                      : "bg-gray-300 cursor-not-allowed"
+                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
                   disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
                 >
                   {isLoading ? (
