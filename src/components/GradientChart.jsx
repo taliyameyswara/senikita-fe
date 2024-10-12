@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import {
   AreaChart,
@@ -7,9 +7,11 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
+  CartesianGrid,
 } from "recharts";
+import DropdownFilter from "./DropdownFilter";
 
-const data = [
+const data2023 = [
   { month: "Jan", productSales: 300, serviceSales: 200 },
   { month: "Feb", productSales: 500, serviceSales: 300 },
   { month: "Mar", productSales: 400, serviceSales: 250 },
@@ -24,6 +26,21 @@ const data = [
   { month: "Dec", productSales: 1400, serviceSales: 1100 },
 ];
 
+const data2024 = [
+  { month: "Jan", productSales: 1000, serviceSales: 250 },
+  { month: "Feb", productSales: 600, serviceSales: 400 },
+  { month: "Mar", productSales: 450, serviceSales: 300 },
+  { month: "Apr", productSales: 700, serviceSales: 450 },
+  { month: "May", productSales: 800, serviceSales: 550 },
+  { month: "Jun", productSales: 900, serviceSales: 650 },
+  { month: "Jul", productSales: 850, serviceSales: 600 },
+  { month: "Aug", productSales: 1000, serviceSales: 750 },
+  { month: "Sep", productSales: 1200, serviceSales: 850 },
+  { month: "Oct", productSales: 1300, serviceSales: 950 },
+  { month: "Nov", productSales: 1400, serviceSales: 1050 },
+  { month: "Dec", productSales: 1500, serviceSales: 1150 },
+];
+
 const useStyles = createUseStyles(() => ({
   container: {
     color: "#000",
@@ -31,29 +48,22 @@ const useStyles = createUseStyles(() => ({
     padding: "1rem",
     transition: "0.3s ease-in-out",
     width: "100%",
-    // height: "400px",
     fontFamily: "Nunito, sans-serif",
     border: "1px solid #ddd",
     borderRadius: "20px",
-  },
-  title: {
-    textAlign: "center",
-    color: "#333",
-    fontSize: "1.5rem",
-    marginBottom: "1rem",
   },
 }));
 
 const GradientColors = () => (
   <>
     <linearGradient id="productSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#A8412A" stopOpacity={0.4} />
-      <stop offset="75%" stopColor="#ff9b9b" stopOpacity={0.3} />
+      <stop offset="30%" stopColor="#e7aaaa" stopOpacity={0.4} />
+      <stop offset="75%" stopColor="#8B5C21" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
     <linearGradient id="serviceSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#119083" stopOpacity={0.4} />
-      <stop offset="75%" stopColor="#7fe6dc" stopOpacity={0.3} />
+      <stop offset="30%" stopColor="#f3c58e" stopOpacity={0.4} />
+      <stop offset="75%" stopColor="#CD9651" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
   </>
@@ -61,13 +71,41 @@ const GradientColors = () => (
 
 const GradientChart = () => {
   const classes = useStyles();
+  const [selectedYear, setSelectedYear] = useState("2023");
+
+  const handleChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const data = selectedYear === "2023" ? data2023 : data2024;
+
+  const dropdownCategories = [
+    { key: "2023", content: "2023" },
+    { key: "2024", content: "2024" },
+  ];
 
   return (
     <div className={classes.container}>
-      <h2 className={classes.title}>
-        Data Penjualan Produk dan Jasa per Bulan
-      </h2>
-      <ResponsiveContainer width="100%" height="100%">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-raleway font-semibold">
+          Data Penjualan Produk dan Jasa
+        </h2>
+        <DropdownFilter
+          options={dropdownCategories.map((cat) => cat.content)}
+          selectedOption={selectedYear}
+          setSelectedOption={(option) => {
+            const selected = dropdownCategories.find(
+              (cat) => cat.content === option
+            );
+            if (selected) {
+              setSelectedYear(selected.key);
+            }
+          }}
+          label="Select Year"
+          width="w-28"
+        />
+      </div>
+      <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
           <defs>
             <GradientColors />
@@ -76,20 +114,21 @@ const GradientChart = () => {
             itemStyle={{ color: "#fff", backgroundColor: "#0A1322" }}
             contentStyle={{ backgroundColor: "#0A1322" }}
           />
+          <CartesianGrid strokeDasharray="4 4" stroke="#f7d0a0" opacity={0.4} />
           <XAxis dataKey="month" tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <YAxis tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <Area
             dataKey="productSales"
             type="monotone"
-            stroke="#EE680D"
-            strokeWidth={3}
+            stroke="#CD5151"
+            strokeWidth={2}
             fill="url(#productSalesGradient)"
           />
           <Area
             dataKey="serviceSales"
             type="monotone"
-            stroke="#4dcfc2"
-            strokeWidth={3}
+            stroke="#CD9651"
+            strokeWidth={2}
             fill="url(#serviceSalesGradient)"
           />
         </AreaChart>

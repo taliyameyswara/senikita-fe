@@ -94,3 +94,52 @@
   filter: opacity(1);
   @apply border-4 rounded-xl border-tertiary;
 }
+
+@layer utilities {
+  .animate-spin-slow {
+    @apply animate-spin;
+    animation-duration: 7s; /* Slow down the spin */
+  }
+
+  .animate-pulse-slow {
+    @apply animate-pulse;
+    animation-duration: 3s; /* Slow down the spin */
+  }
+
+  .animate-scale-pulse {
+    animation: scalePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes scalePulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  .loading-text {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.1),
+      #8b5c21,
+      rgba(0, 0, 0, 0.1)
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: loading 5s infinite ease-in-out;
+  }
+
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+}

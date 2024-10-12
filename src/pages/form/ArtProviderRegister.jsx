@@ -11,6 +11,7 @@ import SucesssModal from "../../components/SuccessModal";
 import Selection from "../../components/Selection";
 import { UserContext } from "../../context/UserContext";
 import { useAxiosInstance } from "../../config/axiosConfig";
+import FullPageLoader from "../../components/loading/FullPageLoader";
 
 const ArtProviderRegister = () => {
   const { user } = useContext(UserContext);
@@ -198,12 +199,14 @@ const ArtProviderRegister = () => {
   if (!user) {
     return "";
   }
-  if (loading) return <div></div>;
+  if (loading) {
+    return <FullPageLoader />;
+  }
 
   return (
     <>
       <NavbarLogo />
-      <div className="container px-6 mb-8">
+      <div className="container px-6">
         <div className="max-w-xl mx-auto mt-3">
           <Stepper
             steps={steps}
@@ -468,10 +471,11 @@ const ArtProviderRegister = () => {
               <button
                 onClick={handleNext}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${isStepValid()
-                  ? "bg-secondary text-white font-semibold hover:bg-opacity_id -90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity_id -90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
                 Selanjutnya
               </button>
@@ -479,10 +483,11 @@ const ArtProviderRegister = () => {
               <button
                 onClick={handleSubmit}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${isStepValid()
-                  ? "bg-tertiary text-white font-semibold hover:bg-opacity_id-90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity_id-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
                 Selesai
               </button>

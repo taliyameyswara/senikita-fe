@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import ServiceDetailSection from "../../components/product-details/ServiceDetailSection";
 import OrderBottomBarService from "../../components/product-details/OrderBottomBarService";
 
-const ServiceDetails = () => {
+const ServiceDetails = ({ setProgress }) => {
   const { id } = useParams();
   const serviceId = id.split("-")[0]; // Ekstrak hanya ID dari URL
   const axiosInstance = useAxiosInstance();
@@ -19,15 +19,19 @@ const ServiceDetails = () => {
   const [loading, setLoading] = useState(true); // State for loading
 
   useEffect(() => {
+    setProgress(30);
+
     axiosInstance
       .get("/random-services")
       .then((res) => {
         setProducts(res.data.data);
         setLoading(false); // Stop loading after data is received
+        setProgress(60);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false); // Stop loading even if there's an error
+        setProgress(100);
       });
 
     axiosInstance
@@ -36,10 +40,12 @@ const ServiceDetails = () => {
         // console.log(res.data.service);
         setService(res.data.service);
         setLoading(false); // Stop loading after data is received
+        setProgress(100);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false); // Stop loading even if there's an error
+        setProgress(100);
       });
   }, []);
 
@@ -70,10 +76,6 @@ const ServiceDetails = () => {
       content: <ArtistProfileSection shop={service ? service.shop : []} />,
     },
   ];
-
-  if (loading) {
-    return <div>Loading</div>;
-  }
 
   return (
     <>

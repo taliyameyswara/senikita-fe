@@ -10,15 +10,15 @@ import ToggleButton from "../../components/ToggleButton";
 import { FaStar } from "react-icons/fa";
 import { IoFilterOutline } from "react-icons/io5";
 import { ProductData } from "../../utils/ProductData";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAxiosInstance } from "../../config/axiosConfig";
-
+import EmptyState from "../../components/EmptyState";
 
 const keyword = "seni tari";
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
-const SearchResult = () => {
+const SearchResult = ({ setProgress }) => {
   // const products = ProductData;
   const axiosInstance = useAxiosInstance();
   const [selectedCharacter, setSelectedCharacter] = useState(null);
@@ -31,22 +31,24 @@ const SearchResult = () => {
     { label: "Hasil Pencarian", to: "/searchresult" },
   ];
 
-  const query = useQuery().get('search');
-  const page = useQuery().get('page') || 1;
+  const query = useQuery().get("search");
+  const page = useQuery().get("page") || 1;
   const [products, setProducts] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1); // Total halaman dari API
   const navigate = useNavigate();
   useEffect(() => {
+    setProgress(30);
     // Fungsi untuk memanggil kedua API secara bersamaan
     const fetchData = async () => {
+      setProgress(70);
       setLoading(true);
       try {
         // Memanggil kedua API secara bersamaan menggunakan Promise.all
         const [productsResponse, servicesResponse] = await Promise.all([
           axiosInstance.get(`products?search=${query}&page=${page}`),
-          axiosInstance.get(`service?search=${query}&page=${page}`)
+          axiosInstance.get(`service?search=${query}&page=${page}`),
         ]);
 
         setProducts(productsResponse.data.data.data);
@@ -55,9 +57,10 @@ const SearchResult = () => {
         // Ambil total halaman (misalkan dari respons produk)
         setTotalPages(productsResponse.data.data.last_page);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
+        setProgress(100);
       }
     };
 
@@ -75,11 +78,10 @@ const SearchResult = () => {
           ))
         ) : (
           <div className="text-center col-span-full">
-            <p>No products available</p>
+            <EmptyState message="Produk tidak ditemukan" />
           </div>
         )}
       </div>
-
     </div>
   );
 
@@ -94,11 +96,10 @@ const SearchResult = () => {
           ))
         ) : (
           <div className="text-center col-span-full">
-            <p>No services available</p>
+            <EmptyState message="Jasa tidak ditemukan" />
           </div>
         )}
       </div>
-
     </div>
   );
 
@@ -160,10 +161,6 @@ const SearchResult = () => {
       navigate(`/search?search=${query}&page=${Number(page) - 1}`);
     }
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
@@ -231,41 +228,38 @@ const SearchResult = () => {
         </div>
         <Tabs tabs={tabs} />
 
-        <div className="flex items-center justify-center mt-4 space-x-4">
+        <div className="flex items-center justify-center  space-x-4">
           {/* Pagination controls */}
           <button
             onClick={handlePreviousPage}
             disabled={Number(page) === 1}
-            className={`px-4 py-2 text-white rounded-md ${Number(page) === 1
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-primary"
-              }`}
+            className={`px-4 py-2 text-white rounded-md ${
+              Number(page) === 1
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-primary"
+            }`}
           >
-            Previous
+            Sebelumnya
           </button>
 
-          <span className="text-lg font-semibold">
-            Page {page} of {totalPages}
+          <span className="font-nunito font-light text-gray-500">
+            Halaman {page} dari {totalPages}
           </span>
 
           <button
             onClick={handleNextPage}
             disabled={Number(page) === totalPages}
-            className={`px-4 py-2 text-white rounded-md ${Number(page) === totalPages
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-primary"
-              }`}
+            className={`px-4 py-2 text-white rounded-md ${
+              Number(page) === totalPages
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-primary"
+            }`}
           >
-            Next
+            Selanjutnya
           </button>
         </div>
-
-
       </div>
-      <div>
-        {/* Pagination controls */}
-
-      </div>
+      <div>{/* Pagination controls */}</div>
     </div>
   );
 };
