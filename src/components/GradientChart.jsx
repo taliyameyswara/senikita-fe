@@ -7,9 +7,10 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
+  CartesianGrid,
 } from "recharts";
+import DropdownFilter from "./DropdownFilter";
 
-// Sample data for 2023 and 2024
 const data2023 = [
   { month: "Jan", productSales: 300, serviceSales: 200 },
   { month: "Feb", productSales: 500, serviceSales: 300 },
@@ -47,28 +48,21 @@ const useStyles = createUseStyles(() => ({
     padding: "1rem",
     transition: "0.3s ease-in-out",
     width: "100%",
-    height: "400px",
     fontFamily: "Nunito, sans-serif",
     border: "1px solid #ddd",
     borderRadius: "20px",
-  },
-  title: {
-    textAlign: "center",
-    color: "#333",
-    fontSize: "1.5rem",
-    marginBottom: "1rem",
   },
 }));
 
 const GradientColors = () => (
   <>
     <linearGradient id="productSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#CD5151" stopOpacity={0.4} />
+      <stop offset="30%" stopColor="#e7aaaa" stopOpacity={0.4} />
       <stop offset="75%" stopColor="#8B5C21" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
     <linearGradient id="serviceSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#CD9651" stopOpacity={0.4} />
+      <stop offset="30%" stopColor="#f3c58e" stopOpacity={0.4} />
       <stop offset="75%" stopColor="#CD9651" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
@@ -85,19 +79,32 @@ const GradientChart = () => {
 
   const data = selectedYear === "2023" ? data2023 : data2024;
 
+  const dropdownCategories = [
+    { key: "2023", content: "2023" },
+    { key: "2024", content: "2024" },
+  ];
+
   return (
     <div className={classes.container}>
-      <h2 className={classes.title}>
-        Data Penjualan Produk dan Jasa per Bulan {selectedYear}
-      </h2>
-      <select
-        className="mt-4 mb-6 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-none focus:ring-0"
-        value={selectedYear}
-        onChange={handleChange}
-      >
-        <option value="2023">2023</option>
-        <option value="2024">2024</option>
-      </select>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-lg font-raleway font-semibold">
+          Data Penjualan Produk dan Jasa
+        </h2>
+        <DropdownFilter
+          options={dropdownCategories.map((cat) => cat.content)}
+          selectedOption={selectedYear}
+          setSelectedOption={(option) => {
+            const selected = dropdownCategories.find(
+              (cat) => cat.content === option
+            );
+            if (selected) {
+              setSelectedYear(selected.key);
+            }
+          }}
+          label="Select Year"
+          width="w-28"
+        />
+      </div>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data}>
           <defs>
@@ -107,6 +114,7 @@ const GradientChart = () => {
             itemStyle={{ color: "#fff", backgroundColor: "#0A1322" }}
             contentStyle={{ backgroundColor: "#0A1322" }}
           />
+          <CartesianGrid strokeDasharray="4 4" stroke="#f7d0a0" opacity={0.4} />
           <XAxis dataKey="month" tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <YAxis tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <Area

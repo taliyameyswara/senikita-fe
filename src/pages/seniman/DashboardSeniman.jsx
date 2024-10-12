@@ -146,7 +146,7 @@ const DashboardSeniman = () => {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="mt-4 col-span-3">
+          <div className="mt-3 col-span-2">
             <GradientChart />
           </div>
         </div>

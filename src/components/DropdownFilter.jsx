@@ -69,21 +69,23 @@ const DropdownFilter = ({
 
         <div
           ref={dropdown}
-          className={`absolute z-[9999] w-56 px-0 bg-white shadow-md p-2 rounded-xl mt-1 transition-transform duration-100 ease-out transform ${isOpen
-            ? "bounce-in scale-100 visible"
-            : "bounce-out scale-95 invisible"
-            }`}
+          className={`absolute z-[9999] ${width} px-0 bg-white shadow-md p-2 rounded-xl mt-1 transition-transform duration-100 ease-out transform ${
+            isOpen
+              ? "bounce-in scale-100 visible"
+              : "bounce-out scale-95 invisible"
+          }`}
         >
           <div className="py-1">
             {options.map((option) => (
               <button
                 key={option}
                 onClick={() => handleSelect(option)}
-                className={`flex text-start justify-between fe items-center w-full px-4 py-2 text-sm focus:outline-none transition-colors duration-200
-                ${selectedOption === option
+                className={`flex text-start justify-between items-center w-full px-4 py-2 text-sm focus:outline-none transition-colors duration-200
+                ${
+                  selectedOption === option
                     ? "bg-tertiary/10 text-primary"
                     : "text-gray-700 hover:bg-gray-100"
-                  }`}
+                }`}
               >
                 {option}
                 {selectedOption === option && (
