@@ -77,15 +77,6 @@ function DropdownProfile({ align }) {
             <div className="text-xs italic text-slate-500">{user ? 'Administrator' : ''}</div>
           </div>
           <ul>
-            {/* <li>
-              <Link
-                className="flex items-center px-3 py-1 text-sm font-medium text-indigo-500 hover:text-indigo-600"
-                to="/settings"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                Settings
-              </Link>
-            </li> */}
             <li>
               <button
                 className="flex items-center px-3 py-1 text-sm font-medium text-indigo-500 hover:text-indigo-600"

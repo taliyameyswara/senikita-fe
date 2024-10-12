@@ -6,7 +6,7 @@ const categories = [
   {
     id: 1,
     name: "Seni Kriya",
-    image: "src/assets/home/category/kriya.webp",
+    image: "assets/home/category/kriya.webp",
     height: "h-[20.8rem]",
     grid: "row-span-2",
     link: "/seni-kriya", // Link ke halaman seni kriya
@@ -14,7 +14,7 @@ const categories = [
   {
     id: 2,
     name: "Seni Tari",
-    image: "src/assets/home/category/tari.webp",
+    image: "assets/home/category/tari.webp",
     height: "h-40",
     grid: "col-span-2",
     link: "/seni-tari", // Link ke halaman seni tari
@@ -22,7 +22,7 @@ const categories = [
   {
     id: 3,
     name: "Seni Musik",
-    image: "src/assets/home/category/musik.webp",
+    image: "assets/home/category/musik.webp",
     height: "h-[20.8rem]",
     grid: "row-span-2",
     link: "/seni-musik", // Link ke halaman seni musik
@@ -30,7 +30,7 @@ const categories = [
   {
     id: 4,
     name: "Seni Lukis",
-    image: "src/assets/home/category/lukis.webp",
+    image: "assets/home/category/lukis.webp",
     height: "h-40",
     grid: "",
     link: "/seni-lukis", // Link ke halaman seni lukis
@@ -38,7 +38,7 @@ const categories = [
   {
     id: 5,
     name: "Seni Teater",
-    image: "src/assets/home/category/teater.webp",
+    image: "assets/home/category/teater.webp",
     height: "h-[20.8rem]",
     grid: "row-span-2",
     link: "/seni-teater", // Link ke halaman seni teater
@@ -46,7 +46,7 @@ const categories = [
   {
     id: 6,
     name: "Seni Ukir",
-    image: "src/assets/home/category/ukir.webp",
+    image: "assets/home/category/ukir.webp",
     height: "h-40",
     grid: "col-span-2",
     link: "/seni-ukir", // Link ke halaman seni ukir
@@ -54,7 +54,7 @@ const categories = [
   {
     id: 7,
     name: "Seni Rupa",
-    image: "src/assets/home/category/rupa.webp",
+    image: "assets/home/category/rupa.webp",
     height: "h-40",
     grid: "",
     link: "/seni-rupa", // Link ke halaman seni rupa
@@ -79,7 +79,7 @@ const KesenianCategory = () => {
               className="object-cover w-full h-full transition-transform duration-300 ease-in-out transform hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-secondary to-transparent opacity-80"></div>
-            <div className="absolute bottom-4 left-4 text-white text-xl font-semibold">
+            <div className="absolute text-xl font-semibold text-white bottom-4 left-4">
               {category.name}
             </div>
           </Link>

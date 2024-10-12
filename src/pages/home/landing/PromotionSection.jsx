@@ -23,7 +23,7 @@ const PromotionSection = () => {
 
   return (
     <div className="mt-20">
-      <div className="bg-gradient-to-r from-primary to-tertiary py-10 ">
+      <div className="py-10 bg-gradient-to-r from-primary to-tertiary ">
         {loading ? (
           <div>Loading...</div> // Display this while loading
         ) : (
