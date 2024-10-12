@@ -13,18 +13,6 @@ import EmptyState from "../../../../components/EmptyState";
 const KesenianService = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
 
-  // Dummy service data
-  // const [services, setServices] = useState([
-  //   {
-  //     id: 1,
-  //     thumbnail: "https://via.placeholder.com/100", // Example image
-  //     name: "Lukis Mural Jogja",
-  //     category: "Jasa Seni Rupa",
-  //     likes: 80,
-  //     price: 2000000,
-  //     isActive: true,
-  //   },
-  // ]);
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -193,20 +181,23 @@ const KesenianService = ({ setProgress }) => {
                       className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                     >
                       <div
-                        className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${service.isActive
-                          ? "translate-x-full bg-tertiary/10"
-                          : "bg-tertiary/10"
-                          }`}
+                        className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
+                          service.isActive
+                            ? "translate-x-full bg-tertiary/10"
+                            : "bg-tertiary/10"
+                        }`}
                       ></div>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${service.isActive ? "text-gray-400" : "text-primary"
-                          }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
+                          service.isActive ? "text-gray-400" : "text-primary"
+                        }`}
                       >
                         Nonaktif
                       </span>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold ${service.isActive ? "text-primary" : "text-gray-400"
-                          }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
+                          service.isActive ? "text-primary" : "text-gray-400"
+                        }`}
                       >
                         Aktif
                       </span>
@@ -216,7 +207,9 @@ const KesenianService = ({ setProgress }) => {
                   {/* Aksi */}
                   <td className="p-4 border-b">
                     <div className="flex space-x-2">
-                      <Link to={`/seniman/dashboard/kesenian/updateservice/${service.id}`}>
+                      <Link
+                        to={`/seniman/dashboard/kesenian/updateservice/${service.id}`}
+                      >
                         <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
                           <BsPencil size={20} />
                         </button>
@@ -237,7 +230,7 @@ const KesenianService = ({ setProgress }) => {
             </tbody>
           </table>
         ) : (
-          <EmptyState />
+          <EmptyState message={"Jasa kesenian tidak tersedia"} />
         )}
       </div>
       <DeleteModal

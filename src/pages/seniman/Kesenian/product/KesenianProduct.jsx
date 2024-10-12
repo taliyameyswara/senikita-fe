@@ -6,7 +6,6 @@ import TextInput from "../../../../components/form-input/TextInput";
 import { IoMdHeart } from "react-icons/io";
 import { BsPencil } from "react-icons/bs";
 import { useAxiosInstance } from "../../../../config/axiosConfig";
-import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import DeleteModal from "../../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
 import EmptyState from "../../../../components/EmptyState";
@@ -195,20 +194,23 @@ const KesenianProduct = ({ setProgress }) => {
                       className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                     >
                       <div
-                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
-                          ? "translate-x-full bg-tertiary/10"
-                          : "bg-tertiary/10"
-                          }`}
+                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
+                          product.isActive
+                            ? "translate-x-full bg-tertiary/10"
+                            : "bg-tertiary/10"
+                        }`}
                       ></div>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${product.isActive ? "text-gray-400" : "text-primary"
-                          }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
+                          product.isActive ? "text-gray-400" : "text-primary"
+                        }`}
                       >
                         Nonaktif
                       </span>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold ${product.isActive ? "text-primary" : "text-gray-400"
-                          }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
+                          product.isActive ? "text-primary" : "text-gray-400"
+                        }`}
                       >
                         Aktif
                       </span>
@@ -244,12 +246,7 @@ const KesenianProduct = ({ setProgress }) => {
             </tbody>
           </table>
         ) : (
-          // Show empty state only if loading is done and there are no products
-          <tr>
-            <td colSpan="6" className="p-4 text-center text-gray-500">
-              <EmptyState message={"Data produk kesenian tidak tersedia"} />
-            </td>
-          </tr>
+          <EmptyState message={"Data produk kesenian tidak tersedia"} />
         )}
       </div>
 

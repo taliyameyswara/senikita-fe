@@ -1,22 +1,22 @@
 import { useContext } from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import UserDashboardLayout from "../../layouts/UserDashboardLayout";
 import Welcoming from "../../assets/home/client1.png";
 import { UserContext } from "../../context/UserContext";
-import { IoWalletOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
-import Tabs from "../../components/Tabs";
-import ProfileAsset from "../../assets/home/faq.png";
+import { IoWalletOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import SenimanDashboardLayout from "../../layouts/SenimanDashboardLayout";
-import { IoIosHourglass, IoMdPaper } from "react-icons/io";
-import { BsTruck } from "react-icons/bs";
-import { FaRegCalendarCheck } from "react-icons/fa";
-import { PiListStar, PiPaintBrush } from "react-icons/pi";
+import { IoMdPaper } from "react-icons/io";
+import { PiPaintBrush } from "react-icons/pi";
 import { limitText } from "../../utils/limitText";
 import { formatNumber } from "../../utils/formatNumber";
 import { LuBox } from "react-icons/lu";
 import GradientChart from "../../components/GradientChart";
 import FullPageLoader from "../../components/loading/FullPageLoader";
+import Tabs from "../../components/Tabs";
+import ProductTransactionCard from "../user/transaction/product/ProductTransactionCard";
+import ServiceTransactionCard from "../user/transaction/service/ServiceTransactionCard";
+import CardButton from "../user/transaction/CardButton";
+import CardHeader from "../user/transaction/CardHeader";
 
 const DashboardSeniman = () => {
   const { user, loading } = useContext(UserContext);
@@ -28,6 +28,30 @@ const DashboardSeniman = () => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/user/dashboard" },
+  ];
+
+  const lowStockProducts = [
+    {
+      id: 9,
+      name: "Gitar Keren",
+      price: 4000000,
+      stock: 9,
+      thumbnail: "http://via.placeholder.com/150",
+    },
+    {
+      id: 9,
+      name: "Gitar Biboi",
+      price: 4000000,
+      stock: 9,
+      thumbnail: "http://via.placeholder.com/150",
+    },
+    {
+      id: 9,
+      name: "Gitar Biboi",
+      price: 4000000,
+      stock: 9,
+      thumbnail: "http://via.placeholder.com/150",
+    },
   ];
 
   // Data for counts
@@ -59,6 +83,134 @@ const DashboardSeniman = () => {
       icon: <IoWalletOutline className="text-2xl" />,
       color:
         "bg-gradient-to-tr from-blue-500/10 via-white to-white border-blue-500/10",
+    },
+  ];
+
+  const productTransactions = [
+    {
+      id: 1,
+      product: {
+        name: "Lukisan Abstrak",
+        price: 500000,
+        thumbnail: "https://via.placeholder.com/150",
+      },
+      quantity: 2,
+      customer: "Lalau",
+      no_transaction: "INV-20231012-0001",
+      created_at: "2023-10-12T10:30:00Z",
+      payment_status: "success",
+      shipping_status: "diproses",
+    },
+    {
+      id: 2,
+      product: {
+        name: "Patung Kayu",
+        price: 750000,
+        thumbnail: "https://via.placeholder.com/150",
+      },
+      quantity: 1,
+      customer: "Lalai",
+      no_transaction: "INV-20231012-0002",
+      created_at: "2023-10-11T09:00:00Z",
+      payment_status: "success",
+      shipping_status: "diproses",
+    },
+  ];
+
+  const serviceTransactions = [
+    {
+      id: 1,
+      service: {
+        name: "Tari Tradisional Bali",
+        price: 1500000,
+        thumbnail: "https://via.placeholder.com/150",
+      },
+
+      customer: "Budi",
+      no_transaction: "INV-20231012-0003",
+      created_at: "2023-10-10T12:45:00Z",
+      payment_status: "pending",
+      shipping_status: "pending",
+    },
+    {
+      id: 2,
+      service: {
+        name: "Pentas Musik Tradisional",
+        price: 2000000,
+        thumbnail: "https://via.placeholder.com/150",
+      },
+      customer: "Lala",
+      no_transaction: "INV-20231012-0004",
+      created_at: "2023-10-09T11:00:00Z",
+      payment_status: "pending",
+      shipping_status: "pending",
+    },
+  ];
+
+  const tabs = [
+    {
+      name: "product",
+      label: "Transaksi Produk",
+      content: (
+        <div className="flex flex-col ">
+          {productTransactions.map((transaction) => (
+            <ProductTransactionCard
+              key={transaction.id}
+              product={transaction.product}
+              quantity={transaction.quantity}
+              header={
+                <CardHeader
+                  item={transaction.product}
+                  payment={transaction.payment_status}
+                  shipping={transaction.shipping_status}
+                  type={"product"}
+                  invoice={transaction.no_transaction}
+                  date={transaction.created_at}
+                  customer={transaction.customer}
+                />
+              }
+              button={
+                <CardButton
+                  buttonLink={``}
+                  buttonLabel="Lihat Detail Transaksi"
+                />
+              }
+            />
+          ))}
+        </div>
+      ),
+    },
+    {
+      name: "service",
+      label: "Transaksi Jasa",
+      content: (
+        <div className="flex flex-col ">
+          {serviceTransactions.map((transaction) => (
+            <ServiceTransactionCard
+              key={transaction.id}
+              service={transaction.service}
+              quantity={transaction.quantity}
+              header={
+                <CardHeader
+                  item={transaction.service}
+                  payment={transaction.payment_status}
+                  shipping={transaction.shipping_status}
+                  type={"service"}
+                  invoice={transaction.no_transaction}
+                  date={transaction.created_at}
+                  customer={transaction.customer}
+                />
+              }
+              button={
+                <CardButton
+                  buttonLink={``}
+                  buttonLabel="Lihat Detail Transaksi"
+                />
+              }
+            />
+          ))}
+        </div>
+      ),
     },
   ];
 
@@ -145,10 +297,46 @@ const DashboardSeniman = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-3">
-          <div className="col-span-2 mt-3">
+        <div className="grid md:grid-cols-5 grid-cols-1 md:gap-3 md:space-y-0 space-y-5 mt-5">
+          <div className="col-span-3 h-full ">
             <GradientChart />
           </div>
+          <div className="rounded-2xl border p-5 flex flex-col  col-span-2">
+            <div className="text-lg font-semibold mb-3">
+              Produk dengan stok kurang dari 10
+            </div>
+            <div className="flex flex-col gap-4">
+              {lowStockProducts.length > 0 ? (
+                lowStockProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center gap-3 bg-gray-50 border rounded-xl p-3"
+                  >
+                    <img
+                      src={product.thumbnail}
+                      alt={product.name}
+                      className="w-16 h-16 object-cover rounded-lg"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-semibold">{product.name}</span>
+                      <span className="text-gray-600 font-nunito">
+                        Stok: {product.stock}
+                      </span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <EmptyState message={"Produk tidak tersedia"} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="p-3">
+          <div className="text-lg font-semibold mb-3">
+            Transaksi yang perlu diproses
+          </div>
+          <Tabs tabs={tabs} />
         </div>
       </div>
     </SenimanDashboardLayout>

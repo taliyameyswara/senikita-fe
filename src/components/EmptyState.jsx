@@ -8,7 +8,7 @@ const EmptyState = ({ message, ctaLabel, onCtaClick }) => {
       <img
         src={EmptyImage}
         alt="No items"
-        className="w-[10%] object-contain opacity-20 filter grayscale"
+        className="md:w-[10%] w-[20%] object-contain opacity-20 filter grayscale"
         style={{ userSelect: "none", pointerEvents: "none" }}
       />
 
