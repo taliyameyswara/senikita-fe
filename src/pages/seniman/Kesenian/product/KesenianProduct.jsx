@@ -234,7 +234,7 @@ const KesenianProduct = ({ setProgress }) => {
                         onClick={() => {
                           setProductIdToDelete(product.id);
                           setIsModalOpen(true);
-                        }}
+                        }} 
                         className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
                       >
                         <IoTrashOutline size={20} />

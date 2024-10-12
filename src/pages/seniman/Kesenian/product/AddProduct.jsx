@@ -14,8 +14,41 @@ import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import PriceInput from "../../../../components/form-input/PriceInput";
 import SelectionOne from "../../../../components/SelectionOne";
 import { toast } from "react-toastify";
+import * as tf from "@tensorflow/tfjs";
 
 const AddProduct = () => {
+  const [model, setModel] = useState(null);
+  useEffect(() => {
+    const loadModel = async () => {
+      try {
+        const loadedModel = await tf.loadLayersModel('/model/CNNImage/model.json');
+        setModel(loadedModel);
+        console.log("Model loaded successfully!");
+      } catch (error) {
+        console.error("Error loading model:", error);
+        toast.error("Gagal memuat model untuk klasifikasi gambar.");
+      }
+    };
+
+    loadModel();
+  }, []);
+
+  const predictImage = async (imageElement) => {
+    if (!model) return null;
+
+    const imgTensor = tf.browser.fromPixels(imageElement)
+      .resizeNearestNeighbor([150, 150])
+      .toFloat()
+      .div(tf.scalar(255))
+      .expandDims();
+
+    const prediction = model.predict(imgTensor);
+    const result = (await prediction.data())[0]; // Konversi hasil ke dalam array untuk mendapatkan nilai
+
+    return result;
+  };
+
+
   const axiosInstance = useAxiosInstance();
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [loading, setLoading] = useState(false); // State untuk loading
@@ -63,7 +96,7 @@ const AddProduct = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (isStepValid()) {
       const postFormData = new FormData();
 
@@ -83,6 +116,25 @@ const AddProduct = () => {
         postFormData.append(`product_images[]`, image.file);
       });
       setLoading(true);
+
+      // Cek setiap gambar sebelum diunggah
+      for (const image of formData.images) {
+        const img = new Image();
+        img.src = URL.createObjectURL(image.file);
+
+        await new Promise((resolve) => {
+          img.onload = async () => {
+            const result = await predictImage(img);
+            console.log(result)
+            if (result >= 0.65) {
+              toast.error("Gambar diklasifikasikan sebagai berbahaya.");
+              setLoading(false);
+              return;
+            }
+            resolve();
+          };
+        });
+      }
 
       // Mengirim data ke server menggunakan axiosInstance
       axiosInstance
@@ -111,8 +163,6 @@ const AddProduct = () => {
             toast.error("Terjadi kesalahan dalam menambahkan alamat");
           }
         })
-
-
         .finally(() => {
           setLoading(false);
         });
