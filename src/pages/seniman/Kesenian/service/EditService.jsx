@@ -184,9 +184,7 @@ const EditService = () => {
         setLoading(false);
       }
     };
-
-    fetchServiceData();
-
+    setLoading(true)
     axiosInstance
       .get("/category")
       .then((response) => {
@@ -196,7 +194,12 @@ const EditService = () => {
         }));
         setCategoryOptions(categories);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err)).finally(() => {
+        setLoading(false)
+      });
+    fetchServiceData();
+
+
   }, []);
 
   if (loading) {

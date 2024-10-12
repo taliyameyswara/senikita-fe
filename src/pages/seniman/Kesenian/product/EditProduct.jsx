@@ -144,8 +144,6 @@ const EditProduct = () => {
       }
     };
 
-    fetchProductData();
-
     axiosInstance
       .get("/category")
       .then((response) => {
@@ -158,6 +156,8 @@ const EditProduct = () => {
       .catch((err) => {
         console.log(err);
       });
+    fetchProductData();
+
   }, []);
 
   const handleSubmit = () => {

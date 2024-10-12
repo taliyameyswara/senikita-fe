@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { createUseStyles } from "react-jss";
 import {
   AreaChart,
@@ -10,37 +11,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import DropdownFilter from "./DropdownFilter";
-
-const data2023 = [
-  { month: "Jan", productSales: 300, serviceSales: 200 },
-  { month: "Feb", productSales: 500, serviceSales: 300 },
-  { month: "Mar", productSales: 400, serviceSales: 250 },
-  { month: "Apr", productSales: 600, serviceSales: 400 },
-  { month: "May", productSales: 700, serviceSales: 500 },
-  { month: "Jun", productSales: 800, serviceSales: 600 },
-  { month: "Jul", productSales: 750, serviceSales: 550 },
-  { month: "Aug", productSales: 900, serviceSales: 700 },
-  { month: "Sep", productSales: 1100, serviceSales: 800 },
-  { month: "Oct", productSales: 1200, serviceSales: 900 },
-  { month: "Nov", productSales: 1300, serviceSales: 1000 },
-  { month: "Dec", productSales: 1400, serviceSales: 1100 },
-];
-
-const data2024 = [
-  { month: "Jan", productSales: 1000, serviceSales: 250 },
-  { month: "Feb", productSales: 600, serviceSales: 400 },
-  { month: "Mar", productSales: 450, serviceSales: 300 },
-  { month: "Apr", productSales: 700, serviceSales: 450 },
-  { month: "May", productSales: 800, serviceSales: 550 },
-  { month: "Jun", productSales: 900, serviceSales: 650 },
-  { month: "Jul", productSales: 850, serviceSales: 600 },
-  { month: "Aug", productSales: 1000, serviceSales: 750 },
-  { month: "Sep", productSales: 1200, serviceSales: 850 },
-  { month: "Oct", productSales: 1300, serviceSales: 950 },
-  { month: "Nov", productSales: 1400, serviceSales: 1050 },
-  { month: "Dec", productSales: 1500, serviceSales: 1150 },
-];
-
+import { useAxiosInstance } from "../config/axiosConfig";
 const useStyles = createUseStyles(() => ({
   container: {
     color: "#000",
@@ -53,6 +24,8 @@ const useStyles = createUseStyles(() => ({
     borderRadius: "20px",
   },
 }));
+
+
 
 const GradientColors = () => (
   <>
@@ -70,14 +43,27 @@ const GradientColors = () => (
 );
 
 const GradientChart = () => {
+  const axiosInstance = useAxiosInstance();
   const classes = useStyles();
   const [selectedYear, setSelectedYear] = useState("2023");
+  const [data, setData] = useState([]);
 
-  const handleChange = (event) => {
-    setSelectedYear(event.target.value);
+  const fetchData = async (year) => {
+    try {
+      const response = await axiosInstance.get(`/user/shop/products/summary-sales?year=${year}`);
+      if (response.data && response.data.status === "success") {
+        setData(response.data.summary.salesData);
+      } else {
+        console.error("Error: Data format not as expected", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
-  const data = selectedYear === "2023" ? data2023 : data2024;
+  useEffect(() => {
+    fetchData(selectedYear);
+  }, [selectedYear]);
 
   const dropdownCategories = [
     { key: "2023", content: "2023" },
@@ -87,7 +73,7 @@ const GradientChart = () => {
   return (
     <div className={classes.container}>
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-raleway font-semibold">
+        <h2 className="text-lg font-semibold font-raleway">
           Data Penjualan Produk dan Jasa
         </h2>
         <DropdownFilter

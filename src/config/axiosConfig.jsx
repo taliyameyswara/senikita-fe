@@ -10,7 +10,6 @@ const createAxiosInstance = () => {
 
     const { logout } = useContext(UserContext); // Memanggil useContext di dalam fungsi
 
-    // Interceptor untuk request (menambahkan token)
     axiosInstance.interceptors.request.use(
         config => {
             const token = localStorage.getItem('token');

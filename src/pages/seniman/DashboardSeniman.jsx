@@ -64,18 +64,18 @@ const DashboardSeniman = () => {
 
   return (
     <SenimanDashboardLayout pageTitle="Dashboard | Transaksi">
-      <div className="flex flex-col gap-2 border p-3 rounded-xl">
-        <div className="border p-3 py-5 rounded-xl bg-gray-50">
+      <div className="flex flex-col gap-2 p-3 border rounded-xl">
+        <div className="p-3 py-5 border rounded-xl bg-gray-50">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
         {/* Welcome Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+        <div className="grid grid-cols-1 gap-2 mt-2 md:grid-cols-2">
           {/* Welcoming */}
-          <div className="grid grid-cols-2 px-10 p-16 bg-gradient-to-r from-primary to-tertiary rounded-2xl text-white relative h-full">
+          <div className="relative grid h-full grid-cols-2 p-16 px-10 text-white bg-gradient-to-r from-primary to-tertiary rounded-2xl">
             <div>
               <p>Selamat Datang, </p>
-              <h1 className="font-crimson font-semibold text-4xl bg-gradient-to-r from-brick to-transparent px-2 w-fit mt-2">
+              <h1 className="px-2 mt-2 text-4xl font-semibold font-crimson bg-gradient-to-r from-brick to-transparent w-fit">
                 {user.name}
               </h1>
             </div>
@@ -83,7 +83,7 @@ const DashboardSeniman = () => {
               <img
                 src={Welcoming}
                 alt=""
-                className="object-cover absolute bottom-0 left-1/3"
+                className="absolute bottom-0 object-cover left-1/3"
                 style={{ userSelect: "none", pointerEvents: "none" }}
               />
             </div>
@@ -94,16 +94,16 @@ const DashboardSeniman = () => {
             <div className="h-full rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
               <Link to={`/user/dashboard/profil`}>
                 <div className="h-full">
-                  <div className="p-5 h-full rounded-2xl bg-gradient-to-r from-brick to-lightBrick relative overflow-hidden">
+                  <div className="relative h-full p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
                     <div className="flex items-center gap-3">
                       <img
                         src="https://via.placeholder.com/100"
                         alt="User Profile"
-                        className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-xl"
+                        className="object-cover w-16 h-16 md:w-20 md:h-20 rounded-xl"
                       />
                       <div className="text-white">
                         <div className="flex gap-2">
-                          <p className="text-xs mb-1">Seni Tari, Seni Kriya</p>
+                          <p className="mb-1 text-xs">Seni Tari, Seni Kriya</p>
                         </div>
                         <h2 className="text-xl font-semibold bg-customGreen">
                           Toko Kesenian Bali
@@ -111,7 +111,7 @@ const DashboardSeniman = () => {
                         <p>Kabupaten Buleleng, Bali</p>
                       </div>
                     </div>
-                    <div className="mt-2 text-white text-sm">
+                    <div className="mt-2 text-sm text-white">
                       {limitText(
                         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos ab saepe expedita accusamus quis error, quaerat tempora recusandae at dignissimos quod quas quasi earumsed? Praesentium est dicta a earum.",
                         300
@@ -125,7 +125,7 @@ const DashboardSeniman = () => {
         </div>
 
         {/* Count Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+        <div className="grid grid-cols-2 gap-3 mt-4 md:grid-cols-4">
           {statisticsData.map((stat, index) => (
             <div key={index} className="">
               <div
@@ -146,7 +146,7 @@ const DashboardSeniman = () => {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="mt-3 col-span-2">
+          <div className="col-span-2 mt-3">
             <GradientChart />
           </div>
         </div>
