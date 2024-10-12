@@ -412,7 +412,7 @@ const ArtProviderRegister = () => {
           {/* Step 3: Syarat & Ketentuan */}
           {currentStep === 2 && (
             <div className="mt-5">
-              <div className="p-6 border rounded-xl">
+              <div className="p-10 border rounded-xl">
                 <h3 className="mb-3 text-lg font-semibold text-center">
                   Syarat & Ketentuan
                 </h3>

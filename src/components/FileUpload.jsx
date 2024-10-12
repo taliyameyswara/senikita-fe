@@ -54,17 +54,14 @@ const FileUpload = ({ onFilesSelect, title }) => {
   return (
     <div className="flex flex-col mb-5">
       <label className="text-sm font-semibold">{title}</label>
-      <div className="flex justify-between items-center p-4 border rounded-xl mt-1">
+      <div className="flex justify-between items-center p-4 border rounded-xl mt-1 gap-3">
         <div className="flex flex-col gap-1">
           <p className="font-semibold md:text-base text-sm">{title}</p>
           <div className="text-gray-500 text-xs md:text-sm ">
-            Unggah file yang mendukung kebutuhan acara Anda, seperti gambar
-            desain, jadwal acara, atau daftar lagu.
-            <div className="text-gray-500 text-xs md:text-sm">
-              Format yang didukung adalah JPEG, PNG, PDF, Word, dan Excel.
-              Ukuran file maksimal{" "}
-              <span className="font-nunito font-light">3</span>mb
-            </div>
+            Unggah file yang mendukung kebutuhan acara , seperti gambar desain,
+            jadwal acara, atau daftar lagu. Format yang didukung adalah JPEG,
+            PNG, PDF, Word, dan Excel. Ukuran file maksimal{" "}
+            <span className="font-nunito font-light">3</span> MB
           </div>
         </div>
 
@@ -72,7 +69,7 @@ const FileUpload = ({ onFilesSelect, title }) => {
           htmlFor="file-upload"
           className={`text-sm border ${
             loading ? "border-gray-200" : "border-primary"
-          } text-primary p-2 px-6 rounded-full cursor-pointer font-semibold`}
+          } text-primary p-2 px-6 rounded-full  cursor-pointer text-center w-56 font-semibold`}
         >
           {loading ? "Mengunggah..." : "Unggah File"}
         </label>

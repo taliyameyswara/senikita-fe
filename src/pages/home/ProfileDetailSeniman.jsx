@@ -7,6 +7,7 @@ import ProductList from "../../components/card/ProductList";
 import Review from "../../components/review/Review";
 import { FaStar } from "react-icons/fa";
 import Tabs from "../../components/Tabs";
+import ReviewTab from "../../components/review/ReviewTab";
 
 const ProfileDetailSeniman = ({ setProgress }) => {
   const { id } = useParams();
@@ -15,6 +16,10 @@ const ProfileDetailSeniman = ({ setProgress }) => {
   const [products, setProducts] = useState([]);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     setProgress(30);
@@ -36,6 +41,31 @@ const ProfileDetailSeniman = ({ setProgress }) => {
         setLoading(false);
       });
   }, []);
+
+  const reviews = [
+    // {
+    //   name: "John Doe",
+    //   date: "12 Oktober 2024",
+    //   rating: 4.0,
+    //   comment:
+    //     "Produk ini sangat bagus dan sesuai ekspektasi. Kualitasnya sangat baik!",
+    //   image: [
+    //     "https://via.placeholder.com/150",
+    //     "https://via.placeholder.com/150",
+    //   ],
+    //   productName: "Patung Naga",
+    //   price: 10000,
+    // },
+    // {
+    //   name: "Jane Smith",
+    //   date: "10 Oktober 2024",
+    //   rating: 4.0,
+    //   comment: "Kualitas produk cukup bagus, namun pengirimannya agak lambat.",
+    //   image: [],
+    //   productName: "Wayang Kulit",
+    //   price: 10000,
+    // },
+  ];
 
   const tabs = [
     {
@@ -63,14 +93,14 @@ const ProfileDetailSeniman = ({ setProgress }) => {
     {
       name: "review",
       label: "Ulasan",
-      content: <></>,
+      content: <ReviewTab reviews={reviews} />,
     },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="container">
+      <div className="container px-6">
         <div className="pt-5">
           <div className="">
             <div className="p-6 mb-3 bg-white border rounded-xl">
@@ -92,7 +122,7 @@ const ProfileDetailSeniman = ({ setProgress }) => {
                     <div className="text-center">
                       <div className="flex items-center gap-2">
                         <FaStar className="text-yellow-500 text-lg" />
-                        <div className="text-lg font-bold">
+                        <div className="text-lg font-bold font-nunito">
                           {seniman?.rating}
                         </div>
                       </div>
@@ -101,15 +131,21 @@ const ProfileDetailSeniman = ({ setProgress }) => {
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-lg font-bold">{seniman?.sold}</div>
-                      <div className="text-gray-400 text-xs">Penjualan</div>
+                      <div className="text-lg font-bold font-nunito">
+                        {seniman?.sold}
+                      </div>
+                      <div className="text-gray-400 text-xs ">Penjualan</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-lg font-bold">{products.length}</div>
+                      <div className="text-lg font-bold font-nunito ">
+                        {products.length}
+                      </div>
                       <div className="text-gray-400 text-xs">Jumlah Produk</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-lg font-bold">{services.length}</div>
+                      <div className="text-lg font-bold font-nunito">
+                        {services.length}
+                      </div>
                       <div className="text-gray-400 text-xs">Jumlah Jasa</div>
                     </div>
                   </div>

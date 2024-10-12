@@ -3,14 +3,16 @@ import ProductCard from "./ProductCard";
 import Heading from "../Heading";
 import Slider from "react-slick";
 import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5";
+import EmptyState from "../EmptyState";
 
 const ProductList = ({ title, products, type, slidesToShow = 4 }) => {
   const sliderRef = useRef(null);
 
   const ArrowButton = ({ onClick, direction }) => (
     <button
-      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${direction === "left" ? "mr-2" : "ml-2"
-        }`}
+      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${
+        direction === "left" ? "mr-2" : "ml-2"
+      }`}
       onClick={onClick}
     >
       {direction === "left" ? (
@@ -45,6 +47,18 @@ const ProductList = ({ title, products, type, slidesToShow = 4 }) => {
       },
     ],
   };
+
+  if (!products || products.length === 0) {
+    return (
+      <>
+        {type === "Product" ? (
+          <EmptyState message={"Belum ada produk tersedia"} />
+        ) : (
+          <EmptyState message={"Belum ada jasa tersedia"} />
+        )}
+      </>
+    );
+  }
 
   return (
     <div className="container px-6">

@@ -27,14 +27,18 @@ const ReviewForm = ({ onSubmit }) => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="text-sm text-center text-gray-400">
-        Seberapa puas Anda dengan produk atau jasa yang diterima? <br /> Bagikan pengalaman Anda dengan memberikan rating dan ulasan produk atau jasa ini.
+        Seberapa puas Anda dengan produk atau jasa yang diterima? <br /> Bagikan
+        pengalaman Anda dengan memberikan rating dan ulasan produk atau jasa
+        ini.
       </div>
 
       <div className="flex items-center justify-center gap-2 my-3">
         {[1, 2, 3, 4, 5].map((star) => (
           <FaStar
             key={star}
-            className={`cursor-pointer text-3xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+            className={`cursor-pointer text-3xl ${
+              star <= rating ? "text-yellow-400" : "text-gray-300"
+            }`}
             onClick={() => setRating(star)}
           />
         ))}

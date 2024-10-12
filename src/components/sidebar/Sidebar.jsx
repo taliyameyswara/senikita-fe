@@ -27,12 +27,12 @@ const SidebarLinks = [
     icon: <IoMdHeartEmpty />,
     link: "/user/dashboard/wishlist",
   },
-  {
-    id: 5,
-    name: "Seniman Favorit",
-    icon: <IoColorPaletteOutline />,
-    link: "/user/dashboard/favorite-artist",
-  },
+  // {
+  //   id: 5,
+  //   name: "Seniman Favorit",
+  //   icon: <IoColorPaletteOutline />,
+  //   link: "/user/dashboard/favorite-artist",
+  // },
   {
     id: 6,
     name: "Profil",
@@ -60,12 +60,12 @@ const SidebarSenimanLinks = [
     icon: <IoMdPaper />,
     link: "/seniman/dashboard/order",
   },
-  {
-    id: 4,
-    name: "Chat",
-    icon: <IoChatboxOutline />,
-    link: "/seniman/dashboard/chat",
-  },
+  // {
+  //   id: 4,
+  //   name: "Chat",
+  //   icon: <IoChatboxOutline />,
+  //   link: "/seniman/dashboard/chat",
+  // },
   {
     id: 5,
     name: "Ulasan",

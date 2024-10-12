@@ -72,23 +72,23 @@ const ServiceOrder = () => {
 
     // Buat objek FormData untuk pengiriman data
     const data = new FormData();
-    data.append('service_id', service.id);
-    data.append('qty', service.qty);
-    data.append('activity_name', formData.activity_name);
-    data.append('name', formData.name);
-    data.append('phone', formData.phone);
+    data.append("service_id", service.id);
+    data.append("qty", service.qty);
+    data.append("activity_name", formData.activity_name);
+    data.append("name", formData.name);
+    data.append("phone", formData.phone);
 
-    const formattedDate = moment(formData.activity_date).format('DD/MM/YYYY');
-    data.append('activity_date', formattedDate);
+    const formattedDate = moment(formData.activity_date).format("DD/MM/YYYY");
+    data.append("activity_date", formattedDate);
 
-    data.append('activity_time', formData.activity_time);
-    data.append('address', formData.address);
-    data.append('city_id', formData.city_id);
-    data.append('province_id', formData.province_id);
-    data.append('note', formData.note || '');  // Default empty string if no note
-    data.append('attendee', formData.attendee || ''); // Default empty string if no attendee
-    data.append('description', formData.description || ''); // Default empty string if no description
-    data.append('termsAccepted', formData.termsAccepted ? '1' : '0'); // For checkbox
+    data.append("activity_time", formData.activity_time);
+    data.append("address", formData.address);
+    data.append("city_id", formData.city_id);
+    data.append("province_id", formData.province_id);
+    data.append("note", formData.note || ""); // Default empty string if no note
+    data.append("attendee", formData.attendee || ""); // Default empty string if no attendee
+    data.append("description", formData.description || ""); // Default empty string if no description
+    data.append("termsAccepted", formData.termsAccepted ? "1" : "0"); // For checkbox
 
     // Menambahkan setiap file dari optional_document ke FormData
     if (formData.optional_document && formData.optional_document.length > 0) {
@@ -98,16 +98,16 @@ const ServiceOrder = () => {
     }
 
     try {
-      const response = await axiosInstance.post('/user/order-service', data, {
+      const response = await axiosInstance.post("/user/order-service", data, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          "Content-Type": "multipart/form-data",
         },
         maxBodyLength: Infinity,
       });
 
       if (response.status === 201) {
         toast.success("Pesanan berhasil dibuat!");
-        navigate('/user/dashboard/transaction'); // Redirect to transaction dashboard
+        navigate("/user/dashboard/transaction"); // Redirect to transaction dashboard
       } else {
         toast.error("Gagal mengirim data!");
         console.log("Gagal mengirim data: ", response.status);
@@ -129,7 +129,6 @@ const ServiceOrder = () => {
       }
     }
   };
-
 
   const isStepValid = () => {
     switch (currentStep) {
@@ -167,8 +166,6 @@ const ServiceOrder = () => {
     console.log(service);
   }, [location.state, navigate]);
 
-
-
   return (
     <div className="">
       <Navbar />
@@ -182,25 +179,26 @@ const ServiceOrder = () => {
 
         <form onSubmit={handleSubmit}>
           {currentStep === 0 && (
-            <div className="mt-8 space-y-6">{
-              service && (
+            <div className="mt-8 space-y-6">
+              {service && (
                 <div className="gap-2">
-                  <label className="text-sm font-semibold ">Nama Layanan Kesenian</label>
+                  <label className="text-sm font-semibold ">
+                    Nama Layanan Kesenian
+                  </label>
                   <ProductTransactionCard
                     product={service}
                     quantity={service.qty}
                   />
                 </div>
-
-              )
-            }
+              )}
               {/* nama penganggunjawab */}
               <TextInput
                 label={
                   <>
                     Nama Penanggungjawab
                     <div className="font-normal text-gray-500">
-                      Tip: Masukkan nama lengkap penanggung jawab acara/kegiatan.
+                      Tip: Masukkan nama lengkap penanggung jawab
+                      acara/kegiatan.
                     </div>
                   </>
                 }
@@ -368,49 +366,76 @@ const ServiceOrder = () => {
           )}
 
           {currentStep === 2 && (
-            <div className="p-8 pt-3 mx-auto bg-white rounded-lg shadow-lg max-w-screen-2xl">
-              <h3 className="mb-6 text-2xl font-bold text-center text-gray-800">
-                Syarat & Ketentuan
-              </h3>
-              <div className="text-base leading-relaxed text-gray-700 terms-content">
-                <p className="mb-2">
-                  Dengan menggunakan platform Senikita, Anda menyetujui untuk mematuhi seluruh Syarat dan Ketentuan berikut:
-                </p>
-                <ul className="space-y-2 list-disc ">
-                  <li>
-                    Platform Senikita menyediakan layanan untuk memesan pertunjukan seni dan membeli produk kesenian lokal. Senikita tidak bertanggung jawab atas kualitas, keamanan, atau ketersediaan layanan yang disediakan oleh pihak ketiga atau seniman yang terdaftar di platform.
-                  </li>
-                  <li>
-                    Setiap pemesanan dianggap final setelah pembayaran berhasil diproses. Senikita berhak membatalkan pemesanan apabila terjadi ketidaksesuaian informasi atau pelanggaran terhadap ketentuan yang berlaku.
-                  </li>
-                  <li>
-                    Pembayaran dapat dilakukan melalui metode pembayaran yang tersedia di platform. Kebijakan pengembalian dana berlaku dalam kondisi tertentu, seperti pembatalan layanan oleh penyedia atau ketidaksesuaian layanan yang diterima dengan yang dipesan.
-                  </li>
-                  <li>
-                    Pengguna setuju untuk tidak menggunakan platform ini untuk kegiatan yang melanggar hukum atau merugikan pihak lain. Konten yang melanggar hak kekayaan intelektual atau bersifat diskriminatif dilarang.
-                  </li>
-                  <li>
-                    Senikita berhak untuk mengubah, menambahkan, atau menghapus bagian dari Syarat dan Ketentuan ini kapan saja. Setiap perubahan akan diinformasikan melalui platform.
-                  </li>
-                </ul>
-                <p className="mt-2">
-                  Jika Anda memiliki pertanyaan mengenai Syarat dan Ketentuan ini, silakan hubungi tim dukungan pelanggan kami melalui email: <a href="mailto:support@senikita.com" className="text-blue-600 hover:underline">officialsenikita@gmail.com</a>.
-                </p>
-              </div>
-              <div className="flex items-start mt-4">
-                <input
-                  type="checkbox"
-                  name="termsAccepted"
-                  checked={formData.termsAccepted}
-                  onChange={handleCheckboxChange}
-                  className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                />
-                <label className="ml-3 text-gray-800">
-                  Saya menyetujui syarat dan ketentuan yang berlaku.
-                </label>
+            <div className="mt-5">
+              <div className="p-10 border rounded-xl">
+                <h3 className="mb-6 text-2xl font-bold text-center text-gray-800">
+                  Syarat & Ketentuan
+                </h3>
+                <div className="text-base leading-relaxed text-gray-700 terms-content">
+                  <p className="mb-2">
+                    Dengan menggunakan platform Senikita, Anda menyetujui untuk
+                    mematuhi seluruh Syarat dan Ketentuan berikut:
+                  </p>
+                  <ul className="space-y-2 list-disc ">
+                    <li>
+                      Platform Senikita menyediakan layanan untuk memesan
+                      pertunjukan seni dan membeli produk kesenian lokal.
+                      Senikita tidak bertanggung jawab atas kualitas, keamanan,
+                      atau ketersediaan layanan yang disediakan oleh pihak
+                      ketiga atau seniman yang terdaftar di platform.
+                    </li>
+                    <li>
+                      Setiap pemesanan dianggap final setelah pembayaran
+                      berhasil diproses. Senikita berhak membatalkan pemesanan
+                      apabila terjadi ketidaksesuaian informasi atau pelanggaran
+                      terhadap ketentuan yang berlaku.
+                    </li>
+                    <li>
+                      Pembayaran dapat dilakukan melalui metode pembayaran yang
+                      tersedia di platform. Kebijakan pengembalian dana berlaku
+                      dalam kondisi tertentu, seperti pembatalan layanan oleh
+                      penyedia atau ketidaksesuaian layanan yang diterima dengan
+                      yang dipesan.
+                    </li>
+                    <li>
+                      Pengguna setuju untuk tidak menggunakan platform ini untuk
+                      kegiatan yang melanggar hukum atau merugikan pihak lain.
+                      Konten yang melanggar hak kekayaan intelektual atau
+                      bersifat diskriminatif dilarang.
+                    </li>
+                    <li>
+                      Senikita berhak untuk mengubah, menambahkan, atau
+                      menghapus bagian dari Syarat dan Ketentuan ini kapan saja.
+                      Setiap perubahan akan diinformasikan melalui platform.
+                    </li>
+                  </ul>
+                  <p className="mt-2">
+                    Jika Anda memiliki pertanyaan mengenai Syarat dan Ketentuan
+                    ini, silakan hubungi tim dukungan pelanggan kami melalui
+                    email:{" "}
+                    <a
+                      href="mailto:support@senikita.com"
+                      className="text-blue-600 hover:underline"
+                    >
+                      officialsenikita@gmail.com
+                    </a>
+                    .
+                  </p>
+                </div>
+                <div className="flex items-start mt-4">
+                  <input
+                    type="checkbox"
+                    name="termsAccepted"
+                    checked={formData.termsAccepted}
+                    onChange={handleCheckboxChange}
+                    className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  />
+                  <label className="ml-3 text-gray-800">
+                    Saya menyetujui syarat dan ketentuan yang berlaku.
+                  </label>
+                </div>
               </div>
             </div>
-
           )}
 
           <div className="flex justify-between mt-8">
@@ -427,10 +452,11 @@ const ServiceOrder = () => {
               <button
                 onClick={handleNextStep}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${isStepValid()
-                  ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
                 Selanjutnya
               </button>
@@ -438,10 +464,11 @@ const ServiceOrder = () => {
               <button
                 onClick={handleSubmit}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${isStepValid()
-                  ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                  : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                className={`px-4 py-2 rounded-xl ${
+                  isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                }`}
               >
                 Selesai
               </button>

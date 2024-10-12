@@ -1,14 +1,20 @@
 import React from "react";
 import { formatNumber } from "../../../../utils/formatNumber";
 
-const ServiceTransactionCard = ({ service, header, button, provider, quantity }) => {
+const ServiceTransactionCard = ({
+  service,
+  header,
+  button,
+  provider,
+  quantity,
+}) => {
   return (
     <div className="p-4 mb-4 bg-white border rounded-xl">
       {/* Header */}
       {header}
 
       {/* Service Details */}
-      <div className="flex gap-3">
+      <div className="flex  items-center gap-3">
         {/* Image */}
         <div className="">
           <img
