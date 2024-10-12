@@ -56,7 +56,6 @@ const ServiceTransaction = ({ setProgress }) => {
   const [photos, setPhotos] = useState([]);
 
   const handleSubmit = async () => {
-
     const formData = new FormData();
     formData.append("comment", reviewText);
     formData.append("rating", rating);
@@ -67,8 +66,8 @@ const ServiceTransaction = ({ setProgress }) => {
     try {
       await axios.post(`/user/service/rating/${currentService.id}`, formData, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       toast.success("Ulasan berhasil dikirim");
       setReviewText("");
@@ -93,41 +92,48 @@ const ServiceTransaction = ({ setProgress }) => {
     }
   };
 
-
   return (
     <div className="space-y-4">
-      {transactions.map((transaction, index) => (
-        <ServiceTransactionCard
-          key={`${transaction.service.id}-${transaction.no_transaction}-${index}`}
-          service={transaction.service}
-          quantity={transaction.qty}
-          provider={transaction.service.shop.name}
-          header={
-            <CardHeader
-              item={transaction.service}
-              payment={transaction.status}
-              shipping={transaction.status_order}
-              invoice={transaction.no_transaction}
-              date={transaction.created_at}
-              type="service"
-            />
-          }
-          button={
-            <div className="flex items-center justify-end w-full gap-3">
-              {transaction.status === "DONE" && transaction.status_order === "DONE" && (
-                <button onClick={() => openReviewModal(transaction.service)} className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer">
-                  <FaStar className="text-yellow-400" />
-                  <div>Beri Ulasan</div>
-                </button>
-              )}
-              <CardButton
-                buttonLink={`/user/dashboard/transaction/service/details/${transaction.id}`}
-                buttonLabel="Lihat Detail Transaksi"
+      {transactions.length > 0 ? (
+        transactions.map((transaction, index) => (
+          <ServiceTransactionCard
+            key={`${transaction.service.id}-${transaction.no_transaction}-${index}`}
+            service={transaction.service}
+            quantity={transaction.qty}
+            provider={transaction.service.shop.name}
+            header={
+              <CardHeader
+                item={transaction.service}
+                payment={transaction.status}
+                shipping={transaction.status_order}
+                invoice={transaction.no_transaction}
+                date={transaction.created_at}
+                type="service"
               />
-            </div>
-          }
-        />
-      ))}
+            }
+            button={
+              <div className="flex items-center justify-end w-full gap-3">
+                {transaction.status === "DONE" &&
+                  transaction.status_order === "DONE" && (
+                    <button
+                      onClick={() => openReviewModal(transaction.service)}
+                      className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer"
+                    >
+                      <FaStar className="text-yellow-400" />
+                      <div>Beri Ulasan</div>
+                    </button>
+                  )}
+                <CardButton
+                  buttonLink={`/user/dashboard/transaction/service/details/${transaction.id}`}
+                  buttonLabel="Lihat Detail Transaksi"
+                />
+              </div>
+            }
+          />
+        ))
+      ) : (
+        <EmptyState message="Tidak ada transaksi produk" />
+      )}
 
       {currentService && (
         <Modal
@@ -155,14 +161,18 @@ const ServiceTransaction = ({ setProgress }) => {
         >
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="text-sm text-center text-gray-400">
-              Seberapa puas Anda dengan produk atau jasa yang diterima? <br /> Bagikan pengalaman Anda dengan memberikan rating dan ulasan produk atau jasa ini.
+              Seberapa puas Anda dengan produk atau jasa yang diterima? <br />{" "}
+              Bagikan pengalaman Anda dengan memberikan rating dan ulasan produk
+              atau jasa ini.
             </div>
 
             <div className="flex items-center justify-center gap-2 my-3">
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
                   key={star}
-                  className={`cursor-pointer text-3xl ${star <= rating ? "text-yellow-400" : "text-gray-300"}`}
+                  className={`cursor-pointer text-3xl ${
+                    star <= rating ? "text-yellow-400" : "text-gray-300"
+                  }`}
                   onClick={() => setRating(star)}
                 />
               ))}
@@ -181,8 +191,8 @@ const ServiceTransaction = ({ setProgress }) => {
                     Upload Gambar Ulasan (Opsional)
                   </div>
                   <div className="mb-4 text-sm text-gray-400">
-                    Pilih foto atau tarik dan letakkan hingga 5 foto sekaligus di sini
-                    dengan minimal 1 foto utama (thumbnail).
+                    Pilih foto atau tarik dan letakkan hingga 5 foto sekaligus
+                    di sini dengan minimal 1 foto utama (thumbnail).
                   </div>
                 </>
               }
