@@ -43,28 +43,28 @@ const ProfileDetailSeniman = ({ setProgress }) => {
   }, []);
 
   const reviews = [
-    // {
-    //   name: "John Doe",
-    //   date: "12 Oktober 2024",
-    //   rating: 4.0,
-    //   comment:
-    //     "Produk ini sangat bagus dan sesuai ekspektasi. Kualitasnya sangat baik!",
-    //   image: [
-    //     "https://via.placeholder.com/150",
-    //     "https://via.placeholder.com/150",
-    //   ],
-    //   productName: "Patung Naga",
-    //   price: 10000,
-    // },
-    // {
-    //   name: "Jane Smith",
-    //   date: "10 Oktober 2024",
-    //   rating: 4.0,
-    //   comment: "Kualitas produk cukup bagus, namun pengirimannya agak lambat.",
-    //   image: [],
-    //   productName: "Wayang Kulit",
-    //   price: 10000,
-    // },
+    {
+      name: "John Doe",
+      date: "12 Oktober 2024",
+      rating: 4.0,
+      comment:
+        "Produk ini sangat bagus dan sesuai ekspektasi. Kualitasnya sangat baik!",
+      image: [
+        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/150",
+      ],
+      productName: "Patung Naga NagaNagaNagaNagaNagaNaga",
+      price: 10000,
+    },
+    {
+      name: "Jane Smith",
+      date: "10 Oktober 2024",
+      rating: 4.0,
+      comment: "Kualitas produk cukup bagus, namun pengirimannya agak lambat.",
+      image: [],
+      productName: "Wayang Kulit",
+      price: 10000,
+    },
   ];
 
   const tabs = [

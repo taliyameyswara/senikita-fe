@@ -98,8 +98,8 @@ const DashboardSeniman = () => {
       customer: "Lalau",
       no_transaction: "INV-20231012-0001",
       created_at: "2023-10-12T10:30:00Z",
-      payment_status: "Paid",
-      shipping_status: "Shipped",
+      payment_status: "success",
+      shipping_status: "diproses",
     },
     {
       id: 2,
@@ -112,8 +112,8 @@ const DashboardSeniman = () => {
       customer: "Lalai",
       no_transaction: "INV-20231012-0002",
       created_at: "2023-10-11T09:00:00Z",
-      payment_status: "Pending",
-      shipping_status: "Not Shipped",
+      payment_status: "success",
+      shipping_status: "diproses",
     },
   ];
 
@@ -125,13 +125,12 @@ const DashboardSeniman = () => {
         price: 1500000,
         thumbnail: "https://via.placeholder.com/150",
       },
-      quantity: 1,
 
       customer: "Budi",
       no_transaction: "INV-20231012-0003",
       created_at: "2023-10-10T12:45:00Z",
-      payment_status: "Paid",
-      shipping_status: "In Progress",
+      payment_status: "pending",
+      shipping_status: "pending",
     },
     {
       id: 2,
@@ -140,12 +139,11 @@ const DashboardSeniman = () => {
         price: 2000000,
         thumbnail: "https://via.placeholder.com/150",
       },
-      quantity: 1,
       customer: "Lala",
       no_transaction: "INV-20231012-0004",
       created_at: "2023-10-09T11:00:00Z",
-      payment_status: "Paid",
-      shipping_status: "Completed",
+      payment_status: "pending",
+      shipping_status: "pending",
     },
   ];
 
