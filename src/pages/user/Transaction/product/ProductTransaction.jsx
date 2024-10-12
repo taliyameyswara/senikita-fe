@@ -52,7 +52,6 @@ const ProductTransaction = ({ setProgress }) => {
         transactions.map((transaction, index) => {
           const paymentStatus = transaction.status || "Selesai";
           const shippingStatus = transaction.status_order || "diproses";
-
           return (
             <ProductTransactionCard
               provider={transaction.product[0].shop.name}
@@ -71,8 +70,8 @@ const ProductTransaction = ({ setProgress }) => {
               }
               button={
                 <div className="flex items-center justify-end w-full gap-3">
-                  {shippingStatus === "selesai" &&
-                    paymentStatus === "selesai" && (
+                  {shippingStatus === "DONE" &&
+                    paymentStatus === "DONE" && (
                       <div
                         onClick={() => openReviewModal(transaction.product[0])}
                         className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer"
@@ -116,7 +115,7 @@ const ProductTransaction = ({ setProgress }) => {
               </div>
             </div>
           }
-          handleSubmit={() => {}}
+          handleSubmit={() => { }}
         >
           <ReviewForm />
         </Modal>

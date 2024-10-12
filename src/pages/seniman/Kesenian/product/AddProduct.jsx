@@ -31,7 +31,7 @@ const AddProduct = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [formData, setFormData] = useState({
-    category_id: [],
+    category_id: null,
     name: "",
     desc: "",
     price: 0,
@@ -67,11 +67,13 @@ const AddProduct = () => {
     if (isStepValid()) {
       const postFormData = new FormData();
 
-      postFormData.append("category_id", formData.category_id);
+      postFormData.append("category_id", formData.category_id.value); // Kirim value saja
       postFormData.append("name", formData.name);
       postFormData.append("desc", formData.desc);
       postFormData.append("price", formData.price);
       postFormData.append("stock", formData.stock);
+
+      console.log(formData.images);
 
       if (formData.images[0]) {
         postFormData.append("thumbnail", formData.images[0].file);
@@ -94,9 +96,23 @@ const AddProduct = () => {
           navigate("/seniman/dashboard/kesenian");
         })
         .catch((error) => {
-          toast.error("Gagal menambahkan produk");
-          console.log(error);
+          if (error.response) {
+            const serverErrors = error.response.data.errors;
+            for (const key in serverErrors) {
+              if (serverErrors.hasOwnProperty(key)) {
+                serverErrors[key].forEach((errorMessage) => {
+                  toast.error(errorMessage);
+                });
+              }
+            }
+          } else if (error.request) {
+            toast.error("Tidak ada respon dari server");
+          } else {
+            toast.error("Terjadi kesalahan dalam menambahkan alamat");
+          }
         })
+
+
         .finally(() => {
           setLoading(false);
         });
@@ -111,7 +127,7 @@ const AddProduct = () => {
           formData.desc.trim().length > 0 &&
           formData.price > 0 &&
           formData.stock > 0 &&
-          formData.category_id.length > 0
+          formData.category_id != null
         );
       case 1:
         return formData.images.length > 0;
@@ -133,8 +149,8 @@ const AddProduct = () => {
         }));
         setCategoryOptions(category_id);
       })
-      .catch((err) => {})
-      .finally(() => {});
+      .catch((err) => { })
+      .finally(() => { });
   }, []);
 
   if (loading) {
@@ -169,11 +185,11 @@ const AddProduct = () => {
                       </>
                     }
                     options={categoryOptions}
-                    selectedOptions={formData.category_id}
-                    onSelect={(options) =>
+                    selectedOption={formData.category_id}
+                    onSelect={(option) =>
                       setFormData((prevFormData) => ({
                         ...prevFormData,
-                        category_id: options,
+                        category_id: option, // Simpan opsi yang dipilih
                       }))
                     }
                     placeholder="Pilih Kategori"
@@ -346,11 +362,10 @@ const AddProduct = () => {
                 <button
                   onClick={handleNextStep}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selanjutnya
                 </button>
@@ -358,11 +373,10 @@ const AddProduct = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selesai
                 </button>

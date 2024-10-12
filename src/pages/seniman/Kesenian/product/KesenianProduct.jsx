@@ -45,11 +45,12 @@ const KesenianProduct = ({ setProgress }) => {
     try {
       const response = await axiosInstance.get("user/shop/products");
       if (response.data.status === "success") {
+        console.log(response.data.products);
         const fetchedProducts = response.data.products.map((product) => ({
           id: product.id,
           thumbnail: product.thumbnail,
           name: product.name,
-          category: product.category_id,
+          category: product.category.name,
           likes: product.sold,
           cartCount: 0,
           price: product.price,
@@ -194,23 +195,20 @@ const KesenianProduct = ({ setProgress }) => {
                       className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                     >
                       <div
-                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
-                          product.isActive
-                            ? "translate-x-full bg-tertiary/10"
-                            : "bg-tertiary/10"
-                        }`}
+                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
+                          ? "translate-x-full bg-tertiary/10"
+                          : "bg-tertiary/10"
+                          }`}
                       ></div>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
-                          product.isActive ? "text-gray-400" : "text-primary"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${product.isActive ? "text-gray-400" : "text-primary"
+                          }`}
                       >
                         Nonaktif
                       </span>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
-                          product.isActive ? "text-primary" : "text-gray-400"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${product.isActive ? "text-primary" : "text-gray-400"
+                          }`}
                       >
                         Aktif
                       </span>
@@ -221,7 +219,7 @@ const KesenianProduct = ({ setProgress }) => {
                   <td className="p-4 border-b">
                     <div className="flex space-x-2">
                       <Link
-                        to={`/seniman/dashboard/kesenian/updateproduct`}
+                        to={`/seniman/dashboard/kesenian/updateproduct/${product.id}`}
                         state={{
                           product: product,
                         }}

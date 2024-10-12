@@ -4,7 +4,8 @@ import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
 import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
-import { useAxiosInstance } from "../../../config/axiosConfig";
+import { useAxiosInstance } from '../../../config/axiosConfig';
+import { toast } from "react-toastify";
 
 const UserBiodata = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
@@ -22,8 +23,7 @@ const UserBiodata = ({ setProgress }) => {
     password: "",
   });
 
-  useEffect(() => {
-    setProgress(30);
+  const fetchUserData = () => {
     axiosInstance
       .get("/user/profile")
       .then((res) => {
@@ -46,14 +46,23 @@ const UserBiodata = ({ setProgress }) => {
         setLoading(false);
         setProgress(100);
       });
+  }
+  // useEffect(() => {
+  //   setProgress(30);
+
+  // });
+
+  useEffect(() => {
+    setProgress(30);
+    fetchUserData();
   }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalSubtitle, setModalSubtitle] = useState("");
   const [fieldToUpdate, setFieldToUpdate] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const openModal = (field, title, subtitle) => {
@@ -63,8 +72,8 @@ const UserBiodata = ({ setProgress }) => {
     setIsModalOpen(true);
 
     if (field === "password") {
-      setNewPassword("");
-      setConfirmPassword("");
+      setOldPassword("");
+      setPassword("");
       setPasswordError("");
     }
   };
@@ -78,10 +87,8 @@ const UserBiodata = ({ setProgress }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        // Set the new profile picture in formData
         setFormData({ ...formData, profile_picture: file });
 
-        // Automatically submit the form once the image is selected
         const formDataToSend = new FormData();
         formDataToSend.append("profile_picture", file);
         formDataToSend.append("_method", "PUT");
@@ -96,8 +103,8 @@ const UserBiodata = ({ setProgress }) => {
           },
         })
           .then((response) => {
-            console.log("Profile picture updated successfully:", response.data);
-            // Optionally update the UI based on the response
+            toast.success("Foto profil berhasil diperbarui.");
+            fetchUserData();
           })
           .catch((error) => {
             console.error("Error updating profile picture:", error);
@@ -109,43 +116,63 @@ const UserBiodata = ({ setProgress }) => {
 
   // Submit data
   const handleSubmit = () => {
-    const formDataToSend = new FormData();
+    // Buat FormData atau JSON payload tergantung field yang sedang diubah
+    if (fieldToUpdate === "password") {
+      // Membuat objek data untuk password
+      const passwordData = {
+        old_password: oldPassword,
+        password: password,
+      };
 
-    // Append data to FormData
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("username", formData.username);
-    formDataToSend.append("call_number", formData.call_number);
-    formDataToSend.append("birth_date", formData.birth_date);
-    formDataToSend.append("birth_location", "Semarang"); // You can update based on the user input
-    formDataToSend.append(
-      "gender",
-      formData.gender === "Laki-laki" ? "male" : "female"
-    );
+      axiosInstance
+        .put("/user/edit-profile/password", passwordData)
+        .then((response) => {
+          console.log("Password updated successfully:", response.data);
+          toast.success("Password berhasil diperbarui.");
+          closeModal();
+        })
+        .catch((error) => {
+          console.error("Error updating password:", error);
+          toast.error("Gagal memperbarui password.");
+        });
+    } else {
+      // Membuat objek FormData untuk profil lainnya
+      const formDataToSend = new FormData();
+      // Tambahkan data ke FormData
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("username", formData.username);
+      formDataToSend.append("call_number", formData.call_number);
+      formDataToSend.append("birth_date", formData.birth_date);
+      formDataToSend.append("birth_location", "Semarang"); // Sesuaikan dengan input pengguna
+      formDataToSend.append("gender", formData.gender === "Laki-laki" ? "male" : "female");
 
-    // Handle profile picture if it is updated
-    if (formData.profile_picture instanceof File) {
-      formDataToSend.append("profile_picture", formData.profile_picture);
-    }
+      // Tangani foto profil jika diubah
+      if (formData.profile_picture instanceof File) {
+        formDataToSend.append("profile_picture", formData.profile_picture);
+      }
 
-    formDataToSend.append("_method", "PUT");
+      formDataToSend.append("_method", "PUT");
 
-    // Send the formData to the API
-    axiosInstance({
-      method: "post",
-      url: "/user/edit-profile", // Endpoint to update profile
-      data: formDataToSend,
-      headers: {
-        "Content-Type": "multipart/form-data", // Ensure the correct headers are set
-      },
-    })
-      .then((response) => {
-        console.log("Profile updated successfully:", response.data);
-        closeModal();
-        // Optionally update the UI based on the response, e.g., refresh the profile
+      // Mengirim formData ke API untuk profil lainnya
+      axiosInstance({
+        method: "post",
+        url: "/user/edit-profile", // Endpoint untuk memperbarui profil
+        data: formDataToSend,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
-      .catch((error) => {
-        console.error("Error updating profile:", error);
-      });
+        .then((response) => {
+          console.log("Profile updated successfully:", response.data);
+          toast.success("Profil berhasil diperbarui.");
+          closeModal();
+          fetchUserData(); // Optionally refresh profile data
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
+          toast.error("Gagal memperbarui profil.");
+        });
+    }
   };
 
   return (
@@ -187,13 +214,13 @@ const UserBiodata = ({ setProgress }) => {
             onClick={() =>
               openModal(
                 "password",
-                formData.password ? "Ubah Password" : "Buat Password",
+                "Ubah Password",
                 "Silakan masukkan password baru."
               )
             }
             className="flex justify-center w-full px-5 py-3 mt-3 text-sm font-semibold border rounded-xl"
           >
-            {formData.password ? "Ubah Password" : "Buat Password"}
+            {"Ubah Password"}
           </button>
         </div>
 
@@ -425,19 +452,17 @@ const UserBiodata = ({ setProgress }) => {
           <>
             <div className="mb-4">
               <PasswordInput
-                label="Password Baru"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                label="Password Lama"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
               />
             </div>
             <PasswordInput
-              label="Konfirmasi Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              label="Password Baru"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            {passwordError && (
-              <p className="text-sm text-red-500">{passwordError}</p>
-            )}
+
           </>
         ) : (
           <TextInput

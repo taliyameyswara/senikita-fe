@@ -11,6 +11,10 @@ const SenimanDashboardLayout = ({ children, pageTitle }) => {
     document.title = pageTitle || "Dashboard Seniman";
   }, [pageTitle]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="">
       <Navbar

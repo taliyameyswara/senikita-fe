@@ -6,9 +6,14 @@ const ServiceOrderDetails = ({ eventDetails }) => {
     return `${(size / (1024 * 1024)).toFixed(2)} MB`; // Convert to MB
   };
 
-  const handleFileButtonClick = (file) => {
-    console.log("button file clicked");
+  const handleFileButtonClick = (fileUrl) => {
+    window.open(fileUrl, "_blank"); // Open the file in a new tab
   };
+
+  // Parse the optional_document field
+  const optionalDocuments = eventDetails.optional_document
+    ? JSON.parse(eventDetails.optional_document)
+    : [];
 
   return (
     <div className="mb-2">
@@ -39,28 +44,23 @@ const ServiceOrderDetails = ({ eventDetails }) => {
             <td className="text-gray-500">Catatan</td>
             <td>{eventDetails.description}</td>
           </tr>
-          {/* {eventDetails.optional_document?.length > 0 && ("ada")} */}
-          {/* <tr className="align-top">
-            <td className="text-gray-500">Permintaan Khusus</td>
-            <td>{eventDetails.specialRequest}</td>
-          </tr> */}
           {/* File Display Section */}
-          {/* <tr className="align-top">
+          <tr className="align-top">
             <td className="text-gray-500">File Pendukung</td>
             <td>
-              {eventDetails.optional_document.length > 0 ? (
+              {optionalDocuments.length > 0 ? (
                 <div className="flex flex-col gap-2">
-                  {eventDetails.files.map((file, index) => (
+                  {optionalDocuments.map((fileUrl, index) => (
                     <button
-                      onClick={() => handleFileButtonClick(file)}
+                      onClick={() => handleFileButtonClick(fileUrl)}
                       key={index}
                       className="flex items-center gap-2 p-2 mb-2 border rounded-lg"
                     >
                       <FaRegFile className="text-gray-500" />
                       <div className="flex flex-col items-start">
-                        <span className="text-sm">{file.name}</span>
+                        <span className="text-sm">{`Dokumen ${index + 1}`}</span>
                         <span className="text-xs text-gray-500">
-                          {formatFileSize(file.size)}
+                          {fileUrl.split('/').pop()} {/* Display file name */}
                         </span>
                       </div>
                     </button>
@@ -72,7 +72,7 @@ const ServiceOrderDetails = ({ eventDetails }) => {
                 </span>
               )}
             </td>
-          </tr> */}
+          </tr>
         </tbody>
       </table>
     </div>
