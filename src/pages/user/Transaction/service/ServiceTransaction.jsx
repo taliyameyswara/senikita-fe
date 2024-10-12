@@ -8,13 +8,14 @@ import { useAxiosInstance } from "../../../../config/axiosConfig";
 
 import { FaStar } from "react-icons/fa";
 
-const ServiceTransaction = () => {
+const ServiceTransaction = ({ setProgress }) => {
   const axios = useAxiosInstance();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setProgress(30);
     const fetchTransactions = async () => {
       try {
         const response = await axios.get("user/transaction-history-service");
@@ -24,12 +25,12 @@ const ServiceTransaction = () => {
         setError(error);
       } finally {
         setLoading(false);
+        setProgress(100);
       }
     };
 
     fetchTransactions();
   }, []);
-
 
   return (
     <div className="space-y-4">
@@ -53,11 +54,10 @@ const ServiceTransaction = () => {
               />
             }
             button={
-
               <>
                 <div className="flex items-center justify-end w-full gap-3">
                   {shippingStatus === "selesai" &&
-                    paymentStatus === "selesai" ? (
+                  paymentStatus === "selesai" ? (
                     <div className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary  text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer">
                       <FaStar className="text-yellow-400" />
                       <div className="">Beri Ulasan</div>

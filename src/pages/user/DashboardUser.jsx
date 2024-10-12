@@ -11,16 +11,13 @@ import { IoIosHourglass } from "react-icons/io";
 import { BsTruck } from "react-icons/bs";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { PiListStar } from "react-icons/pi";
+import FullPageLoader from "../../components/loading/FullPageLoader";
 
 const DashboardUser = () => {
   const { user, loading } = useContext(UserContext);
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return <div>User not found!</div>;
+    return <FullPageLoader />;
   }
 
   const breadcrumbItems = [

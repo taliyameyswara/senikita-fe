@@ -85,7 +85,10 @@ function App() {
         <Route path="*" element={<NotFound />} />
 
         {/* Route for home */}
-        <Route path="/search" element={<SearchResult />} />
+        <Route
+          path="/search"
+          element={<SearchResult setProgress={setProgress} />}
+        />
         <Route
           path="/product/:id"
           element={<ProductDetails setProgress={setProgress} />}
@@ -105,7 +108,10 @@ function App() {
           <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
 
           {/* SENIMAN */}
-          <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
+          <Route
+            path="/seniman/dashboard"
+            element={<DashboardSeniman setProgress={setProgress} />}
+          />
           {/* kesenian */}
           <Route
             path="/seniman/dashboard/kesenian"
@@ -145,7 +151,7 @@ function App() {
           {/* transaction */}
           <Route
             path="/user/dashboard/transaction"
-            element={<DashboardTransaction />}
+            element={<DashboardTransaction setProgress={setProgress} />}
           />
           <Route
             path="/user/dashboard/transaction/product/details/:id"
@@ -157,7 +163,7 @@ function App() {
           />
           <Route
             path="/user/dashboard/wishlist"
-            element={<DashboardWishlist />}
+            element={<DashboardWishlist setProgress={setProgress} />}
           />
           {/* profil */}
           <Route path="/user/dashboard/profil" element={<UserProfile />} />

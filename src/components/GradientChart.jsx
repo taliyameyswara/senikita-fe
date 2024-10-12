@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createUseStyles } from "react-jss";
 import {
   AreaChart,
@@ -9,7 +9,8 @@ import {
   YAxis,
 } from "recharts";
 
-const data = [
+// Sample data for 2023 and 2024
+const data2023 = [
   { month: "Jan", productSales: 300, serviceSales: 200 },
   { month: "Feb", productSales: 500, serviceSales: 300 },
   { month: "Mar", productSales: 400, serviceSales: 250 },
@@ -22,6 +23,21 @@ const data = [
   { month: "Oct", productSales: 1200, serviceSales: 900 },
   { month: "Nov", productSales: 1300, serviceSales: 1000 },
   { month: "Dec", productSales: 1400, serviceSales: 1100 },
+];
+
+const data2024 = [
+  { month: "Jan", productSales: 1000, serviceSales: 250 },
+  { month: "Feb", productSales: 600, serviceSales: 400 },
+  { month: "Mar", productSales: 450, serviceSales: 300 },
+  { month: "Apr", productSales: 700, serviceSales: 450 },
+  { month: "May", productSales: 800, serviceSales: 550 },
+  { month: "Jun", productSales: 900, serviceSales: 650 },
+  { month: "Jul", productSales: 850, serviceSales: 600 },
+  { month: "Aug", productSales: 1000, serviceSales: 750 },
+  { month: "Sep", productSales: 1200, serviceSales: 850 },
+  { month: "Oct", productSales: 1300, serviceSales: 950 },
+  { month: "Nov", productSales: 1400, serviceSales: 1050 },
+  { month: "Dec", productSales: 1500, serviceSales: 1150 },
 ];
 
 const useStyles = createUseStyles(() => ({
@@ -47,13 +63,13 @@ const useStyles = createUseStyles(() => ({
 const GradientColors = () => (
   <>
     <linearGradient id="productSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#A8412A" stopOpacity={0.4} />
-      <stop offset="75%" stopColor="#ff9b9b" stopOpacity={0.3} />
+      <stop offset="30%" stopColor="#CD5151" stopOpacity={0.4} />
+      <stop offset="75%" stopColor="#8B5C21" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
     <linearGradient id="serviceSalesGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="30%" stopColor="#119083" stopOpacity={0.4} />
-      <stop offset="75%" stopColor="#7fe6dc" stopOpacity={0.3} />
+      <stop offset="30%" stopColor="#CD9651" stopOpacity={0.4} />
+      <stop offset="75%" stopColor="#CD9651" stopOpacity={0.3} />
       <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
     </linearGradient>
   </>
@@ -61,15 +77,28 @@ const GradientColors = () => (
 
 const GradientChart = () => {
   const classes = useStyles();
+  const [selectedYear, setSelectedYear] = useState("2023");
+
+  const handleChange = (event) => {
+    setSelectedYear(event.target.value);
+  };
+
+  const data = selectedYear === "2023" ? data2023 : data2024;
 
   return (
     <div className={classes.container}>
       <h2 className={classes.title}>
-        Data Penjualan Produk dan Jasa per Bulan
+        Data Penjualan Produk dan Jasa per Bulan {selectedYear}
       </h2>
+      <select
+        className="mt-4 mb-6 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-none focus:ring-0"
+        value={selectedYear}
+        onChange={handleChange}
+      >
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+      </select>
       <ResponsiveContainer width="100%" height={300}>
-        {" "}
-        {/* Set a height here */}
         <AreaChart data={data}>
           <defs>
             <GradientColors />
@@ -83,15 +112,15 @@ const GradientChart = () => {
           <Area
             dataKey="productSales"
             type="monotone"
-            stroke="#A8412A"
-            strokeWidth={3}
+            stroke="#CD5151"
+            strokeWidth={2}
             fill="url(#productSalesGradient)"
           />
           <Area
             dataKey="serviceSales"
             type="monotone"
-            stroke="#119083"
-            strokeWidth={3}
+            stroke="#CD9651"
+            strokeWidth={2}
             fill="url(#serviceSalesGradient)"
           />
         </AreaChart>

@@ -10,6 +10,10 @@ const UserDashboardLayout = ({ children, pageTitle }) => {
     document.title = pageTitle || "Dashboard";
   }, [pageTitle]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="">
       <Navbar

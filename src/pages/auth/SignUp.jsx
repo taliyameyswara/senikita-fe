@@ -1,11 +1,12 @@
 import NavbarLogo from "../../components/navbar/NavbarLogo";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { toast } from "react-toastify";
 import { useAuthApi } from "../../api/auth";
 import PasswordInput from "../../components/form-input/PasswordInput";
+import FooterLogo from "../../components/footer/FooterLogo";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -16,6 +17,10 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false); // Loading state
   const { register: registerApi } = useAuthApi();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const isFormValid = name && email && password && confirmPassword;
 
@@ -176,6 +181,7 @@ const SignUp = () => {
             </div>
           </form>
         </div>
+        <FooterLogo />
       </div>
     </>
   );

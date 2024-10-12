@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
@@ -18,6 +18,10 @@ const LogIn = ({ setProgress }) => {
   const navigate = useNavigate();
   const { login, setEmailOTP } = useContext(UserContext);
   const { login: loginApi } = useAuthApi();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const isFormValid = email && password;
 
@@ -164,9 +168,8 @@ const LogIn = ({ setProgress }) => {
             </form>
           </div>
         </div>
-        <div className="mb-8">
-          <FooterLogo />
-        </div>
+
+        <FooterLogo />
       </div>
     </>
   );

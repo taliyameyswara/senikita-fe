@@ -6,7 +6,7 @@ import ProductTransaction from "../transaction/product/ProductTransaction";
 import ServiceTransaction from "./service/ServiceTransaction";
 import { ProductData } from "../../../utils/ProductData";
 
-const DashboardTransaction = () => {
+const DashboardTransaction = ({ setProgress }) => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/user/dashboard" },
@@ -25,12 +25,12 @@ const DashboardTransaction = () => {
     {
       name: "produk-kesenian",
       label: "Produk Kesenian",
-      content: <ProductTransaction />,
+      content: <ProductTransaction setProgress={setProgress} />,
     },
     {
       name: "jasa-kesenian",
       label: "Jasa Kesenian",
-      content: <ServiceTransaction />,
+      content: <ServiceTransaction setProgress={setProgress} />,
     },
   ];
 

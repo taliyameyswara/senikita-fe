@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { IoArrowBackOutline, IoArrowForwardOutline } from "react-icons/io5"; // Import icons
+import FullPageLoader from "../../../components/loading/FullPageLoader";
 
 // Custom ArrowButton Component
 const ArrowButton = ({ onClick, direction }) => (
@@ -44,7 +45,7 @@ const PopularSenimanSection = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <FullPageLoader />;
   }
 
   // Slider settings with custom arrows

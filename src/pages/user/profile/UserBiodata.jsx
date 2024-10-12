@@ -4,7 +4,7 @@ import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
 import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
-import { useAxiosInstance } from '../../../config/axiosConfig';
+import { useAxiosInstance } from "../../../config/axiosConfig";
 
 const UserBiodata = () => {
   const axiosInstance = useAxiosInstance();
@@ -23,7 +23,8 @@ const UserBiodata = () => {
   });
 
   useEffect(() => {
-    axiosInstance.get("/user/profile")
+    axiosInstance
+      .get("/user/profile")
       .then((res) => {
         const userData = res.data.data;
         setUserData(userData);
@@ -43,7 +44,6 @@ const UserBiodata = () => {
         setLoading(false);
       });
   }, []);
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -104,7 +104,6 @@ const UserBiodata = () => {
     }
   };
 
-
   // Submit data
   const handleSubmit = () => {
     const formDataToSend = new FormData();
@@ -115,7 +114,10 @@ const UserBiodata = () => {
     formDataToSend.append("call_number", formData.call_number);
     formDataToSend.append("birth_date", formData.birth_date);
     formDataToSend.append("birth_location", "Semarang"); // You can update based on the user input
-    formDataToSend.append("gender", formData.gender === "Laki-laki" ? "male" : "female");
+    formDataToSend.append(
+      "gender",
+      formData.gender === "Laki-laki" ? "male" : "female"
+    );
 
     // Handle profile picture if it is updated
     if (formData.profile_picture instanceof File) {
@@ -146,7 +148,6 @@ const UserBiodata = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
 
   return (
     <div className="">

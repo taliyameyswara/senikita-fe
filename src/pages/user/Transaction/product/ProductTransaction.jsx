@@ -10,13 +10,14 @@ import Modal from "../../../../components/Modal";
 import ReviewForm from "../../../../components/ReviewForm";
 import { formatNumber } from "../../../../utils/formatNumber";
 
-const ProductTransaction = () => {
+const ProductTransaction = ({ setProgress }) => {
   const axios = useAxiosInstance();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setProgress(30);
     const fetchTransactions = async () => {
       try {
         const response = await axios.get("user/transaction-history");
@@ -26,6 +27,7 @@ const ProductTransaction = () => {
         setError(error);
       } finally {
         setLoading(false);
+        setProgress(100);
       }
     };
 
@@ -68,7 +70,6 @@ const ProductTransaction = () => {
               />
             }
             button={
-
               <div className="flex items-center justify-end w-full gap-3">
                 {shippingStatus === "selesai" &&
                   paymentStatus === "selesai" && (
@@ -115,7 +116,7 @@ const ProductTransaction = () => {
               </div>
             </div>
           }
-          handleSubmit={() => { }}
+          handleSubmit={() => {}}
         >
           <ReviewForm />
         </Modal>

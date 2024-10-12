@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 const FooterLogo = () => {
   return (
-    <div>
-      <hr className="my-8 w-full" />
+    <div className="container pb-10 px-6">
+      <hr className="my-8 w-full " />
       <div className="flex items-center justify-between ">
         <div className="">
           <Link
