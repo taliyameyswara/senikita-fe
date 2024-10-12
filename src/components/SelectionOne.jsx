@@ -18,13 +18,18 @@ const SelectionOne = ({
 
   const handleSelect = (option) => {
     setTempSelectedOption(option);
-    onSelect(option.value);  // Call onSelect immediately after SelectionOne 
-    setIsOpen(false);  // Close the dropdown
+    onSelect(option); // Call onSelect immediately with full option
+    setIsOpen(false); // Close the dropdown
   };
 
   const isSelected = (option) => {
     return tempSelectedOption?.value === option.value;
   };
+
+  useEffect(() => {
+    // Sync tempSelectedOption with the parent selectedOption whenever it changes
+    setTempSelectedOption(selectedOption);
+  }, [selectedOption]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {

@@ -39,11 +39,12 @@ const KesenianProduct = () => {
     try {
       const response = await axiosInstance.get("user/shop/products");
       if (response.data.status === "success") {
+        console.log(response.data.products);
         const fetchedProducts = response.data.products.map((product) => ({
           id: product.id,
           thumbnail: product.thumbnail,
           name: product.name,
-          category: product.category_id,
+          category: product.category.name,
           likes: product.sold,
           cartCount: 0,
           price: product.price,
@@ -211,10 +212,8 @@ const KesenianProduct = () => {
                 <td className="p-4 border-b">
                   <div className="flex space-x-2">
                     <Link
-                      to={`/seniman/dashboard/kesenian/updateproduct`}
-                      state={{
-                        product: product,
-                        }}
+                      to={`/seniman/dashboard/kesenian/updateproduct/${product.id}`}
+
                     >
                       <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
                         <BsPencil size={20} />

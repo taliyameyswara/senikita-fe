@@ -32,14 +32,14 @@ const AddService = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [formData, setFormData] = useState({
-    category_id: [],
+    category_id: null, // Simpan sebagai satu objek
     name: "",
     desc: "",
     price: 0,
     images: [],
     agreeTerms: false,
     person_amount: 0,
-    type: "",
+    type: null, // Simpan sebagai satu objek
   });
 
   const options = [
@@ -73,13 +73,13 @@ const AddService = () => {
 
       const postFormData = new FormData();
 
-      postFormData.append("category_id", formData.category_id);
+      postFormData.append("category_id", formData.category_id.value);
       postFormData.append("name", formData.name);
       postFormData.append("desc", formData.desc);
       postFormData.append("price", formData.price);
       postFormData.append("stock", formData.stock);
       postFormData.append("person_amount", formData.person_amount);
-      postFormData.append("type", formData.type);
+      postFormData.append("type", formData.type.value);
 
       if (formData.images[0]) {
         postFormData.append("thumbnail", formData.images[0].file);
@@ -114,11 +114,11 @@ const AddService = () => {
       case 0:
         return (
           formData.name.trim().length > 0 &&
-            formData.desc.trim().length > 0 &&
-            formData.price > 0 &&
-            formData.category_id.length > 0 &&
-            formData.person_amount > 0,
-          formData.type !== ""
+          formData.desc.trim().length > 0 &&
+          formData.price > 0 &&
+          formData.category_id !== null &&
+          formData.person_amount > 0,
+          formData.type !== null
         );
       case 1:
         return formData.images.length > 0;
@@ -140,8 +140,8 @@ const AddService = () => {
         }));
         setCategoryOptions(category_id);
       })
-      .catch((err) => {})
-      .finally(() => {});
+      .catch((err) => { })
+      .finally(() => { });
   }, []);
 
   return (
@@ -173,11 +173,11 @@ const AddService = () => {
                       </>
                     }
                     options={categoryOptions}
-                    selectedOptions={formData.category_id}
-                    onSelect={(options) =>
+                    selectedOption={formData.category_id}
+                    onSelect={(option) =>
                       setFormData((prevFormData) => ({
                         ...prevFormData,
-                        category_id: options,
+                        category_id: option,
                       }))
                     }
                     placeholder="Pilih Kategori"
@@ -230,11 +230,11 @@ const AddService = () => {
                       </>
                     }
                     options={options}
-                    selectedOptions={formData.type}
-                    onSelect={(options) =>
+                    selectedOption={formData.type}
+                    onSelect={(option) =>
                       setFormData((prevFormData) => ({
                         ...prevFormData,
-                        type: options,
+                        type: option,
                       }))
                     }
                     placeholder="Pilih Tipe Waktu Kesenian"
@@ -373,11 +373,10 @@ const AddService = () => {
                 <button
                   onClick={handleNextStep}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-secondary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selanjutnya
                 </button>
@@ -385,11 +384,10 @@ const AddService = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!isStepValid()}
-                  className={`px-4 py-2 rounded-xl ${
-                    isStepValid()
-                      ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
-                      : "bg-gray-200 text-gray-400 font-semibold"
-                  }`}
+                  className={`px-4 py-2 rounded-xl ${isStepValid()
+                    ? "bg-tertiary text-white font-semibold hover:bg-opacity-90"
+                    : "bg-gray-200 text-gray-400 font-semibold"
+                    }`}
                 >
                   Selesai
                 </button>

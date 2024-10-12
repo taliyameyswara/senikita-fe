@@ -14,19 +14,6 @@ import { toast } from "react-toastify";
 
 const KesenianService = () => {
   const axiosInstance = useAxiosInstance();
-
-  // Dummy service data
-  // const [services, setServices] = useState([
-  //   {
-  //     id: 1,
-  //     thumbnail: "https://via.placeholder.com/100", // Example image
-  //     name: "Lukis Mural Jogja",
-  //     category: "Jasa Seni Rupa",
-  //     likes: 80,
-  //     price: 2000000,
-  //     isActive: true,
-  //   },
-  // ]);
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,7 +64,7 @@ const KesenianService = () => {
           id: service.id,
           thumbnail: service.thumbnail,
           name: service.name,
-          category: service.category_id,
+          category: service.category.name,
           likes: service.sold,
           cartCount: 0,
           price: service.price,
@@ -88,10 +75,8 @@ const KesenianService = () => {
       }
     } catch (error) {
       if (error.response) {
-        // Jika respons ada, lakukan sesuatu dengan error.response
         console.error(error.response.data);
       } else {
-        // Jika tidak ada respons (seperti koneksi gagal)
         console.error("Error:", error.message);
       }
     } finally {
@@ -210,7 +195,7 @@ const KesenianService = () => {
                 {/* Aksi */}
                 <td className="p-4 border-b">
                   <div className="flex space-x-2">
-                    <Link to={`/seniman/dashboard/kesenian/updateservice`}>
+                    <Link to={`/seniman/dashboard/kesenian/updateservice/${service.id}`}>
                       <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
                         <BsPencil size={20} />
                       </button>

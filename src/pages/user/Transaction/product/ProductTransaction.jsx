@@ -70,10 +70,10 @@ const ProductTransaction = () => {
             button={
 
               <div className="flex items-center justify-end w-full gap-3">
-                {shippingStatus === "selesai" &&
-                  paymentStatus === "selesai" && (
+                {shippingStatus === "DONE" &&
+                  paymentStatus === "DONE" && (
                     <div
-                      onClick={() => openReviewModal(product)}
+                      onClick={() => openReviewModal(transaction)}
                       className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary  text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer"
                     >
                       <FaStar className="text-yellow-400" />

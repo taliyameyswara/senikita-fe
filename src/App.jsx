@@ -27,8 +27,8 @@ import ServiceTransactionDetails from "./pages/user/transaction/service/ServiceT
 
 import DashboardSeniman from "./pages/seniman/DashboardSeniman";
 import KesenianList from "./pages/seniman/kesenian/KesenianList";
-import AddProduct from "./pages/seniman/kesenian/product/AddProduct";
-import EditProduct from "./pages/seniman/kesenian/product/EditProduct";
+import AddProduct from "./pages/seniman/Kesenian/product/AddProduct";
+import EditProduct from "./pages/seniman/Kesenian/product/EditProduct";
 import AddService from "./pages/seniman/kesenian/service/AddService";
 import EditService from "./pages/seniman/kesenian/service/EditService";
 import ProductOrder from "./pages/form/ProductOrder";
@@ -41,6 +41,7 @@ import SenimanProfile from "./pages/seniman/profile/SenimanProfile";
 import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
+import Playground from "./pages/Playground";
 
 function App() {
   return (
@@ -100,7 +101,7 @@ function App() {
             element={<AddProduct />}
           />
           <Route
-            path="/seniman/dashboard/kesenian/updateproduct"
+            path="/seniman/dashboard/kesenian/updateproduct/:id"
             element={<EditProduct />}
           />
           {/* service */}
@@ -109,7 +110,7 @@ function App() {
             element={<AddService />}
           />
           <Route
-            path="/seniman/dashboard/kesenian/updateservice"
+            path="/seniman/dashboard/kesenian/updateservice/:id"
             element={<EditService />}
           />
           <Route
@@ -149,6 +150,7 @@ function App() {
           <Route path="/service-order" element={<ServiceOrder />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
+        <Route path="/playground" element={<Playground />}></Route>
       </Routes>
       <ToastContainer autoClose={1200} />
     </Router>
