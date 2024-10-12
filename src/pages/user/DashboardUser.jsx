@@ -84,7 +84,7 @@ const DashboardUser = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-3">
           {purchaseProductData.map((purchase, index) => (
             <Link to={"/user/dashboard/transaction"} key={index}>
-              <div className="flex gap-3 items-center p-3 rounded-xl hover:bg-gray-50">
+              <div className="flex gap-3 items-center p-3 rounded-xl bg-tertiary/[0.08]">
                 <div className="p-3 rounded-xl bg-tertiary/20 relative">
                   {purchase.count > 0 && (
                     <span
@@ -114,7 +114,7 @@ const DashboardUser = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
           {purchaseServiceData.map((purchase, index) => (
             <Link to={"/user/dashboard/transaction"} key={index}>
-              <div className="flex gap-3 items-center p-3 rounded-xl hover:bg-gray-50">
+              <div className="flex gap-3 items-center p-3 rounded-xl bg-tertiary/[0.08]">
                 <div className="p-3 rounded-xl bg-tertiary/20 relative">
                   {purchase.count > 0 && (
                     <span

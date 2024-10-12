@@ -5,6 +5,7 @@ import ProductCard from "../../../components/card/ProductCard";
 import { ProductData } from "../../../utils/ProductData";
 import Tabs from "../../../components/Tabs";
 import { useAxiosInstance } from "../../../config/axiosConfig";
+import EmptyState from "../../../components/EmptyState";
 
 const DashboardWishlist = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
@@ -57,27 +58,33 @@ const DashboardWishlist = ({ setProgress }) => {
 
   const ProductContent = () => (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {products &&
-          products.map((product, index) => (
+      {products.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {products.map((product, index) => (
             <div key={index}>
               <ProductCard product={product} type={"Product"} />
             </div>
           ))}
-      </div>
+        </div>
+      ) : (
+        <EmptyState message="Tidak ada produk dalam wishlist" />
+      )}
     </div>
   );
 
   const ServiceContent = () => (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {service &&
-          service.map((serviceItem, index) => (
+      {service.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {service.map((serviceItem, index) => (
             <div key={index}>
               <ProductCard product={serviceItem} type={"Service"} />
             </div>
           ))}
-      </div>
+        </div>
+      ) : (
+        <EmptyState message="Tidak ada jasa dalam wishlist" />
+      )}
     </div>
   );
 
@@ -85,12 +92,12 @@ const DashboardWishlist = ({ setProgress }) => {
     {
       name: "produk-kesenian",
       label: "Produk Kesenian",
-      content: <ProductContent />,
+      content: <ProductContent setProgress={setProgress} />,
     },
     {
       name: "jasa-kesenian",
       label: "Jasa Kesenian",
-      content: <ServiceContent />,
+      content: <ServiceContent setProgress={setProgress} />,
     },
   ];
 

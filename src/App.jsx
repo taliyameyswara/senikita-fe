@@ -115,7 +115,7 @@ function App() {
           {/* kesenian */}
           <Route
             path="/seniman/dashboard/kesenian"
-            element={<KesenianList />}
+            element={<KesenianList setProgress={setProgress} />}
           />
           {/* product */}
           <Route
@@ -166,7 +166,10 @@ function App() {
             element={<DashboardWishlist setProgress={setProgress} />}
           />
           {/* profil */}
-          <Route path="/user/dashboard/profil" element={<UserProfile />} />
+          <Route
+            path="/user/dashboard/profil"
+            element={<UserProfile setProgress={setProgress} />}
+          />
 
           <Route path="/product-order" element={<ProductOrder />} />
           <Route path="/service-order" element={<ServiceOrder />} />

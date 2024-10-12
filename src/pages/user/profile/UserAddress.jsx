@@ -9,7 +9,9 @@ import { useAxiosInstance } from "../../../config/axiosConfig";
 import DeleteModal from "../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
 import AddAddressModal from "../../../components/address/AddAdressModal";
-const UserAddress = () => {
+import EmptyState from "../../../components/EmptyState";
+
+const UserAddress = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [addresses, setAddresses] = useState([]);
@@ -37,9 +39,9 @@ const UserAddress = () => {
     }
   };
   useEffect(() => {
-    // Mengambil data alamat dari API 
-
+    // Mengambil data alamat dari API
     fetchAddresses();
+    setProgress(100);
   }, []);
 
   const openAddModal = () => setIsAddModalOpen(true);
@@ -55,6 +57,7 @@ const UserAddress = () => {
       const response = await axiosInstance.post("user/address", newAddress);
       if (response.data.status === "success") {
         fetchAddresses();
+        setProgress(100);
         closeAddModal();
       } else {
         // console.error("Failed to add address:", response.data.message);
@@ -75,9 +78,13 @@ const UserAddress = () => {
 
   const handleDeleteAddress = async () => {
     try {
-      const response = await axiosInstance.delete(`user/address/${addressToDelete.id}`);
+      const response = await axiosInstance.delete(
+        `user/address/${addressToDelete.id}`
+      );
       if (response.data.status === "success") {
-        setAddresses(addresses.filter((address) => address.id !== addressToDelete.id));
+        setAddresses(
+          addresses.filter((address) => address.id !== addressToDelete.id)
+        );
         closeDeleteModal();
       } else {
         // console.error("Failed to delete address:", response.data.message);
@@ -94,8 +101,6 @@ const UserAddress = () => {
     setAddressToDelete(null);
   };
 
-
-
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -111,15 +116,22 @@ const UserAddress = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        {addresses.map((address) => (
-          <CustomerAddress key={address.id} address={address} isOrder={false} openDeleteModal={openDeleteModal} // Kirim fungsi ini sebagai prop
-          />
-        ))}
-      </div>
+      {addresses.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          {addresses.map((address) => (
+            <CustomerAddress
+              key={address.id}
+              address={address}
+              isOrder={false}
+              openDeleteModal={openDeleteModal}
+            />
+          ))}
+        </div>
+      ) : (
+        <EmptyState message="Tidak ada alamat yang tersedia" />
+      )}
 
       {/* Modal Tambah Alamat */}
-
 
       <AddAddressModal
         isOpen={isAddModalOpen}
@@ -129,16 +141,16 @@ const UserAddress = () => {
         handleChange={handleAddChange}
       />
 
-
       {/* Modal Hapus Alamat */}
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
         onConfirm={handleDeleteAddress} // Pastikan onConfirm memanggil handleDeleteAddress
         title="Konfirmasi Hapus"
-        subtitle={`Apakah Anda yakin ingin menghapus alamat ${addressToDelete ? addressToDelete.label_address : ''}?`} // Menampilkan label alamat yang akan dihapus
+        subtitle={`Apakah Anda yakin ingin menghapus alamat ${
+          addressToDelete ? addressToDelete.label_address : ""
+        }?`} // Menampilkan label alamat yang akan dihapus
       />
-
     </div>
   );
 };

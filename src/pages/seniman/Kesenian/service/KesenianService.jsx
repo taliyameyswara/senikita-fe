@@ -6,27 +6,13 @@ import TextInput from "../../../../components/form-input/TextInput";
 import { IoMdHeart } from "react-icons/io";
 import { BsPencil } from "react-icons/bs";
 import { useAxiosInstance } from "../../../../config/axiosConfig";
-import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import DeleteModal from "../../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
+import EmptyState from "../../../../components/EmptyState";
 
-
-
-const KesenianService = () => {
+const KesenianService = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
 
-  // Dummy service data
-  // const [services, setServices] = useState([
-  //   {
-  //     id: 1,
-  //     thumbnail: "https://via.placeholder.com/100", // Example image
-  //     name: "Lukis Mural Jogja",
-  //     category: "Jasa Seni Rupa",
-  //     likes: 80,
-  //     price: 2000000,
-  //     isActive: true,
-  //   },
-  // ]);
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,18 +20,24 @@ const KesenianService = () => {
 
   const handleDelete = async (id) => {
     setLoading(true);
+    setProgress(30);
     try {
       const response = await axiosInstance.delete(`user/shop/service/${id}`);
       if (response.data.status === "success") {
-        setServices((prevServices) => prevServices.filter((service) => service.id !== id));
+        setServices((prevServices) =>
+          prevServices.filter((service) => service.id !== id)
+        );
         setIsModalOpen(false);
+        setProgress(100);
         toast.success("Produk berhasil dihapus");
       }
     } catch (error) {
       console.error(error);
+      setProgress(100);
       toast.error("Gagal menghapus produk");
     } finally {
       setLoading(false);
+      setProgress(100);
     }
   };
 
@@ -70,6 +62,7 @@ const KesenianService = () => {
 
   const fetchProducts = async () => {
     setLoading(true);
+    setProgress(30);
     try {
       const response = await axiosInstance.get("user/shop/service");
       if (response.data.status === "success") {
@@ -90,24 +83,20 @@ const KesenianService = () => {
       if (error.response) {
         // Jika respons ada, lakukan sesuatu dengan error.response
         console.error(error.response.data);
+        setProgress(100);
       } else {
         // Jika tidak ada respons (seperti koneksi gagal)
         console.error("Error:", error.message);
       }
     } finally {
       setLoading(false);
+      setProgress(100);
     }
   };
-
-
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  if (loading) {
-    return <FullPageLoader />;
-  }
 
   return (
     <div>
@@ -133,110 +122,122 @@ const KesenianService = () => {
       </div>
 
       <div className="mt-5 overflow-x-auto bg-white border rounded-xl">
-        <table className="min-w-full">
-          <thead>
-            <tr>
-              <th className="p-4 text-left border-b">Info Jasa</th>
-              <th className="p-4 text-left border-b">Statistik</th>
-              <th className="p-4 text-left border-b">Harga</th>
-              <th className="p-4 text-left border-b">Status</th>
-              <th className="p-4 text-left border-b">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {services.map((service) => (
-              <tr key={service.id} className="text-sm">
-                {/* Info Layanan */}
-                <td className="p-4 border-b">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={service.thumbnail}
-                      alt={service.name}
-                      className="object-cover w-16 h-16 rounded-lg"
-                    />
-                    <div>
-                      <div className="font-semibold">{service.name}</div>
-                      <div className="text-gray-500">{service.category}</div>
-                      <div className="text-gray-500">{service.description}</div>
-                    </div>
-                  </div>
-                </td>
-
-                {/* Statistik */}
-                <td className="p-4 border-b">
-                  <div className="flex flex-col font-light font-nunito">
-                    <div className="flex items-center gap-1">
-                      <IoMdHeart className="text-xl text-customRed" />
-                      <span className="mr-2">{service.likes}</span>
-                    </div>
-                  </div>
-                </td>
-
-                {/* Harga */}
-                <td className="p-4 border-b">
-                  <PriceInput
-                    value={service.price}
-                    onChange={(e) => handleInputChange(e, service.id, "price")}
-                  />
-                </td>
-
-                {/* Status */}
-                <td className="p-4 border-b">
-                  <button
-                    onClick={() => handleToggle(service.id)}
-                    className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
-                  >
-                    <div
-                      className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${service.isActive
-                        ? "translate-x-full bg-tertiary/10"
-                        : "bg-tertiary/10"
-                        }`}
-                    ></div>
-                    <span
-                      className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${service.isActive ? "text-gray-400" : "text-primary"
-                        }`}
-                    >
-                      Nonaktif
-                    </span>
-                    <span
-                      className={`w-1/2 text-center z-10 text-sm font-semibold ${service.isActive ? "text-primary" : "text-gray-400"
-                        }`}
-                    >
-                      Aktif
-                    </span>
-                  </button>
-                </td>
-
-                {/* Aksi */}
-                <td className="p-4 border-b">
-                  <div className="flex space-x-2">
-                    <Link to={`/seniman/dashboard/kesenian/updateservice`}>
-                      <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
-                        <BsPencil size={20} />
-                      </button>
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setServiceIdToDelete(service.id);
-                        setIsModalOpen(true);
-                      }}
-                      className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
-                    >
-                      <IoTrashOutline size={20} />
-                    </button>
-                  </div>
-                </td>
+        {loading ? (
+          setProgress(100)
+        ) : services.length > 0 ? (
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="p-4 text-left border-b">Info Jasa</th>
+                <th className="p-4 text-left border-b">Statistik</th>
+                <th className="p-4 text-left border-b">Harga</th>
+                <th className="p-4 text-left border-b">Status</th>
+                <th className="p-4 text-left border-b">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {services.map((service) => (
+                <tr key={service.id} className="text-sm">
+                  {/* Info Layanan */}
+                  <td className="p-4 border-b">
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={service.thumbnail}
+                        alt={service.name}
+                        className="object-cover w-16 h-16 rounded-lg"
+                      />
+                      <div>
+                        <div className="font-semibold">{service.name}</div>
+                        <div className="text-gray-500">{service.category}</div>
+                        <div className="text-gray-500">
+                          {service.description}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Statistik */}
+                  <td className="p-4 border-b">
+                    <div className="flex flex-col font-light font-nunito">
+                      <div className="flex items-center gap-1">
+                        <IoMdHeart className="text-xl text-customRed" />
+                        <span className="mr-2">{service.likes}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Harga */}
+                  <td className="p-4 border-b">
+                    <PriceInput
+                      value={service.price}
+                      onChange={(e) =>
+                        handleInputChange(e, service.id, "price")
+                      }
+                    />
+                  </td>
+
+                  {/* Status */}
+                  <td className="p-4 border-b">
+                    <button
+                      onClick={() => handleToggle(service.id)}
+                      className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
+                    >
+                      <div
+                        className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
+                          service.isActive
+                            ? "translate-x-full bg-tertiary/10"
+                            : "bg-tertiary/10"
+                        }`}
+                      ></div>
+                      <span
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
+                          service.isActive ? "text-gray-400" : "text-primary"
+                        }`}
+                      >
+                        Nonaktif
+                      </span>
+                      <span
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
+                          service.isActive ? "text-primary" : "text-gray-400"
+                        }`}
+                      >
+                        Aktif
+                      </span>
+                    </button>
+                  </td>
+
+                  {/* Aksi */}
+                  <td className="p-4 border-b">
+                    <div className="flex space-x-2">
+                      <Link to={`/seniman/dashboard/kesenian/updateservice`}>
+                        <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
+                          <BsPencil size={20} />
+                        </button>
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setServiceIdToDelete(service.id);
+                          setIsModalOpen(true);
+                        }}
+                        className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
+                      >
+                        <IoTrashOutline size={20} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <EmptyState message={"Data jasa kesenian tidak tersedia"} />
+        )}
       </div>
       <DeleteModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => handleDelete(serviceIdToDelete)}
       />
-
     </div>
   );
 };

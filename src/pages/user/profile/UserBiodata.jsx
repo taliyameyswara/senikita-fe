@@ -6,7 +6,7 @@ import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
 import { useAxiosInstance } from "../../../config/axiosConfig";
 
-const UserBiodata = () => {
+const UserBiodata = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,6 +23,7 @@ const UserBiodata = () => {
   });
 
   useEffect(() => {
+    setProgress(30);
     axiosInstance
       .get("/user/profile")
       .then((res) => {
@@ -39,9 +40,11 @@ const UserBiodata = () => {
           password: "", // Password kosong untuk keamanan
         });
         setLoading(false);
+        setProgress(100);
       })
       .catch((err) => {
         setLoading(false);
+        setProgress(100);
       });
   }, []);
 
@@ -144,10 +147,6 @@ const UserBiodata = () => {
         console.error("Error updating profile:", error);
       });
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="">

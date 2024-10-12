@@ -6,7 +6,7 @@ import DropdownFilter from "../../../components/DropdownFilter";
 import KesenianProduct from "./product/KesenianProduct";
 import KesenianService from "./service/KesenianService";
 
-const DaftarKesenian = () => {
+const DaftarKesenian = ({ setProgress }) => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/seniman/dashboard" },
@@ -17,12 +17,12 @@ const DaftarKesenian = () => {
     {
       name: "produk-kesenian",
       label: "Produk Kesenian",
-      content: <KesenianProduct />,
+      content: <KesenianProduct setProgress={setProgress} />,
     },
     {
       name: "jasa-kesenian",
       label: "Jasa Kesenian",
-      content: <KesenianService />,
+      content: <KesenianService setProgress={setProgress} />,
     },
   ];
 
