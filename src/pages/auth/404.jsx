@@ -1,30 +1,52 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import NavbarLogo from '../../components/navbar/NavbarLogo';
+import React from "react";
+import { Link } from "react-router-dom";
+import NavbarLogo from "../../components/navbar/NavbarLogo";
+import ErrorImage from "../../assets/home/404.png";
+import FooterLogo from "../../components/footer/FooterLogo";
 
 const NotFound = () => {
-    return (
-        <div className="flex flex-col h-screen bg-primary bg-opacity-5">
-            <NavbarLogo />
+  return (
+    <div className="relative flex flex-col  bg-primary bg-opacity-5">
+      {/* Navbar */}
+      <NavbarLogo />
 
-            <div className="flex items-center justify-center flex-grow">
-                <div className="p-10 text-center transition-transform transform bg-white rounded-lg shadow-2xl hover:scale-105">
-                    <svg className="w-16 h-16 mx-auto text-rose-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                        <path fillRule="evenodd" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM11 7a1 1 0 112 0v4a1 1 0 01-2 0V7zm0 8a1 1 0 112 0v1a1 1 0 01-2 0v-1z" clipRule="evenodd" />
-                    </svg>
-                    <h1 className="mt-6 text-4xl font-semibold text-gray-800">404 - Page Not Found</h1>
-                    <p className="my-4 text-lg text-gray-700">Oops! The page you are looking for does not exist.</p>
+      <div
+        className="container flex flex-col lg:flex-row items-center gap-10 px-6 relative"
+        style={{ minHeight: "calc(100vh - 6rem)" }}
+      >
+        {/* 404 Text Section */}
+        <div className="col-span-2 flex flex-col items-start lg:w-1/2 mb-20">
+          <h1 className="text-[4rem] lg:text-[6rem] font-extrabold text-brick leading-tight text-center lg:text-left">
+            Oops!
+          </h1>
+          <h2 className="text-[2rem] lg:text-[3rem] font-bold mb-4">
+            Halaman Tidak Ditemukan
+          </h2>
+          <p className="text-gray-500 text-lg mb-6 ">
+            Maaf, halaman yang Anda cari tidak tersedia. Mungkin Anda salah
+            ketik atau halaman telah dihapus.
+          </p>
 
-                    <Link
-                        className="inline-block px-6 py-3 mt-6 text-lg font-semibold text-white transition duration-300 rounded-lg shadow-md bg-rose-600 hover:bg-rose-500 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-75"
-                        to="/"
-                    >
-                        Go Back Home
-                    </Link>
-                </div>
-            </div>
+          <Link
+            className="inline-block px-8 py-3 text-lg font-semibold text-white transition duration-300 rounded-full bg-brick hover:bg-customGreen shadow-md"
+            to="/"
+          >
+            Kembali ke Beranda
+          </Link>
         </div>
-    );
+
+        {/* 404 Image Section */}
+        <div className="absolute right-0 bottom-0 w-[80%] md:w-[30%] flex justify-end overflow-hidden pointer-events-none -z-10">
+          <img
+            src={ErrorImage}
+            alt="404 Not Found"
+            className="object-contain lg:opacity-100 opacity-10"
+          />
+        </div>
+      </div>
+      <FooterLogo />
+    </div>
+  );
 };
 
 export default NotFound;

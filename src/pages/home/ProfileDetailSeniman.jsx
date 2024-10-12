@@ -8,7 +8,7 @@ import Review from "../../components/review/Review";
 import { FaStar } from "react-icons/fa";
 import Tabs from "../../components/Tabs";
 
-const ProfileDetailSeniman = () => {
+const ProfileDetailSeniman = ({ setProgress }) => {
   const { id } = useParams();
   const axiosInstance = useAxiosInstance();
   const [seniman, setSeniman] = useState(null);
@@ -17,29 +17,25 @@ const ProfileDetailSeniman = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSenimanDetails = async () => {
-      try {
-        const response = await axiosInstance.get(`/shops/${id}`);
-        setSeniman(response.data.data);
-        setProducts(response.data.data.products || []);
-        setServices(response.data.data.services || []);
-      } catch (err) {
+    setProgress(30);
+    axiosInstance
+      .get(`/shops/${id}`)
+      .then((res) => {
+        const data = res.data.data;
+        setSeniman(data);
+        setProducts(data.products || []);
+        setProgress(100);
+        setServices(data.services || []);
+        setProgress(100);
+      })
+      .catch((err) => {
         console.error("Error fetching seniman details:", err);
-      } finally {
+        setProgress(100);
+      })
+      .finally(() => {
         setLoading(false);
-      }
-    };
-
-    fetchSenimanDetails();
-  }, [id]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!seniman) {
-    return <div>No seniman found</div>;
-  }
+      });
+  }, []);
 
   const tabs = [
     {
@@ -47,9 +43,9 @@ const ProfileDetailSeniman = () => {
       label: "Produk Kesenian",
       content: (
         <ProductList
-          title={"Produk dari Seniman"}
+          title="Produk dari Seniman"
           products={products}
-          type={"Product"}
+          type="Product"
         />
       ),
     },
@@ -58,16 +54,16 @@ const ProfileDetailSeniman = () => {
       label: "Jasa Kesenian",
       content: (
         <ProductList
-          title={"Jasa dari Seniman"}
-          products={services} // Assuming services are still available in seniman
-          type={"Service"}
+          title="Jasa dari Seniman"
+          products={services}
+          type="Service"
         />
       ),
     },
     {
       name: "review",
       label: "Ulasan",
-      content: <Review review={seniman.reviews} />, // Assuming you have a review component
+      content: <></>,
     },
   ];
 
@@ -81,51 +77,40 @@ const ProfileDetailSeniman = () => {
               <div className="flex items-center gap-4 text-sm">
                 <img
                   src={
-                    seniman.profile_picture || "https://via.placeholder.com/100"
-                  }
-                  alt={seniman.name}
+                    seniman?.profile_picture ||
+                    "https://via.placeholder.com/100"
+                  } // Use optional chaining for safe access
+                  alt={seniman?.name || "Seniman"} // Fallback name if seniman is null
                   className="object-cover w-16 h-16 rounded-full"
                 />
                 <div className="flex flex-wrap justify-between w-full">
                   <div>
-                    <div className="text-lg font-semibold">{seniman.name}</div>
-                    <div className="text-gray-600">{seniman.region}</div>
+                    <div className="text-lg font-semibold">{seniman?.name}</div>
+                    <div className="text-gray-600">{seniman?.region}</div>
                   </div>
                   <div className="flex gap-3 mt-2">
-                    <div className="">
-                      <div className="flex items-center justify-center gap-2">
+                    <div className="text-center">
+                      <div className="flex items-center gap-2">
                         <FaStar className="text-yellow-500 text-lg" />
-                        <div className="text-lg font-nunito font-bold text-center">
-                          {seniman.rating}
+                        <div className="text-lg font-bold">
+                          {seniman?.rating}
                         </div>
                       </div>
-                      <div className="text-gray-400 text-xs text-center">
+                      <div className="text-gray-400 text-xs">
                         Rating & Ulasan
                       </div>
                     </div>
-                    <div className="">
-                      <div className="text-lg font-nunito font-bold text-center">
-                        {seniman.sold}
-                      </div>
-                      <div className="text-gray-400 text-xs text-center">
-                        Penjualan
-                      </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold">{seniman?.sold}</div>
+                      <div className="text-gray-400 text-xs">Penjualan</div>
                     </div>
-                    <div className="">
-                      <div className="text-lg font-nunito font-bold text-center">
-                        {products.length} {/* Display the number of products */}
-                      </div>
-                      <div className="text-gray-400 text-xs text-center">
-                        Jumlah Produk
-                      </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold">{products.length}</div>
+                      <div className="text-gray-400 text-xs">Jumlah Produk</div>
                     </div>
-                    <div className="">
-                      <div className="text-lg font-nunito font-bold text-center">
-                        {seniman.services.length}
-                      </div>
-                      <div className="text-gray-400 text-xs text-center">
-                        Jumlah Jasa
-                      </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold">{services.length}</div>
+                      <div className="text-gray-400 text-xs">Jumlah Jasa</div>
                     </div>
                   </div>
                 </div>

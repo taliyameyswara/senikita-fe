@@ -1,5 +1,7 @@
 import "./css/index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import LoadingBar from "react-top-loading-bar";
 import Home from "./pages/home/Home";
 import LogIn from "./pages/auth/LogIn";
 import OTPVerification from "./pages/auth/OTPVerification";
@@ -44,16 +46,22 @@ import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 import Playground from "./pages/Playground";
 
 function App() {
+  const [progress, setProgress] = useState(0);
   return (
     <Router>
       {/* <ToastContainer> */}
+      <LoadingBar
+        color="#8B5C21"
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home setProgress={setProgress} />} />
 
         {/* Route yang gabisa diakses ketika sudah login */}
         <Route element={<PublicRoutes />}>
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<LogIn />} />
+          <Route path="/login" element={<LogIn setProgress={setProgress} />} />
           <Route path="/otp" element={<OTPVerification />} />
         </Route>
 
@@ -78,10 +86,22 @@ function App() {
         <Route path="*" element={<NotFound />} />
 
         {/* Route for home */}
-        <Route path="/search" element={<SearchResult />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/service/:id" element={<ServiceDetails />} />
-        <Route path="/seniman/:id" element={<ProfileDetailSeniman />} />
+        <Route
+          path="/search"
+          element={<SearchResult setProgress={setProgress} />}
+        />
+        <Route
+          path="/product/:id"
+          element={<ProductDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/service/:id"
+          element={<ServiceDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/seniman/:id"
+          element={<ProfileDetailSeniman setProgress={setProgress} />}
+        />
         {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
 
         {/* Route yang bisa diakses setelah login */}
@@ -89,11 +109,14 @@ function App() {
           <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
 
           {/* SENIMAN */}
-          <Route path="/seniman/dashboard" element={<DashboardSeniman />} />
+          <Route
+            path="/seniman/dashboard"
+            element={<DashboardSeniman setProgress={setProgress} />}
+          />
           {/* kesenian */}
           <Route
             path="/seniman/dashboard/kesenian"
-            element={<KesenianList />}
+            element={<KesenianList setProgress={setProgress} />}
           />
           {/* product */}
           <Route
@@ -129,7 +152,7 @@ function App() {
           {/* transaction */}
           <Route
             path="/user/dashboard/transaction"
-            element={<DashboardTransaction />}
+            element={<DashboardTransaction setProgress={setProgress} />}
           />
           <Route
             path="/user/dashboard/transaction/product/details/:id"
@@ -141,10 +164,13 @@ function App() {
           />
           <Route
             path="/user/dashboard/wishlist"
-            element={<DashboardWishlist />}
+            element={<DashboardWishlist setProgress={setProgress} />}
           />
           {/* profil */}
-          <Route path="/user/dashboard/profil" element={<UserProfile />} />
+          <Route
+            path="/user/dashboard/profil"
+            element={<UserProfile setProgress={setProgress} />}
+          />
 
           <Route path="/product-order" element={<ProductOrder />} />
           <Route path="/service-order" element={<ServiceOrder />} />

@@ -11,7 +11,10 @@ import { formatNumber } from "../../../../utils/formatNumber";
 import { toast } from "react-toastify";
 import MultipleImageUploader from "../../../../components/MultipleImageUploader";
 import TextareaInput from "../../../../components/form-input/TextareaInput";
-const ServiceTransaction = () => {
+
+import EmptyState from "../../../../components/EmptyState"; // Import your EmptyState component
+
+const ServiceTransaction = ({ setProgress }) => {
   const axios = useAxiosInstance();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,6 +25,7 @@ const ServiceTransaction = () => {
   // Tambahkan state untuk menyimpan data ulasan
 
   useEffect(() => {
+    setProgress(30);
     const fetchTransactions = async () => {
       try {
         const response = await axios.get("user/transaction-history-service");
@@ -30,6 +34,7 @@ const ServiceTransaction = () => {
         setError(error);
       } finally {
         setLoading(false);
+        setProgress(100);
       }
     };
 

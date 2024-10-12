@@ -108,7 +108,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                 <input
                   type="text"
                   placeholder="Cari kesenian.."
-                  className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none"
+                  className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyPress}
@@ -323,7 +323,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   <input
                     type="text"
                     placeholder="Cari kesenian.."
-                    className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none"
+                    className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyPress}

@@ -9,8 +9,9 @@ import { useAxiosInstance } from "../../../../config/axiosConfig";
 import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import DeleteModal from "../../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
+import EmptyState from "../../../../components/EmptyState";
 
-const KesenianProduct = () => {
+const KesenianProduct = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -19,11 +20,15 @@ const KesenianProduct = () => {
 
   const handleDelete = async (id) => {
     setLoading(true);
+    setProgress(30);
     try {
       const response = await axiosInstance.delete(`user/shop/products/${id}`);
       if (response.data.status === "success") {
-        setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
+        );
         setIsModalOpen(false); // Tutup modal setelah menghapus
+        setProgress(100);
         toast.success("Produk berhasil dihapus");
       }
     } catch (error) {
@@ -36,6 +41,7 @@ const KesenianProduct = () => {
 
   const fetchProducts = async () => {
     setLoading(true);
+    setProgress(30);
     try {
       const response = await axiosInstance.get("user/shop/products");
       if (response.data.status === "success") {
@@ -63,15 +69,13 @@ const KesenianProduct = () => {
       }
     } finally {
       setLoading(false);
+      setProgress(100);
     }
   };
-
-
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
 
   const handleToggle = (id) => {
     setProducts((prevProducts) =>
@@ -91,11 +95,6 @@ const KesenianProduct = () => {
       )
     );
   };
-
-  if (loading) {
-    return <FullPageLoader />;
-  }
-
 
   return (
     <div>
@@ -121,120 +120,137 @@ const KesenianProduct = () => {
       </div>
 
       <div className="mt-5 overflow-x-auto bg-white border rounded-xl">
-        <table className="min-w-full">
-          <thead>
-            <tr>
-              <th className="p-4 text-left border-b">Info Produk</th>
-              <th className="p-4 text-left border-b">Statistik</th>
-              <th className="p-4 text-left border-b">Harga</th>
-              <th className="p-4 text-left border-b">Stok</th>
-              <th className="p-4 text-left border-b">Status</th>
-              <th className="p-4 text-left border-b">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id} className="text-sm">
-                {/* Info Produk */}
-                <td className="p-4 border-b">
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={product.thumbnail}
-                      alt={product.name}
-                      className="object-cover w-16 h-16 rounded-lg"
-                    />
-                    <div>
-                      <div className="font-semibold">{product.name}</div>
-                      <div className="text-gray-500">{product.category}</div>
-                    </div>
-                  </div>
-                </td>
-
-                {/* Statistik */}
-                <td className="p-4 border-b">
-                  <div className="flex flex-col font-light font-nunito">
-                    <div className="flex items-center gap-1">
-                      <IoMdHeart className="text-xl text-customRed" />
-                      <span className="mr-2">{product.likes}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <IoCartOutline className="text-xl text-gray-500" />
-                      <span className="mr-2">{product.cartCount}</span>
-                    </div>
-                  </div>
-                </td>
-
-                {/* Harga */}
-                <td className="p-4 border-b">
-                  <PriceInput
-                    value={product.price}
-                    onChange={(e) => handleInputChange(e, product.id, "price")}
-                  />
-                </td>
-
-                {/* Stok */}
-                <td className="p-4 border-b">
-                  <TextInput
-                    type="number"
-                    value={product.stock}
-                    onChange={(e) => handleInputChange(e, product.id, "stock")}
-                  />
-                </td>
-
-                {/* Status */}
-                <td className="p-4 border-b">
-                  <button
-                    onClick={() => handleToggle(product.id)}
-                    className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
-                  >
-                    <div
-                      className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
-                        ? "translate-x-full bg-tertiary/10"
-                        : "bg-tertiary/10"
-                        }`}
-                    ></div>
-                    <span
-                      className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${product.isActive ? "text-gray-400" : "text-primary"
-                        }`}
-                    >
-                      Nonaktif
-                    </span>
-                    <span
-                      className={`w-1/2 text-center z-10 text-sm font-semibold ${product.isActive ? "text-primary" : "text-gray-400"
-                        }`}
-                    >
-                      Aktif
-                    </span>
-                  </button>
-                </td>
-
-                {/* Aksi */}
-                <td className="p-4 border-b">
-                  <div className="flex space-x-2">
-                    <Link
-                      to={`/seniman/dashboard/kesenian/updateproduct/${product.id}`}
-
-                    >
-                      <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
-                        <BsPencil size={20} />
-                      </button>
-                    </Link>
-                    <button
-                      onClick={() => {
-                        setProductIdToDelete(product.id);
-                        setIsModalOpen(true);
-                      }}
-                      className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
-                    >
-                      <IoTrashOutline size={20} />
-                    </button>
-
-                  </div>
-                </td>
+        {/* Show loader while fetching data */}
+        {loading ? (
+          setProgress(100)
+        ) : products.length > 0 ? (
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="p-4 text-left border-b">Info Produk</th>
+                <th className="p-4 text-left border-b">Statistik</th>
+                <th className="p-4 text-left border-b">Harga</th>
+                <th className="p-4 text-left border-b">Stok</th>
+                <th className="p-4 text-left border-b">Status</th>
+                <th className="p-4 text-left border-b">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product.id} className="text-sm">
+                  {/* Info Produk */}
+                  <td className="p-4 border-b">
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={product.thumbnail}
+                        alt={product.name}
+                        className="object-cover w-16 h-16 rounded-lg"
+                      />
+                      <div>
+                        <div className="font-semibold">{product.name}</div>
+                        <div className="text-gray-500">{product.category}</div>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Statistik */}
+                  <td className="p-4 border-b">
+                    <div className="flex flex-col font-light font-nunito">
+                      <div className="flex items-center gap-1">
+                        <IoMdHeart className="text-xl text-customRed" />
+                        <span className="mr-2">{product.likes}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <IoCartOutline className="text-xl text-gray-500" />
+                        <span className="mr-2">{product.cartCount}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Harga */}
+                  <td className="p-4 border-b">
+                    <PriceInput
+                      value={product.price}
+                      onChange={(e) =>
+                        handleInputChange(e, product.id, "price")
+                      }
+                    />
+                  </td>
+
+                  {/* Stok */}
+                  <td className="p-4 border-b">
+                    <TextInput
+                      type="number"
+                      value={product.stock}
+                      onChange={(e) =>
+                        handleInputChange(e, product.id, "stock")
+                      }
+                    />
+                  </td>
+
+                  {/* Status */}
+                  <td className="p-4 border-b">
+                    <button
+                      onClick={() => handleToggle(product.id)}
+                      className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
+                    >
+                      <div
+                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
+                            ? "translate-x-full bg-tertiary/10"
+                            : "bg-tertiary/10"
+                          }`}
+                      ></div>
+                      <span
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${product.isActive ? "text-gray-400" : "text-primary"
+                          }`}
+                      >
+                        Nonaktif
+                      </span>
+                      <span
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${product.isActive ? "text-primary" : "text-gray-400"
+                          }`}
+                      >
+                        Aktif
+                      </span>
+                    </button>
+                  </td>
+
+                  {/* Aksi */}
+                  <td className="p-4 border-b">
+                    <div className="flex space-x-2">
+                      <Link
+                        to={`/seniman/dashboard/kesenian/updateproduct`}
+                        state={{
+                          product: product,
+                        }}
+                      >
+                        <button className="p-2 text-primary hover:text-primary/90 bg-tertiary/10 rounded-xl">
+                          <BsPencil size={20} />
+                        </button>
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setProductIdToDelete(product.id);
+                          setIsModalOpen(true);
+                        }}
+                        className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
+                      >
+                        <IoTrashOutline size={20} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          // Show empty state only if loading is done and there are no products
+          <tr>
+            <td colSpan="6" className="p-4 text-center text-gray-500">
+              <EmptyState message={"Data produk kesenian tidak tersedia"} />
+            </td>
+          </tr>
+        )}
       </div>
 
       <DeleteModal
@@ -242,8 +258,6 @@ const KesenianProduct = () => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => handleDelete(productIdToDelete)}
       />
-
-
     </div>
   );
 };

@@ -12,6 +12,7 @@ import RecentReviewSection from "./landing/RecentReviewSection";
 import PopularSenimanSection from "./landing/PopularSenimanSection";
 import FaqSection from "./landing/FaqSection";
 import ClientTestimoniSection from "./landing/ClientTestimoniSection";
+import FullPageLoader from "../../components/loading/FullPageLoader";
 
 const Home = () => {
   const axiosInstance = useAxiosInstance();
@@ -23,7 +24,9 @@ const Home = () => {
       .get("/random-product")
       .then((res) => {
         setProducts(res.data.data);
-        setLoading(false); // Stop loading after data is received
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       })
       .catch((err) => {
         setLoading(false); // Stop loading even if there's an error
@@ -33,7 +36,9 @@ const Home = () => {
       .get("/random-services")
       .then((res) => {
         setService(res.data.data);
-        setLoading(false); // Stop loading after data is received
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
       })
       .catch((err) => {
         setLoading(false); // Stop loading even if there's an error
@@ -42,12 +47,12 @@ const Home = () => {
 
   return (
     <div>
-      <Navbar />
-      <Hero />
       {loading ? (
-        <div>Loading...</div> // Display this while loading
+        <FullPageLoader />
       ) : (
         <>
+          <Navbar />
+          <Hero />
           <ProductList
             title={"Produk Kesenian"}
             products={products}
@@ -61,15 +66,13 @@ const Home = () => {
 
           <CategorySection />
           <PromotionSection />
-          {/* <GuideSection /> */}
-          {/* <RecentReviewSection /> */}
           <PopularSenimanSection />
           <RegisterSenimanSection />
           <ClientTestimoniSection />
           <FaqSection />
+          <Footer />
         </>
       )}
-      <Footer />
     </div>
   );
 };

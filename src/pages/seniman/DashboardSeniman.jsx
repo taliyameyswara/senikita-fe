@@ -16,16 +16,13 @@ import { limitText } from "../../utils/limitText";
 import { formatNumber } from "../../utils/formatNumber";
 import { LuBox } from "react-icons/lu";
 import GradientChart from "../../components/GradientChart";
+import FullPageLoader from "../../components/loading/FullPageLoader";
 
 const DashboardSeniman = () => {
   const { user, loading } = useContext(UserContext);
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!user) {
-    return <div>User not found!</div>;
+    return <FullPageLoader />;
   }
 
   const breadcrumbItems = [
@@ -149,7 +146,7 @@ const DashboardSeniman = () => {
         </div>
 
         <div className="grid grid-cols-3">
-          <div className="mt-4 mb-20 col-span-3">
+          <div className="mt-3 col-span-2">
             <GradientChart />
           </div>
         </div>

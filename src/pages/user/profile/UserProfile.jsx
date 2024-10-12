@@ -5,7 +5,7 @@ import Tabs from "../../../components/Tabs";
 import UserBiodata from "./UserBiodata";
 import UserAlamat from "./UserAddress";
 
-const UserProfile = () => {
+const UserProfile = ({ setProgress }) => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/user/dashboard" },
@@ -16,12 +16,12 @@ const UserProfile = () => {
     {
       name: "biodata",
       label: "Data Pribadi",
-      content: <UserBiodata />,
+      content: <UserBiodata setProgress={setProgress} />,
     },
     {
       name: "address",
       label: "Data Alamat",
-      content: <UserAlamat />,
+      content: <UserAlamat setProgress={setProgress} />,
     },
   ];
   return (

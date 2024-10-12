@@ -6,7 +6,9 @@ import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
 import { useAxiosInstance } from '../../../config/axiosConfig';
 import { toast } from "react-toastify";
-const UserBiodata = () => {
+import { useAxiosInstance } from "../../../config/axiosConfig";
+
+const UserBiodata = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,8 @@ const UserBiodata = () => {
   });
 
   const fetchUserData = () => {
-    axiosInstance.get("/user/profile")
+    axiosInstance
+      .get("/user/profile")
       .then((res) => {
         const userData = res.data.data;
         setUserData(userData);
@@ -38,16 +41,22 @@ const UserBiodata = () => {
           password: "", // Password kosong untuk keamanan
         });
         setLoading(false);
+        setProgress(100);
       })
       .catch((err) => {
         setLoading(false);
+        setProgress(100);
       });
-  };
+  }
+  // useEffect(() => {
+  //   setProgress(30);
+
+  // });
 
   useEffect(() => {
+    setProgress(30);
     fetchUserData();
   }, []);
-
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -105,7 +114,6 @@ const UserBiodata = () => {
       reader.readAsDataURL(file);
     }
   };
-
 
   // Submit data
   const handleSubmit = () => {
@@ -167,12 +175,6 @@ const UserBiodata = () => {
         });
     }
   };
-
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
 
   return (
     <div className="">

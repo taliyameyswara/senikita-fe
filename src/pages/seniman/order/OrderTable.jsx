@@ -1,13 +1,10 @@
+import EmptyState from "../../../components/EmptyState";
 import { limitText } from "../../../utils/limitText";
 import { IoEyeOutline } from "react-icons/io5";
 
 const OrderTable = ({ orders, onViewDetails }) => {
   if (orders.length === 0) {
-    return (
-      <div className="flex items-center justify-center h-32">
-        <p className="text-gray-500">Data tidak tersedia</p>
-      </div>
-    );
+    return <EmptyState message={"Data pesanan tidak tersedia"} />;
   }
 
   return (
