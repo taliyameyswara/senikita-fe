@@ -196,8 +196,8 @@ const KesenianProduct = ({ setProgress }) => {
                     >
                       <div
                         className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
-                            ? "translate-x-full bg-tertiary/10"
-                            : "bg-tertiary/10"
+                          ? "translate-x-full bg-tertiary/10"
+                          : "bg-tertiary/10"
                           }`}
                       ></div>
                       <span
@@ -219,7 +219,7 @@ const KesenianProduct = ({ setProgress }) => {
                   <td className="p-4 border-b">
                     <div className="flex space-x-2">
                       <Link
-                        to={`/seniman/dashboard/kesenian/updateproduct`}
+                        to={`/seniman/dashboard/kesenian/updateproduct/${product.id}`}
                         state={{
                           product: product,
                         }}

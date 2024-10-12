@@ -6,7 +6,6 @@ import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
 import { useAxiosInstance } from '../../../config/axiosConfig';
 import { toast } from "react-toastify";
-import { useAxiosInstance } from "../../../config/axiosConfig";
 
 const UserBiodata = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
