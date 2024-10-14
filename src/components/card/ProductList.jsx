@@ -30,6 +30,7 @@ const ProductList = ({ title, products, type, slidesToShow = 4 }) => {
     initialSlide: 0,
     draggable: false,
     swipe: false,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,

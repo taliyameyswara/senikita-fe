@@ -1,10 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import ErrorImage from "../../assets/home/404.png";
 import FooterLogo from "../../components/footer/FooterLogo";
 
 const NotFound = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="relative flex flex-col  bg-primary bg-opacity-5">
       {/* Navbar */}
@@ -27,12 +32,12 @@ const NotFound = () => {
             ketik atau halaman telah dihapus.
           </p>
 
-          <Link
+          <button
+            onClick={() => navigate(-1)}
             className="inline-block px-8 py-3 text-lg font-semibold text-white transition duration-300 rounded-full bg-brick hover:bg-customGreen shadow-md"
-            to="/"
           >
             Kembali ke Beranda
-          </Link>
+          </button>
         </div>
 
         {/* 404 Image Section */}

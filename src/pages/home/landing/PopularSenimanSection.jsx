@@ -11,8 +11,9 @@ import FullPageLoader from "../../../components/loading/FullPageLoader";
 // Custom ArrowButton Component
 const ArrowButton = ({ onClick, direction }) => (
   <button
-    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${direction === "left" ? "-left-10" : "-right-10"
-      }`}
+    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${
+      direction === "left" ? "-left-10" : "-right-10"
+    }`}
     onClick={onClick}
   >
     {direction === "left" ? (
@@ -47,13 +48,15 @@ const PopularSenimanSection = () => {
     return <FullPageLoader />;
   }
 
-  // Slider settings with custom arrows
   const sliderSettings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+    autoplaySpeed: 3000,
     nextArrow: <ArrowButton direction="right" />,
     prevArrow: <ArrowButton direction="left" />,
     responsive: [
@@ -62,6 +65,7 @@ const PopularSenimanSection = () => {
         settings: {
           slidesToShow: 2,
           slidesToScroll: 1,
+          arrows: true,
         },
       },
       {
@@ -69,6 +73,7 @@ const PopularSenimanSection = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: false,
         },
       },
     ],
@@ -76,11 +81,13 @@ const PopularSenimanSection = () => {
 
   return (
     <div>
-      <div className="mt-20">
+      <div className="lg:mt-20 mt-12">
         <div className="container mx-auto">
-          <div className="text-center">
+          <div className="text-center px-16">
             <Heading title={"Seniman Paling Populer"} />
-            <div>Seniman dengan penjualan produk atau jasa terbanyak</div>
+            <div className="md:text-base text-sm text-gray-500">
+              Seniman dengan penjualan produk atau jasa terbanyak
+            </div>
           </div>
 
           <Slider {...sliderSettings} className="mt-10 overflow-visible">

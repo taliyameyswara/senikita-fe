@@ -89,7 +89,7 @@ const ProductCard = ({ product, type }) => {
                   key={index}
                   src={image}
                   alt={name}
-                  className="object-cover w-full h-48"
+                  className="object-cover w-full lg:h-48 h-36"
                 />
               ))}
             </Slider>
@@ -98,7 +98,7 @@ const ProductCard = ({ product, type }) => {
             <img
               src={thumbnail}
               alt={name}
-              className="object-cover w-full h-48"
+              className="object-cover w-full lg:h-48 h-36"
             />
           )}
 

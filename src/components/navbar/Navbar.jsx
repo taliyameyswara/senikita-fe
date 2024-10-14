@@ -162,21 +162,28 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   {/* cart */}
                   <Link to={"/cart"} className="relative p-3">
                     <IoCartOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                    {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                       20
-                    </div>
+                    </div> */}
                   </Link>
                   {/* message */}
-                  <button className="relative p-3">
+                  {/* <button className="relative p-3">
                     <IoChatboxOutline className="text-2xl text-secondary" />
                     <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                       20
                     </div>
-                  </button>
+                  </button> */}
                   {/* liked */}
-                  {/* <button className="p-3 ">
-                  <IoMdHeartEmpty className="text-2xl text-secondary" />
-                </button> */}
+
+                  <Link
+                    to={"/user/dashboard/wishlist"}
+                    className="p-3 relative"
+                  >
+                    <IoMdHeartEmpty className="text-2xl text-secondary" />
+                    {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                      1
+                    </div> */}
+                  </Link>
                 </>
               ) : (
                 // !authenticated
@@ -187,7 +194,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   >
                     Daftar
                   </Link>
-                  <div className="p-2 px-5 text-white rounded-full bg-primary">
+                  <div className="p-3 px-5  text-white rounded-full bg-primary">
                     <Link to="/login" className="">
                       Masuk
                     </Link>
@@ -200,7 +207,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
           {/* mobile nav */}
           <div className="flex flex-col px-4 md:hidden">
             {/* top section*/}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-3">
               {/* right section */}
               <div className="flex items-center gap-2">
                 {/*  Site header */}
@@ -238,64 +245,70 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                           </div>
                         </>
                       }
+                      position={"-left-8"}
                       icon={<IoChevronDownOutline />}
                     >
                       {/* profile dropdown links */}
                       <ul className="space-y-3">
                         {ProfileLinks.map((data) => (
                           <li key={data.id}>
-                            <a
-                              href={data.link}
+                            <Link
+                              to={data.link}
                               onClick={(e) => {
-                                e.preventDefault();
                                 if (data.id === 3) {
-                                  // ID 3 is for logout
+                                  e.preventDefault();
                                   logout(); // Call logout from context
                                   window.location.href = "/login"; // Redirect after logout
                                 }
                               }}
-                              className="flex items-center w-full gap-3 p-2 px-4 rounded-md text-secondary hover:bg-gray-100"
+                              className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
                             >
                               <div className="text-xl">{data.icon}</div>
-                              <div className="text-base">{data.title}</div>
-                            </a>
+                              <div className="text-sm">{data.title}</div>
+                            </Link>
                           </li>
                         ))}
                       </ul>
                     </DropdownNav>
                     {/* cart */}
-                    <button className="relative p-3">
+                    <Link to={"/cart"} className="relative p-3">
                       <IoCartOutline className="text-2xl text-secondary" />
-                      <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                      {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                         20
-                      </div>
-                    </button>
+                      </div> */}
+                    </Link>
                     {/* message */}
-                    <button className="relative p-3">
+                    {/* <button className="relative p-3">
                       <IoChatboxOutline className="text-2xl text-secondary" />
                       <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
                         20
                       </div>
-                    </button>
+                    </button> */}
                     {/* liked */}
-                    {/* <button className="p-3 ">
-                    <IoMdHeartEmpty className="text-2xl text-secondary" />
-                  </button> */}
+                    <Link
+                      to={"/user/dashboard/wishlist"}
+                      className="p-3 relative"
+                    >
+                      <IoMdHeartEmpty className="text-2xl text-secondary" />
+                      {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
+                        1
+                      </div> */}
+                    </Link>
                   </>
                 ) : (
                   // !authenticated
                   <>
                     <Link
-                      to="/"
+                      to="/signup"
                       className="mr-4 text-sm font-semibold md:text-base"
                     >
                       Daftar
                     </Link>
-                    <div className="p-2 px-5 text-white rounded-full bg-primary">
-                      <Link to="/login" className="">
+                    <Link to="/login" className="">
+                      <div className="p-3 px-5 text-sm text-white rounded-full bg-primary">
                         Masuk
-                      </Link>
-                    </div>
+                      </div>
+                    </Link>
                   </>
                 )}
               </div>
@@ -317,13 +330,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   ))}
                 </ul>
               </DropdownNav>
-              <div className="flex-grow mx-4">
+              <div className="flex-grow ml-4 bg-red">
                 <div className="relative group">
                   <IoMdSearch className="absolute text-xl text-gray-600 -translate-y-1/2 left-3 top-1/2" />
                   <input
                     type="text"
                     placeholder="Cari kesenian.."
-                    className="w-full p-3 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
+                    className="w-full p-2.5 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyPress}
