@@ -35,7 +35,7 @@ const RegisterSenimanSection = () => {
           </div>
           {/* <div className="col-span-1 hidden lg:block"> */}
           <div className="col-span-1 ">
-            <div className="absolute xl:-bottom-10 xl:w-[32%] lg:w-[40%] md:w-[40%] w-[60%] sm:hidden block md:block lg:left-[25%] md:left-[20%] -right-5 lg:-top-20 md:-top-16 bottom-[10rem] z-20 lg:rotate-0 rotate-2 scale-x-[-1]">
+            <div className="absolute xl:-bottom-10 xl:w-[32%] lg:w-[40%] md:w-[40%] w-[60%] sm:hidden block md:block lg:left-[25%] md:left-[20%] -right-5 lg:-top-20 md:-top-16 bottom-[10rem] z-20 scale-x-[-1] bg-red-200">
               <img
                 src={SenimanRegister}
                 alt=""
