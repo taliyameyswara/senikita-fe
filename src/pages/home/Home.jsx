@@ -18,6 +18,7 @@ import CustomSearchInput from "../../components/form-input/CustomSearchInput";
 import HeroTexture from "../../assets/home/hero-texture2.png";
 import HeroImage from "../../assets/home/hero.png";
 import { IoIosList } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
 
 const Home = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
@@ -76,7 +77,9 @@ const Home = ({ setProgress }) => {
         }));
         setCategoryOptions(category_id);
       })
-      .catch((err) => { console.error("Error fetching categories:", err); });
+      .catch((err) => {
+        console.error("Error fetching categories:", err);
+      });
   };
 
   useEffect(() => {
@@ -95,7 +98,10 @@ const Home = ({ setProgress }) => {
     setProducts(null);
     setService(null);
     setSelectedCategory(category === "Semua Kategori" ? null : category);
-    fetchProductsAndServices(null, category === "Semua Kategori" ? null : category);
+    fetchProductsAndServices(
+      null,
+      category === "Semua Kategori" ? null : category
+    );
   };
 
   return (
@@ -106,19 +112,17 @@ const Home = ({ setProgress }) => {
         <>
           <Navbar />
           <div className="container relative px-6 pt-10">
-            <div className="relative py-20 md:py-28 rounded-3xl ">
-              <div
-                className="absolute inset-0 z-10 opacity-100 bg-gradient-to-r from-primary to-tertiary rounded-3xl"
-              ></div>
+            <div className="pb-12 pt-20 lg:py-28 md:py-16 rounded-3xl relative">
+              <div className="absolute inset-0 z-10 opacity-100 bg-gradient-to-r from-primary to-tertiary rounded-3xl"></div>
               <div
                 className="absolute inset-0 z-20 bg-center bg-cover opacity-30 rounded-3xl"
                 style={{
                   backgroundImage: `url(${HeroTexture})`,
                 }}
               ></div>
-              <div className="z-30 grid grid-cols-1 gap-5 md:grid-cols-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5 z-30">
                 <div className="">
-                  <div className="absolute lg:-bottom-3 lg:w-[40%] lg:left-14 w-[70%] -top-12 right-1/4 z-20">
+                  <div className="absolute lg:-bottom-3 lg:w-[40%] md:w-[48%] w-[80%] lg:left-14 md:left-6 right-[10%] -top-12 z-20">
                     <img
                       src={HeroImage}
                       alt=""
@@ -127,33 +131,58 @@ const Home = ({ setProgress }) => {
                     />
                   </div>
                 </div>
-                <div className="z-20 col-span-2 pl-32 pr-24">
+
+                {/* text */}
+                <div className="lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28 px-5 col-span-2 z-20">
                   <div className="flex flex-col gap-[0.4rem] text-white">
-                    <p>Selamat Datang,</p>
-                    <h1 className="text-2xl font-semibold text-white font-raleway md:text-3xl">
+                    <p className="lg:text-base text-sm">Selamat Datang,</p>
+                    {/* desktop */}
+                    <h1 className="font-semibold font-raleway hidden lg:block lg:text-3xl text-xl text-white">
                       Jelajahi
-                      <span className="p-2 ml-2 bg-brick/80 rounded-xl">
-                        Seni dan Kebudayaan Daerah
+                      <span className="ml-2 p-2 bg-brick/80 rounded-xl">
+                        Seni Kebudayaan Daerah
                       </span>
                     </h1>
-                    <p>
-                      Senikita merupakan marketplace pertama yang mempertemukan produk
-                      dan jasa kesenian di Indonesia, tempat untuk menemukan berbagai
-                      karya seni dan layanan dari seniman lokal di Indonesia.
+                    {/* mobile */}
+                    <div className="block lg:hidden font-semibold font-raleway  lg:text-3xl text-xl text-white">
+                      <h1 className="">Jelajahi</h1>
+                      <h2 className="p-2 bg-brick/80 rounded-xl flex w-fit">
+                        Seni Kebudayaan Daerah
+                      </h2>
+                    </div>
+
+                    {/* desktop */}
+                    <p className="lg:text-base text-sm hidden lg:block">
+                      Senikita merupakan marketplace pertama yang mempertemukan
+                      produk dan jasa kesenian di Indonesia, tempat untuk
+                      menemukan berbagai karya seni dan layanan dari seniman
+                      lokal di Indonesia.
+                    </p>
+
+                    {/* mobile */}
+                    <p className="lg:text-base text-sm block lg:hidden">
+                      Temukan karya seni dan layanan dari seniman lokal dengan
+                      Senikita. Marketplace pertama produk dan jasa kesenian di
+                      Indonesia
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center mb-10">
-              <div className="absolute z-30 flex items-center justify-between w-3/4 h-16 px-4 bg-white shadow-lg rounded-2xl -bottom-8">
-                <div className="grid w-full grid-cols-2">
-                  <div className="flex items-center gap-3">
-                    <div className="mr-4 font-semibold">Telusuri</div>
-                    <div className="flex items-center w-full gap-2 mr-4 border-r">
+            {/* search filter */}
+            <div className="flex justify-center mb-10 ">
+              <div className="w-3/4 h-16 bg-white shadow-lg rounded-2xl absolute -bottom-8 z-30 flex items-center justify-between px-4">
+                {/*  */}
+                <div className="grid lg:grid-cols-2 w-full">
+                  <div className="flex items-center gap-3 w-full">
+                    <div className="font-semibold mr-4 hidden lg:block">
+                      Telusuri
+                    </div>
+                    <div className="lg:flex  hidden items-center gap-2 border-r mr-5 w-full">
                       <div className="p-2 bg-tertiary/20 rounded-xl">
                         <IoIosList className="text-xl text-primary" />
                       </div>
+
                       <DropdownFilter
                         title={"Status"}
                         options={status}
@@ -163,18 +192,25 @@ const Home = ({ setProgress }) => {
                           handleSelectCategory(option);
                         }}
                         label="Kategori Kesenian"
-                        width="w-72"
+                        width="xl:w-72 2xl:w-96"
                       />
                     </div>
                   </div>
-                  <div>
-                    <CustomSearchInput
-                      placeholder="Cari kota..."
-                      mapData={(city) => city.name + " " + city.province.name}
-                      handleSelect={handleSelectLocation}
-                      itemsData={cities}
-                      disabled={false}
-                    />
+                  <div className="flex items-center gap-2 w-full">
+                    <div className="p-2 bg-tertiary/20 rounded-xl">
+                      <IoLocationSharp className="text-xl text-primary" />
+                    </div>
+                    <div className="w-full">
+                      <CustomSearchInput
+                        placeholder="Cari lokasi.."
+                        mapData={(city) =>
+                          city.name + ", " + city.province.name
+                        }
+                        handleSelect={handleSelectLocation}
+                        itemsData={cities}
+                        disabled={false}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
