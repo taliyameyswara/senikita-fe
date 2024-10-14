@@ -12,7 +12,6 @@ import ProductList from "../../components/card/ProductList";
 
 const ProductDetails = ({ setProgress }) => {
   const { id } = useParams();
-  // const productId = id.split("-")[0];
   const [productId, setProductId] = useState("");
 
   useEffect(() => {
