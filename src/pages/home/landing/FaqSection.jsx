@@ -16,12 +16,12 @@ const FaqSection = () => {
     {
       question: "Bagaimana cara membuat akun di Senikita?",
       answer:
-        "Anda bisa membuat akun dengan mendaftarkan email atau nomor telepon di halaman pendaftaran Senikita, lalu mengikuti langkah-langkah yang diberikan.",
+        "Anda bisa membuat akun dengan mendaftarkan email di halaman pendaftaran Senikita, lalu mengikuti langkah-langkah yang diberikan.",
     },
     {
       question: "Apa jenis produk dan jasa yang tersedia di Senikita?",
       answer:
-        "Di Senikita, Anda bisa menemukan berbagai karya seni rrupa, musik, tari, seni pertunjukan, serta layanan seperti pelatihan, konsultasi seni, dan lainnya.",
+        "Di Senikita, Anda bisa menemukan berbagai karya seni rupa, musik, tari, seni pertunjukan, serta layanan seperti pelatihan, konsultasi seni, dan lainnya.",
     },
     {
       question: "Bagaimana cara melakukan pembayaran di Senikita?",
@@ -35,12 +35,12 @@ const FaqSection = () => {
   };
 
   return (
-    <section className="py-10 pb-20 container">
+    <section className="pb-20 container">
       {/* Grid layout */}
       <div className="grid md:grid-cols-2 grid-cols-1">
         {/* FAQ Section */}
         <div className="">
-          <div className="ml-5 pb-1">
+          <div className="ml-4 pb-1">
             <Heading title={"Pertanyaan Yang Sering Ditanyakan"} />
           </div>
           <div className="space-y-4 ">
@@ -54,11 +54,11 @@ const FaqSection = () => {
                   className="flex items-center justify-between w-full px-4 py-3 sm:p-4"
                   onClick={() => handleToggle(index)}
                 >
-                  <span className="flex text-start text-lg font-semibold">
+                  <span className="flex text-start font-semibold md:text-lg text-base">
                     {faq.question}
                   </span>
                   <IoChevronDownOutline
-                    className={`w-6 h-6 text-gray-400 transition-transform duration-300 ${
+                    className={`md:text-lg text-base text-gray-400 transition-transform duration-300 ${
                       openQuestion === index ? "rotate-180" : ""
                     }`}
                   />
@@ -74,7 +74,7 @@ const FaqSection = () => {
                   }}
                   className={`overflow-hidden transition-max-height duration-500 ease-in-out`}
                 >
-                  <div className="px-4 pb-5 sm:px-6 sm:pb-6">
+                  <div className="px-4 pb-5 sm:px-6 sm:pb-6 text-sm md:text-base">
                     <p>{faq.answer}</p>
                   </div>
                 </div>
@@ -82,7 +82,7 @@ const FaqSection = () => {
             ))}
           </div>
 
-          <p className="text-center text-gray-600 text-base mt-9">
+          <p className="text-gray-600 text-base mt-9 px-4">
             Tidak menemukan jawaban yang Anda cari?{" "}
             <a
               href="#"
@@ -94,7 +94,7 @@ const FaqSection = () => {
           </p>
         </div>
 
-        <div className="hidden md:block">
+        <div className="lg:mt-0 mt-10">
           <img
             src={FaqImage}
             className="object-cover w-full h-full"

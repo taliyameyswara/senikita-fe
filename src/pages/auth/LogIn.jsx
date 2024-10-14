@@ -161,7 +161,7 @@ const LogIn = ({ setProgress }) => {
                   {isLoading ? (
                     <div className="w-6 h-6 border-2 border-white border-solid rounded-full border-t-transparent animate-spin"></div>
                   ) : (
-                    "Submit"
+                    "Masuk"
                   )}
                 </button>
               </div>

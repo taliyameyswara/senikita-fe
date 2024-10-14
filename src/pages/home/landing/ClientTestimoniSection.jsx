@@ -54,7 +54,7 @@ const ClientTestimoniSection = () => {
   };
 
   return (
-    <section className="py-8 my-20 relative overflow-hidden">
+    <section className="lg:py-8 lg:my-20 my-10 relative overflow-hidden">
       {/* Background Texture Overlay */}
       <div
         className="absolute inset-0"
@@ -73,36 +73,50 @@ const ClientTestimoniSection = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent h-1/4 bottom-0 translate-y-[300%] z-10"></div>
 
       <div className="container mx-auto px-4 relative z-20">
-        <div className="text-center mb-10">
+        <div className="text-center lg:mb-10 mb-5">
           <Heading title={"Testimoni Klien Tentang Senikita"} />
-          <p className="text-gray-600">Kata klien tentang Senikita</p>
+          <p className="text-gray-500 text-sm lg:text-base">
+            Kata klien tentang Senikita
+          </p>
         </div>
 
-        {/* Slider Section */}
         <Slider {...settings} className="w-full md:w-[60%] mx-auto">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="p-4">
-              <div className="overflow-hidden flex">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-24 h-24 object-cover rounded-full m-4"
-                />
-                <div className="p-4 flex-1">
-                  <div className="flex items-center mb-2">
-                    <IoStar className="text-yellow-400 text-lg mb-1" />
-                    <span className="ml-2 text-lg font-semibold font-nunito">
-                      {testimonial.rating}{" "}
-                      <span className="text-gray-400 font-light">/ 5.0</span>
-                    </span>
+              <div className="overflow-hidden flex flex-col md:flex-row">
+                <div className="flex gap-3">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-full m-2 md:m-4 mx-auto md:mx-0"
+                  />
+                  <div className="flex flex-col justify-center">
+                    {/* Bintang rating */}
+                    <div className="flex items-center mb-2">
+                      <IoStar className="text-yellow-400 text-lg mb-1" />
+                      <span className="ml-2 text-lg font-semibold font-nunito">
+                        {testimonial.rating}{" "}
+                        <span className="text-gray-400 font-light">/ 5.0</span>
+                      </span>
+                    </div>
+                    {/* mobile */}
+                    <p className="text-gray-600 mb-2 text-sm md:hidden block">
+                      {testimonial.name}, {testimonial.position}
+                    </p>
                   </div>
-                  <p className="text-gray-800 font-semibold mb-2">
+                </div>
+
+                <div className="py-2 px-0 flex-1 md:text-left">
+                  {/* Ulasan */}
+                  <p className="text-gray-800 font-semibold mb-2 text-sm md:text-base">
                     {testimonial.review}
                   </p>
-                  <p className="text-gray-600 mb-2">
+                  {/* desktop*/}
+                  <p className="text-gray-600 mb-2 text-sm md:text-base hidden md:block">
                     {testimonial.name}, {testimonial.position}
                   </p>
-                  <div className="text-sm text-gray-500">
+                  {/* Jasa yang dipesan */}
+                  <div className="text-xs md:text-sm text-gray-500">
                     Jasa Yang Dipesan:{" "}
                     <span className="text-primary">{testimonial.service}</span>
                   </div>

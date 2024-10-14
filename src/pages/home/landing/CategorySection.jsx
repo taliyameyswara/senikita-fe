@@ -16,7 +16,7 @@ const categories = [
     name: "Seni Tari",
     image: "assets/home/category/tari.webp",
     height: "h-40",
-    grid: "col-span-2",
+    grid: "md:col-span-2",
     link: "/seni-tari", // Link ke halaman seni tari
   },
   {
@@ -48,7 +48,7 @@ const categories = [
     name: "Seni Ukir",
     image: "assets/home/category/ukir.webp",
     height: "h-40",
-    grid: "col-span-2",
+    grid: "md:col-span-2",
     link: "/seni-ukir", // Link ke halaman seni ukir
   },
   {
@@ -65,8 +65,7 @@ const KesenianCategory = () => {
   return (
     <div className="container px-6 mb-6">
       <Heading title={"Kategori Kesenian"} />
-
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4  gap-3">
         {categories.map((category) => (
           <Link
             key={category.id}
