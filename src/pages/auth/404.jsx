@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
 import ErrorImage from "../../assets/home/404.png";
 import FooterLogo from "../../components/footer/FooterLogo";
 
 const NotFound = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="relative flex flex-col  bg-primary bg-opacity-5">
       {/* Navbar */}
