@@ -7,9 +7,9 @@ import "slick-carousel/slick/slick-theme.css";
 
 createRoot(document.getElementById("root")).render(
   <UserProvider>
-    <StrictMode>
-      <App />
-    </StrictMode>
+    {/* <StrictMode> */}
+    <App />
+    {/* </StrictMode> */}
   </UserProvider>
 
 );

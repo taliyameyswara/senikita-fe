@@ -11,9 +11,8 @@ import FullPageLoader from "../../../components/loading/FullPageLoader";
 // Custom ArrowButton Component
 const ArrowButton = ({ onClick, direction }) => (
   <button
-    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${
-      direction === "left" ? "-left-10" : "-right-10"
-    }`}
+    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${direction === "left" ? "-left-10" : "-right-10"
+      }`}
     onClick={onClick}
   >
     {direction === "left" ? (
@@ -96,7 +95,7 @@ const PopularSenimanSection = () => {
                           seniman.profile_picture ||
                           "https://via.placeholder.com/100"
                         }
-                        className="w-32 h-32 rounded-full shadow-lg border-primary/20 object-cover"
+                        className="object-cover w-32 h-32 rounded-full shadow-lg border-primary/20"
                       />
                     </div>
 
@@ -105,7 +104,7 @@ const PopularSenimanSection = () => {
                         {seniman.categories.map((cat, index) => (
                           <p
                             key={index}
-                            className="text-xs bg-tertiary/10 text-primary p-1 px-2 rounded-full"
+                            className="p-1 px-2 text-xs rounded-full bg-tertiary/10 text-primary"
                           >
                             {cat.name}
                           </p>
@@ -116,7 +115,7 @@ const PopularSenimanSection = () => {
                       </h3>
                       <p className="text-sm text-gray-600">{seniman.region}</p>
 
-                      <p className="mt-2 text-sm bg-customGreen/10 w-fit mx-auto px-2 text-customGreen">
+                      <p className="px-2 mx-auto mt-2 text-sm bg-customGreen/10 w-fit text-customGreen">
                         <span className="font-nunito">20</span> Penjualan
                       </p>
                     </div>

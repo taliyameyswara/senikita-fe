@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import Welcoming from "../../assets/home/client1.png";
 import { UserContext } from "../../context/UserContext";
@@ -17,11 +17,102 @@ import ProductTransactionCard from "../user/transaction/product/ProductTransacti
 import ServiceTransactionCard from "../user/transaction/service/ServiceTransactionCard";
 import CardButton from "../user/transaction/CardButton";
 import CardHeader from "../user/transaction/CardHeader";
+import { useAxiosInstance } from "../../config/axiosConfig"
+import EmptyState from "../../components/EmptyState";
 
 const DashboardSeniman = () => {
   const { user, loading } = useContext(UserContext);
+  const [countProduct, setCountProduct] = useState(0);
+  const [countService, setCountService] = useState(0);
+  const [totalCount, setTotalCount] = useState(0); // Tambahkan state untuk total
+  const [totalPendapatan, setTotalPendapatan] = useState(0)
+  const [lowStock, setLowStock] = useState([]);
+  const [pendingProduct, setPendingProduct] = useState([]);
+  const [pendingService, setPendingService] = useState([]);
+  const axiosInstance = useAxiosInstance();
+  const [loadingData, setLoadingData] = useState(false);
+
+  const getCountProductOrder = () => {
+    axiosInstance.get('/user/shop/service/sold-count')
+      .then((res) => {
+        console.log(res.data.sold_count)
+        setCountService(res.data.sold_count)
+      }).catch((error) => {
+        console.log(error.response)
+      })
+  }
+
+  const getCountServiceOrder = () => {
+    axiosInstance.get('/user/shop/products/sold-count')
+      .then((res) => {
+        console.log(res.data.sold_products_count)
+        setCountProduct(res.data.sold_products_count)
+      }).catch((error) => {
+        console.log(error.response)
+      })
+  }
+
+  const getLowStockProduct = () => {
+    axiosInstance.get('/user/shop/products/low-stock')
+      .then((res) => {
+        console.log(res.data.low_stock_products)
+        setLowStock(res.data.low_stock_products)
+      }).catch((err) => {
+        console.log(err.response)
+      })
+  }
+
+
+  const getPendingService = () => {
+    axiosInstance.get('/user/shop/order-service/pending-delivery')
+      .then((res) => {
+        console.log(res.data.data)
+        setPendingService(res.data.data)
+      }).catch((err) => {
+        console.log(err.response)
+      })
+  }
+  const getPendingProduct = () => {
+    axiosInstance.get('/user/shop/order-product/pending-delivery')
+      .then((res) => {
+        console.log(res.data.data)
+        setPendingProduct(res.data.data)
+      }).catch((err) => {
+        console.log(err.response)
+      })
+  }
+
+  const getTotalPendapatan = () => {
+    axiosInstance.get('/user/shop/revenue')
+      .then((res) => {
+        console.log(res.data.revenue);
+        setTotalPendapatan(res.data.revenue);
+      }).catch((err) => {
+        console.log(err.response)
+      })
+  }
+
+  // /user/shop/order-product/pending-delivery
+
+  useEffect(() => {
+    setLoadingData(true);
+    getCountProductOrder();
+    getCountServiceOrder();
+    getLowStockProduct();
+    getPendingProduct();
+    getPendingService();
+    getTotalPendapatan();
+    setLoadingData(false);
+  })
+
+  useEffect(() => {
+    setTotalCount(countProduct + countService);
+  }, [countProduct, countService]);
 
   if (loading) {
+    return <FullPageLoader />;
+  }
+  if (loadingData) {
     return <FullPageLoader />;
   }
 
@@ -30,122 +121,98 @@ const DashboardSeniman = () => {
     { label: "Dashboard", to: "/user/dashboard" },
   ];
 
-  const lowStockProducts = [
-    {
-      id: 9,
-      name: "Gitar Keren",
-      price: 4000000,
-      stock: 9,
-      thumbnail: "http://via.placeholder.com/150",
-    },
-    {
-      id: 9,
-      name: "Gitar Biboi",
-      price: 4000000,
-      stock: 9,
-      thumbnail: "http://via.placeholder.com/150",
-    },
-    {
-      id: 9,
-      name: "Gitar Biboi",
-      price: 4000000,
-      stock: 9,
-      thumbnail: "http://via.placeholder.com/150",
-    },
-  ];
-
   // Data for counts
   const statisticsData = [
     {
       label: "Total Produk Terjual",
-      count: 10,
+      count: countProduct ?? 0,
       icon: <LuBox className="text-2xl" />,
       color:
         "bg-gradient-to-tr from-lightBrick/10 via-white to-white border-lightBrick/10",
     },
     {
       label: "Total Jasa Terjual",
-      count: 5,
+      count: countService ?? 0,
       icon: <PiPaintBrush className="text-2xl" />,
       color:
         "bg-gradient-to-tr from-customGreen/10 via-white to-white border-customGreen/10",
     },
     {
       label: "Total Transaksi",
-      count: 15,
+      count: totalCount ?? 0,
       icon: <IoMdPaper className="text-2xl" />,
       color:
         "bg-gradient-to-tr from-tertiary/10 via-white to-white border-tertiary/10",
     },
     {
       label: "Jumlah Pendapatan",
-      count: formatNumber(1000000),
+      count: totalPendapatan ? formatNumber(totalPendapatan) : "",
       icon: <IoWalletOutline className="text-2xl" />,
       color:
         "bg-gradient-to-tr from-blue-500/10 via-white to-white border-blue-500/10",
     },
   ];
 
-  const productTransactions = [
-    {
-      id: 1,
-      product: {
-        name: "Lukisan Abstrak",
-        price: 500000,
-        thumbnail: "https://via.placeholder.com/150",
-      },
-      quantity: 2,
-      customer: "Lalau",
-      no_transaction: "INV-20231012-0001",
-      created_at: "2023-10-12T10:30:00Z",
-      payment_status: "success",
-      shipping_status: "diproses",
-    },
-    {
-      id: 2,
-      product: {
-        name: "Patung Kayu",
-        price: 750000,
-        thumbnail: "https://via.placeholder.com/150",
-      },
-      quantity: 1,
-      customer: "Lalai",
-      no_transaction: "INV-20231012-0002",
-      created_at: "2023-10-11T09:00:00Z",
-      payment_status: "success",
-      shipping_status: "diproses",
-    },
-  ];
+  // const pendingProduct = [
+  //   {
+  //     id: 1,
+  //     product: {
+  //       name: "Lukisan Abstrak",
+  //       price: 500000,
+  //       thumbnail: "https://via.placeholder.com/150",
+  //     },
+  //     quantity: 2,
+  //     customer: "Lalau",
+  //     no_transaction: "INV-20231012-0001",
+  //     created_at: "2023-10-12T10:30:00Z",
+  //     payment_status: "success",
+  //     shipping_status: "diproses",
+  //   },
+  //   {
+  //     id: 2,
+  //     product: {
+  //       name: "Patung Kayu",
+  //       price: 750000,
+  //       thumbnail: "https://via.placeholder.com/150",
+  //     },
+  //     quantity: 1,
+  //     customer: "Lalai",
+  //     no_transaction: "INV-20231012-0002",
+  //     created_at: "2023-10-11T09:00:00Z",
+  //     payment_status: "success",
+  //     shipping_status: "diproses",
+  //   },
+  // ];
 
-  const serviceTransactions = [
-    {
-      id: 1,
-      service: {
-        name: "Tari Tradisional Bali",
-        price: 1500000,
-        thumbnail: "https://via.placeholder.com/150",
-      },
+  // const pendingService = [
+  //   {
+  //     id: 1,
+  //     service: {
+  //       name: "Tari Tradisional Bali",
+  //       price: 1500000,
+  //       thumbnail: "https://via.placeholder.com/150",
+  //     },
 
-      customer: "Budi",
-      no_transaction: "INV-20231012-0003",
-      created_at: "2023-10-10T12:45:00Z",
-      payment_status: "pending",
-      shipping_status: "pending",
-    },
-    {
-      id: 2,
-      service: {
-        name: "Pentas Musik Tradisional",
-        price: 2000000,
-        thumbnail: "https://via.placeholder.com/150",
-      },
-      customer: "Lala",
-      no_transaction: "INV-20231012-0004",
-      created_at: "2023-10-09T11:00:00Z",
-      payment_status: "pending",
-      shipping_status: "pending",
-    },
-  ];
+  //     customer: "Budi",
+  //     no_transaction: "INV-20231012-0003",
+  //     created_at: "2023-10-10T12:45:00Z",
+  //     payment_status: "pending",
+  //     shipping_status: "pending",
+  //   },
+  //   {
+  //     id: 2,
+  //     service: {
+  //       name: "Pentas Musik Tradisional",
+  //       price: 2000000,
+  //       thumbnail: "https://via.placeholder.com/150",
+  //     },
+  //     customer: "Lala",
+  //     no_transaction: "INV-20231012-0004",
+  //     created_at: "2023-10-09T11:00:00Z",
+  //     payment_status: "pending",
+  //     shipping_status: "pending",
+  //   },
+  // ];
 
   const tabs = [
     {
@@ -153,30 +220,37 @@ const DashboardSeniman = () => {
       label: "Transaksi Produk",
       content: (
         <div className="flex flex-col ">
-          {productTransactions.map((transaction) => (
-            <ProductTransactionCard
-              key={transaction.id}
-              product={transaction.product}
-              quantity={transaction.quantity}
-              header={
-                <CardHeader
-                  item={transaction.product}
-                  payment={transaction.payment_status}
-                  shipping={transaction.shipping_status}
-                  type={"product"}
-                  invoice={transaction.no_transaction}
-                  date={transaction.created_at}
-                  customer={transaction.customer}
-                />
-              }
-              button={
-                <CardButton
-                  buttonLink={``}
-                  buttonLabel="Lihat Detail Transaksi"
-                />
-              }
-            />
-          ))}
+          {pendingProduct.length > 0 ? (
+
+            pendingProduct.map((transaction) => (
+              <ProductTransactionCard
+                key={transaction.id}
+                product={transaction.product}
+                quantity={transaction.quantity}
+                header={
+                  <CardHeader
+                    item={transaction.product}
+                    payment={transaction.payment_status}
+                    shipping={transaction.shipping_status}
+                    type={"product"}
+                    invoice={transaction.no_transaction}
+                    date={transaction.created_at}
+                    customer={transaction.customer}
+                  />
+                }
+                button={
+                  <CardButton
+                    buttonLink={`seniman/dashboard/order`}
+                    buttonLabel="Lihat Detail Transaksi"
+                  />
+                }
+              />
+            ))
+
+          ) : (
+            <EmptyState message={"Tidak ada transaksi yang perlu diproses"} />
+          )
+          }
         </div>
       ),
     },
@@ -185,7 +259,7 @@ const DashboardSeniman = () => {
       label: "Transaksi Jasa",
       content: (
         <div className="flex flex-col ">
-          {serviceTransactions.map((transaction) => (
+          {pendingService.length > 0 ? (pendingService.map((transaction) => (
             <ServiceTransactionCard
               key={transaction.id}
               service={transaction.service}
@@ -203,12 +277,16 @@ const DashboardSeniman = () => {
               }
               button={
                 <CardButton
-                  buttonLink={``}
+                  buttonLink={`seniman/dashboard/order`}
                   buttonLabel="Lihat Detail Transaksi"
                 />
               }
             />
-          ))}
+          ))) :
+            (
+              <EmptyState message={"Tidak ada transaksi yang perlu diproses"} />
+            )
+          }
         </div>
       ),
     },
@@ -297,25 +375,25 @@ const DashboardSeniman = () => {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-5 grid-cols-1 md:gap-3 md:space-y-0 space-y-5 mt-5">
-          <div className="col-span-3 h-full ">
+        <div className="grid grid-cols-1 mt-5 space-y-5 md:grid-cols-5 md:gap-3 md:space-y-0">
+          <div className="h-full col-span-3 ">
             <GradientChart />
           </div>
-          <div className="rounded-2xl border p-5 flex flex-col  col-span-2">
-            <div className="text-lg font-semibold mb-3">
+          <div className="flex flex-col col-span-2 p-5 border rounded-2xl">
+            <div className="mb-3 text-lg font-semibold">
               Produk dengan stok kurang dari 10
             </div>
             <div className="flex flex-col gap-4">
-              {lowStockProducts.length > 0 ? (
-                lowStockProducts.map((product) => (
+              {lowStock.length > 0 ? (
+                lowStock.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center gap-3 bg-gray-50 border rounded-xl p-3"
+                    className="flex items-center gap-3 p-3 border bg-gray-50 rounded-xl"
                   >
                     <img
                       src={product.thumbnail}
                       alt={product.name}
-                      className="w-16 h-16 object-cover rounded-lg"
+                      className="object-cover w-16 h-16 rounded-lg"
                     />
                     <div className="flex flex-col">
                       <span className="font-semibold">{product.name}</span>
@@ -333,7 +411,7 @@ const DashboardSeniman = () => {
         </div>
 
         <div className="p-3">
-          <div className="text-lg font-semibold mb-3">
+          <div className="mb-3 text-lg font-semibold">
             Transaksi yang perlu diproses
           </div>
           <Tabs tabs={tabs} />
