@@ -22,14 +22,14 @@ const PromotionSection = () => {
   }, []);
 
   return (
-    <div className="mt-20">
-      <div className="py-10 bg-gradient-to-r from-primary to-tertiary ">
+    <div className="lg:mt-20 mt-10">
+      <div className="md:py-10 py-10 bg-gradient-to-r from-primary to-tertiary ">
         {loading ? (
           <div>Loading...</div> // Display this while loading
         ) : (
           <div className="relative">
             <div className="container">
-              <div className="w-[70%]">
+              <div className="md:w-[70%] mx-4">
                 <div className="bg-white rounded-2xl">
                   <ProductList
                     title={"Pementasan Cocok Untuk Acara Anda"}
@@ -40,7 +40,7 @@ const PromotionSection = () => {
                 </div>
               </div>
 
-              <div className="absolute lg:-bottom-32 lg:w-[34%] lg:right-5 w-[70%] -top-16 right-1/2 z-20 ">
+              <div className="absolute hidden lg:block lg:-bottom-32 lg:w-[34%] lg:right-5 w-[70%] -top-16 right-1/2 z-20 ">
                 <img
                   src={PromotionImage}
                   alt=""

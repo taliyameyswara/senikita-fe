@@ -4,7 +4,7 @@ const FooterLogo = () => {
   return (
     <div className="container pb-10 px-6">
       <hr className="my-8 w-full " />
-      <div className="flex items-center justify-between ">
+      <div className="flex lg:flex-row flex-col lg:items-center justify-between ">
         <div className="">
           <Link
             to="/"
@@ -14,7 +14,7 @@ const FooterLogo = () => {
           </Link>
         </div>
 
-        <div className="text-gray-400">
+        <div className="text-gray-400 text-sm lg:text-base">
           <p>&copy; 2024 SeniKita | Seluruh Hak Cipta Dilindungi</p>
         </div>
       </div>

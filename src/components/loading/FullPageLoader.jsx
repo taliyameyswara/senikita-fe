@@ -8,10 +8,10 @@ const FullPageLoader = () => {
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="flex flex-col items-center justify-center gap-5 ">
-        <div className="animate-spin-slow ">
+        <div className="animate-spin-slow">
           <img
             src={LoadingImage}
-            className="w-28 h-28 animate-pulse-slow rotate-45"
+            className="lg:w-28 lg:h-28 w-20 h-20 animate-pulse-slow rotate-45"
             alt="Loading"
           />
         </div>
