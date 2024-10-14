@@ -12,7 +12,15 @@ import OrderBottomBarService from "../../components/product-details/OrderBottomB
 
 const ServiceDetails = ({ setProgress }) => {
   const { id } = useParams();
-  const serviceId = id.split("-")[0]; // Ekstrak hanya ID dari URL
+  // const serviceId = id.split("-")[0]; // Ekstrak hanya ID dari URL
+  const [serviceId, setServiceId] = useState("");
+
+  useEffect(() => {
+    const decryptedId = atob(id);
+    const serviceId = decryptedId.split("-")[0];
+    setServiceId(serviceId);
+  })
+
   const axiosInstance = useAxiosInstance();
   const [service, setService] = useState(null);
   const [products, setProducts] = useState([]);
@@ -34,20 +42,22 @@ const ServiceDetails = ({ setProgress }) => {
         setProgress(100);
       });
 
-    axiosInstance
-      .get(`service/${serviceId}`)
-      .then((res) => {
-        // console.log(res.data.service);
-        setService(res.data.service);
-        setLoading(false); // Stop loading after data is received
-        setProgress(100);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false); // Stop loading even if there's an error
-        setProgress(100);
-      });
-  }, []);
+    if (serviceId) {
+      axiosInstance
+        .get(`service/${serviceId}`)
+        .then((res) => {
+          // console.log(res.data.service);
+          setService(res.data.service);
+          setLoading(false); // Stop loading after data is received
+          setProgress(100);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false); // Stop loading even if there's an error
+          setProgress(100);
+        });
+    }
+  }, [serviceId, setProgress]);
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -84,10 +94,10 @@ const ServiceDetails = ({ setProgress }) => {
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
         <OrderBottomBarService service={service} />
-        <ProductList
+        <ProductList  
           title={"Produk Lainnya"}
           products={products}
-          type={"Product"}
+          type={"Service"}
         />
       </div>
     </>
