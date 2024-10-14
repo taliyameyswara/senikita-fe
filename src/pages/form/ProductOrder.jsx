@@ -35,6 +35,7 @@ const ProductOrder = () => {
   useEffect(() => {
     setProducts(null);
     const selectedItems = location.state?.selectedItems || [];
+    console.log(selectedItems);
     setProducts(selectedItems);
 
     // Jika tidak ada produk, navigasi kembali ke cart
@@ -119,8 +120,6 @@ const ProductOrder = () => {
     setActiveAddress(selectedAddress);
     setIsModalOpen(false);
   };
-
-
 
   // Fungsi untuk melakukan checkout
   const handleCheckout = async () => {

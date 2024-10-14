@@ -32,6 +32,8 @@ const DashboardSeniman = () => {
   const axiosInstance = useAxiosInstance();
   const [loadingData, setLoadingData] = useState(false);
 
+  const [seniman, setSeniman] = useState({})
+
   const getCountProductOrder = () => {
     axiosInstance.get('/user/shop/service/sold-count')
       .then((res) => {
@@ -40,6 +42,19 @@ const DashboardSeniman = () => {
       }).catch((error) => {
         console.log(error.response)
       })
+  }
+
+  const getSeniman = () => {
+    axiosInstance.get('user/shop/view-login')
+      .then((res) => {
+        const senimanData = res.data.data;
+        console.log(senimanData)
+        setSeniman(senimanData);
+      }).catch((res) => {
+        console.log(res)
+      }).finally(() => {
+
+      });
   }
 
   const getCountServiceOrder = () => {
@@ -96,6 +111,7 @@ const DashboardSeniman = () => {
 
   useEffect(() => {
     setLoadingData(true);
+    getSeniman();
     getCountProductOrder();
     getCountServiceOrder();
     getLowStockProduct();
@@ -103,7 +119,7 @@ const DashboardSeniman = () => {
     getPendingService();
     getTotalPendapatan();
     setLoadingData(false);
-  })
+  }, [])
 
   useEffect(() => {
     setTotalCount(countProduct + countService);
@@ -327,25 +343,32 @@ const DashboardSeniman = () => {
                   <div className="relative h-full p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
                     <div className="flex items-center gap-3">
                       <img
-                        src="https://via.placeholder.com/100"
+                        src={seniman.profile_picture || "https://via.placeholder.com/100"}
                         alt="User Profile"
                         className="object-cover w-16 h-16 md:w-20 md:h-20 rounded-xl"
                       />
                       <div className="text-white">
                         <div className="flex gap-2">
-                          <p className="mb-1 text-xs">Seni Tari, Seni Kriya</p>
+                          <p className="mb-1 text-xs">
+                            {seniman.categories && seniman.categories.map((category, index) => (
+                              <span key={index}>
+                                {category.name}
+                                {index < seniman.categories.length - 1 && ", "}
+                              </span>
+                            ))}
+                          </p>
                         </div>
                         <h2 className="text-xl font-semibold bg-customGreen">
-                          Toko Kesenian Bali
-                        </h2>
-                        <p>Kabupaten Buleleng, Bali</p>
+                          {seniman.name}                        </h2>
+                        <p>{seniman.region}</p>
                       </div>
                     </div>
                     <div className="mt-2 text-sm text-white">
                       {limitText(
-                        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos ab saepe expedita accusamus quis error, quaerat tempora recusandae at dignissimos quod quas quasi earumsed? Praesentium est dicta a earum.",
+                        seniman.desc,
                         300
                       )}
+                      {/* {seniman.desc} */}
                     </div>
                   </div>
                 </div>

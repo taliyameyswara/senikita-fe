@@ -10,9 +10,8 @@ const ProductList = ({ title, products, type, slidesToShow = 4 }) => {
 
   const ArrowButton = ({ onClick, direction }) => (
     <button
-      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${
-        direction === "left" ? "mr-2" : "ml-2"
-      }`}
+      className={`bg-primary bg-opacity-85 p-2 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 ${direction === "left" ? "mr-2" : "ml-2"
+        }`}
       onClick={onClick}
     >
       {direction === "left" ? (

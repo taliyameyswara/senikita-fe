@@ -12,7 +12,15 @@ import ProductList from "../../components/card/ProductList";
 
 const ProductDetails = ({ setProgress }) => {
   const { id } = useParams();
-  const productId = id.split("-")[0];
+  const [productId, setProductId] = useState("");
+
+  useEffect(() => {
+    const decryptedId = atob(id);
+    const productId = decryptedId.split("-")[0];
+    setProductId(productId);
+  })
+
+  // const productId = decryptText(id);
   const axiosInstance = useAxiosInstance();
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -34,19 +42,21 @@ const ProductDetails = ({ setProgress }) => {
         setLoading(false);
         setProgress(100);
       });
+    if (productId) {
+      axiosInstance
+        .get(`products/${productId}`)
+        .then((res) => {
+          setProduct(res.data.product);
+          setLoading(false);
+          setProgress(100);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setProgress(100);
+        });
+    }
 
-    axiosInstance
-      .get(`products/${productId}`)
-      .then((res) => {
-        setProduct(res.data.product);
-        setLoading(false);
-        setProgress(100);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        setProgress(100);
-      });
   }, [productId, setProgress]);
 
   const breadcrumbItems = [

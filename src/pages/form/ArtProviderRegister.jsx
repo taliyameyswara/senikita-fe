@@ -471,11 +471,10 @@ const ArtProviderRegister = () => {
               <button
                 onClick={handleNext}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${
-                  isStepValid()
-                    ? "bg-secondary text-white font-semibold hover:bg-opacity_id -90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                }`}
+                className={`px-4 py-2 rounded-xl ${isStepValid()
+                  ? "bg-secondary text-white font-semibold hover:bg-opacity_id -90"
+                  : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
               >
                 Selanjutnya
               </button>
@@ -483,11 +482,10 @@ const ArtProviderRegister = () => {
               <button
                 onClick={handleSubmit}
                 disabled={!isStepValid()}
-                className={`px-4 py-2 rounded-xl ${
-                  isStepValid()
-                    ? "bg-tertiary text-white font-semibold hover:bg-opacity_id-90"
-                    : "bg-gray-200 text-gray-400 font-semibold"
-                }`}
+                className={`px-4 py-2 rounded-xl ${isStepValid()
+                  ? "bg-tertiary text-white font-semibold hover:bg-opacity_id-90"
+                  : "bg-gray-200 text-gray-400 font-semibold"
+                  }`}
               >
                 Selesai
               </button>

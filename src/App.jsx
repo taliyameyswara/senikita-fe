@@ -44,7 +44,6 @@ import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 import Playground from "./pages/Playground";
-
 function App() {
   const [progress, setProgress] = useState(0);
   return (

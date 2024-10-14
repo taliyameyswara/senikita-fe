@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
+import { useEffect, useState } from "react";
 import TotalCounter from "../../components/TotalCounter";
 import LikeButton from "../LikeButton";
 import { useAxiosInstance } from "../../config/axiosConfig";
@@ -18,6 +18,7 @@ const OrderBottomBar = ({ product }) => {
   useEffect(() => {
     if (product) {
       setIsLiked(product.is_bookmarked);
+      console.log(product);
     }
   }, [product]);
 
@@ -55,6 +56,28 @@ const OrderBottomBar = ({ product }) => {
     }
   };
 
+  const orderNow = async () => {
+    try {
+      const selectedItems = [{
+        storeName: product.shop.name,
+        storeAvatar: product.shop.profile_picture,
+        storeLocation: product.shop.region,
+        productName: product.name,
+        productThumbnail: product.thumbnail,
+        productPrice: product.price,
+        qty: quantity,
+        shop_city_id: product.shop.city_id,
+        shop_id: product.shop_id,
+        product_id: product.id,
+        quantity: quantity,
+      }];
+
+      navigate("/product-order", { state: { selectedItems } });
+    } catch (error) {
+      toast.error("Failed to order product", error);
+    }
+  }
+
   // Function to update quantity
   const updateQuantity = (newQuantity) => {
     setQuantity(newQuantity);
@@ -85,7 +108,8 @@ const OrderBottomBar = ({ product }) => {
         />
       </div>
       <div className="flex items-center col-span-12 gap-2 lg:col-span-4">
-        <button className="w-full px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-dark rounded-xl">
+        <button onClick={orderNow}
+          className="w-full px-6 py-3 font-semibold text-white bg-primary hover:bg-primary-dark rounded-xl">
           Beli Sekarang
         </button>
         <button

@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { IoCartOutline, IoHeartOutline, IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import LikeButton from "../LikeButton";
+import { encryptText, decryptText } from '../../helpers/cryptoHelper';
+
 
 const PrevArrow = ({ onClick }) => (
   <button
@@ -36,16 +38,21 @@ const ProductCard = ({ product, type }) => {
     images,
     thumbnail,
   } = product;
-  const createSlug = (name) => {
-    return name
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-  };
+  const [slug, setSlug] = useState("");
+
+  useEffect(() => {
+    async function generateSlug() {
+      const encryptedId = btoa(product.id + "-" + product.name);
+      setSlug(encryptedId);
+    }
+    generateSlug();
+  }, [product.id]);
+
+
   const categoryName = category.name;
   const shopName = shop.name;
   const region = shop.region;
-  const slug = createSlug(name) + "-" + createSlug(shopName);
+  // const slug = createSlug(name) + "-" + createSlug(shopName);
   const settings = {
     dots: true,
     infinite: true,
@@ -75,10 +82,10 @@ const ProductCard = ({ product, type }) => {
   return (
     <Link
       to={
-        type === "Product" ? `/product/${id}-${slug}` : `/service/${id}-${slug}`
+        type === "Product" ? `/product/${slug}` : `/service/${slug}`
       }
     >
-      <div className="mb-2 mr-2 overflow-hidden  rounded-xl md:mr-4 md:mb-4">
+      <div className="mb-2 mr-2 overflow-hidden rounded-xl md:mr-4 md:mb-4">
         {/* image slider */}
         <div className="relative overflow-hidden group rounded-xl">
           {images && images.length > 0 ? (

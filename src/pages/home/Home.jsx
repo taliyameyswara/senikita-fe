@@ -44,12 +44,16 @@ const Home = ({ setProgress }) => {
         axiosInstance.get(`/random-services`, { params }),
       ]);
 
+      console.log("Product data:", productResponse.data.data); // Log data produk
+      console.log("Service data:", serviceResponse.data.data); // Log data jasa
+
       setProducts(productResponse.data.data);
       setService(serviceResponse.data.data);
       setProgress(100);
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };

@@ -15,7 +15,8 @@ import FullPageLoader from "../../components/loading/FullPageLoader";
 import { useAxiosInstance } from "../../config/axiosConfig"
 
 const DashboardUser = () => {
-  const { user, loading } = useContext(UserContext);
+  const { loading } = useContext(UserContext);
+  const [user, setUser] = useState({});
   const [product, setProduct] = useState([]);
   const [service, setService] = useState([]);
   const axiosInstance = useAxiosInstance()
@@ -40,9 +41,19 @@ const DashboardUser = () => {
       })
   }
 
+  const getProfile = () => {
+    axiosInstance.get('/user/profile')
+      .then((res) => {
+        setUser(res.data.data)
+      }).catch((error) => {
+        console.log(error.response)
+      })
+  }
+
   useEffect(() => {
     getProductCount();
     getServiceCount();
+    getProfile();
   }, [])
 
 
@@ -203,7 +214,7 @@ const DashboardUser = () => {
               <div className="relative grid h-full grid-cols-2 p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
                 <div>
                   <img
-                    src="https://via.placeholder.com/100"
+                    src={user.profile_picture}
                     alt="User Profile"
                     className="object-cover w-24 h-24 md:w-32 md:h-32 rounded-xl "
                   />

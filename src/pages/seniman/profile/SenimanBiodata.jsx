@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "../../../assets/avatar.png";
 import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
@@ -6,36 +6,75 @@ import TextareaInput from "../../../components/form-input/TextareaInput";
 import Selection from "../../../components/Selection";
 import ReadMore from "../../../components/ReadMore";
 import CustomerAddress from "../../../components/orders/CustomerAddress";
+import { useAxiosInstance } from "../../../config/axiosConfig";
+import FullPageLoader from "../../../components/loading/FullPageLoader";
+import { toast } from "react-toastify";
+const SenimanBiodata = () => {
+  const axiosInstance = useAxiosInstance();
+  const [loading, setLoading] = useState(true);
+  const [senimanData, setSenimanData] = useState(false);
 
-const UserBiodata = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalSubtitle, setModalSubtitle] = useState("");
   const [fieldToUpdate, setFieldToUpdate] = useState("");
   const [formData, setFormData] = useState({
-    profilePicture: "",
-    fullName: "Sanggar Seni Apa Gt",
-    desc: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore sequi itaque repellat! Consequatur aliquid sint suscipit voluptatem consequuntur dolorem animi natus! Consequuntur obcaecati unde tempore soluta iste accusamus dolor pariatur! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore sequi itaque repellat! Consequatur aliquid sint suscipit voluptatem consequuntur dolorem animi natus! Consequuntur obcaecati unde tempore soluta iste accusamus dolor pariatur!",
-    category: ["Seni Tari", "Seni Musik"],
+    profile_picture: "",
+    name: "",
+    desc: "",
+    address: "",
+    city_id: 0,
+    province_id: 0,
+
+    // category: ["Seni Tari", "Seni Musik"],
   });
 
-  const [categoryOptions] = useState([
-    { label: "Seni Tari", value: "Seni Tari" },
-    { label: "Seni Rupa", value: "Seni Rupa" },
-    { label: "Seni Musik", value: "Seni Musik" },
-  ]);
+  const fetchUserData = () => {
+    axiosInstance.get('user/shop/view-login')
+      .then((res) => {
+        const senimanData = res.data.data;
+        console.log(senimanData)
+        setSenimanData(senimanData);
+        setFormData({
+          profile_picture: senimanData.profile_picture,
+          name: senimanData.name,
+          desc: senimanData.desc,
+          address: senimanData.address,
+          city_id: senimanData.city_id,
+          province_id: senimanData.province_id,
+        })
+      }).catch((res) => {
+        console.log(res)
+      }).finally(() => {
+        setLoading(false);
+      });
+  }
 
-  const [address, setAddress] = useState({
-    label: "Kantor",
-    name: "Seni Apa Gt",
-    phone: "08123456789",
-    street: "Jl. Kebon Jeruk No 7 Blok F",
-    zipCode: "61314",
-    city: "Bandung",
-    district: "Cibaduyut",
-    province: "Jawa Barat",
-    note: "Rumah warna hijau pager oren", //optional
-  });
+  useEffect(() => {
+    fetchUserData();
+  }, [])
+
+  useEffect(() => {
+    console.log(formData)
+  }, [formData])
+
+  // const [categoryOptions] = useState([
+  //   { label: "Seni Tari", value: "Seni Tari" },
+  //   { label: "Seni Rupa", value: "Seni Rupa" },
+  //   { label: "Seni Musik", value: "Seni Musik" },
+  // ]);
+
+  // const [address, setAddress] = useState({
+  //   label: "Kantor",
+  //   name: "Seni Apa Gt",
+  //   phone: "08123456789",
+  //   street: "Jl. Kebon Jeruk No 7 Blok F",
+  //   zipCode: "61314",
+  //   city: "Bandung",
+  //   district: "Cibaduyut",
+  //   province: "Jawa Barat",
+  //   note: "Rumah warna hijau pager oren", //optional
+  // });
 
   const openModal = (field, title, subtitle) => {
     setFieldToUpdate(field);
@@ -53,16 +92,37 @@ const UserBiodata = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFormData({ ...formData, profilePicture: reader.result });
+        setFormData({ ...formData, profile_picture: file });
+
+        const formEditData = new FormData();
+        formEditData.append("profile_picture", file);
+        formEditData.append("_method", "PUT");
+
+        // Submit the profile picture change
+        axiosInstance({
+          method: "post",
+          url: `/user/shop/${senimanData.id}`,
+          data: formEditData,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+          .then((response) => {
+            toast.success("Foto profil berhasil diperbarui.");
+            fetchUserData();
+          })
+          .catch((error) => {
+            console.error("Error updating profile picture:", error);
+          });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleCategorySelect = (selectedOptions) => {
-    const selectedCategories = selectedOptions.map((option) => option.value);
-    setFormData({ ...formData, category: selectedCategories });
-  };
+  // const handleCategorySelect = (selectedOptions) => {
+  //   const selectedCategories = selectedOptions.map((option) => option.value);
+  //   setFormData({ ...formData, category: selectedCategories });
+  // };
 
   const handleSubmit = () => {
     if (fieldToUpdate === "password") {
@@ -71,23 +131,64 @@ const UserBiodata = () => {
         return;
       }
       setFormData({ ...formData, password: newPassword });
+    } else {
+      const formEditData = new FormData();
+      formEditData.append("name", formData.name);
+      formEditData.append("desc", formData.desc);
+      formEditData.append('address', formData.address);
+
+      if (formData.profile_picture instanceof File) {
+        formEditData.append('profile_picture', formData.profile_picture);
+      }
+
+      formEditData.append("_method", "PUT");
+      axiosInstance({
+        method: "post",
+        url: `/user/shop/${senimanData.id}`, // Endpoint untuk memperbarui profil
+        data: formEditData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+        .then((response) => {
+          console.log("Profile updated successfully:", response.data);
+          toast.success("Profil berhasil diperbarui.");
+          closeModal();
+          fetchUserData(); // Optionally refresh profile data
+        })
+        .catch((error) => {
+          console.error("Error updating profile:", error);
+          toast.error("Gagal memperbarui profil.");
+        });
+
+      // profile_picture: "",
+      //   name: "",
+      //     desc: "",
+      //       address: "",
+      //         city_id: 0,
+      //           province_id: 0,
+
     }
     closeModal();
   };
 
+  if (loading) {
+    return <FullPageLoader />
+  }
+
   return (
     <div className="">
       {/* Profile Section */}
-      <div className="grid grid-cols-10 xl:gap-5 lg:gap-4 gap-2">
-        <div className="xl:col-span-3 lg:col-span-4 col-span-10 border px-5 py-4 rounded-xl">
-          <div className="font-semibold mb-2">Foto Profil</div>
+      <div className="grid grid-cols-10 gap-2 xl:gap-5 lg:gap-4">
+        <div className="col-span-10 px-5 py-4 border xl:col-span-3 lg:col-span-4 rounded-xl">
+          <div className="mb-2 font-semibold">Foto Profil</div>
           <img
             src={
-              formData.profilePicture ||
+              formData.profile_picture ||
               "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
             }
             alt="Profile"
-            className="w-full h-48 object-cover rounded-xl"
+            className="object-cover w-full h-48 rounded-xl"
           />
           <input
             type="file"
@@ -100,32 +201,32 @@ const UserBiodata = () => {
             onClick={() =>
               document.getElementById("profilePictureInput").click()
             }
-            className="border px-5 py-2 rounded-xl text-sm font-semibold mt-3 flex w-full justify-center"
+            className="flex justify-center w-full px-5 py-2 mt-3 text-sm font-semibold border rounded-xl"
           >
             Ubah Foto Profil
           </button>
-          <p className="text-sm text-gray-400 mt-3">
+          <p className="mt-3 text-sm text-gray-400">
             Ukuran foto maksimal 500KB. Format file yang diperbolehkan: .JPG
             .JPEG .PNG .GIF
           </p>
         </div>
 
         {/* Biodata Section */}
-        <div className="xl:col-span-7 lg:col-span-6 col-span-10">
+        <div className="col-span-10 xl:col-span-7 lg:col-span-6">
           {/* Personal Info Table */}
-          <div className=" border px-5 py-4 rounded-xl">
-            <div className="font-semibold text-black text-lg mb-4">
+          <div className="px-5 py-4 border rounded-xl">
+            <div className="mb-4 text-lg font-semibold text-black">
               Informasi Seniman
             </div>
             <div className="space-y-4">
-              <div className="grid grid-cols-3 gap-y-4 mt-2">
-                <div className=" text-gray-600">Nama Lengkap</div>
-                <div className="col-span-2 flex items-center">
-                  {formData.fullName}
+              <div className="grid grid-cols-3 mt-2 gap-y-4">
+                <div className="text-gray-600 ">Nama Lengkap</div>
+                <div className="flex items-center col-span-2">
+                  {formData.name}
                   <button
                     onClick={() =>
                       openModal(
-                        "fullName",
+                        "name",
                         "Nama Seniman",
                         "Pastikan nama lengkap Anda benar."
                       )
@@ -137,7 +238,7 @@ const UserBiodata = () => {
                 </div>
 
                 <div className="text-gray-600">Deskripsi Seniman</div>
-                <div className="col-span-2 flex items-center">
+                <div className="flex items-center col-span-2">
                   <ReadMore description={formData.desc} maxLength={200} />
                   <button
                     onClick={() =>
@@ -153,8 +254,23 @@ const UserBiodata = () => {
                   </button>
                 </div>
 
-                <div className="text-gray-600">Kategori Kesenian</div>
-                <div className="col-span-2 flex items-center">
+                <div className="text-gray-600">Alamat Seniman</div>
+                <div className="flex items-center col-span-2">
+                  <ReadMore description={formData.address} maxLength={200} />
+                  <button
+                    onClick={() =>
+                      openModal(
+                        "address",
+                        "Aalamat Seniman",
+                        "Berikan deskripsi mengenai alamat kesenian."
+                      )
+                    }
+                    className="ml-3 text-tertiary"
+                  >
+                    Ubah
+                  </button>
+                </div>
+                {/* <div className="flex items-center col-span-2">
                   {formData.category.join(", ") || "Belum ada kategori"}
                   <button
                     onClick={() =>
@@ -168,14 +284,14 @@ const UserBiodata = () => {
                   >
                     Ubah
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
 
-          <div className="">
+          {/* <div className="">
             <CustomerAddress address={address} isOrder={true} />
-          </div>
+          </div> */}
         </div>
 
         {/* Address Section */}
@@ -228,4 +344,4 @@ const UserBiodata = () => {
   );
 };
 
-export default UserBiodata;
+export default SenimanBiodata;
