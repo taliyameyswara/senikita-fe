@@ -10,8 +10,10 @@ import Heading from "../../components/Heading";
 import { CgNotes } from "react-icons/cg";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 import { useAxiosInstance } from "../../config/axiosConfig";
-import Spinner from "../../components/loading/Spinner";
+import FullPageLoader from "../../components/loading/FullPageLoader";
 import { useNavigate } from "react-router-dom";
+import EmptyState from "../../components/EmptyState";
+import { formatNumber } from "../../utils/formatNumber";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -30,39 +32,37 @@ const Cart = () => {
   };
 
   const getCartItems = () => {
-    axiosInstance.get('user/cart')
+    axiosInstance
+      .get("user/cart")
       .then((response) => {
         // Memasukkan qty ke dalam setiap produk
         const updatedProducts = response.data.data.map((item) => ({
           ...item,
-          quantity: item.qty // Menyimpan qty ke dalam property quantity
+          quantity: item.qty, // Menyimpan qty ke dalam property quantity
         }));
         setProducts(updatedProducts);
         console.log(updatedProducts);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-
-
   // delete cart-items
   const handleDeleteCart = (cartItemId) => {
-    axiosInstance.delete(`user/cart/items/${cartItemId}`)
+    axiosInstance
+      .delete(`user/cart/items/${cartItemId}`)
       .then((response) => {
         getCartItems();
       })
       .catch((error) => {
-        console.error('Error deleting data:', error);
+        console.error("Error deleting data:", error);
       })
       .finally(() => {
-
         setLoading(false);
-
       });
   };
 
@@ -70,11 +70,9 @@ const Cart = () => {
   const updateCartItemQuantity = (cartItemId, newQuantity) => {
     axiosInstance
       .put(`user/cart/items/${cartItemId}`, { qty: newQuantity })
-      .then((response) => {
-
-      })
+      .then((response) => {})
       .catch((error) => {
-        console.error('Error updating quantity:', error);
+        console.error("Error updating quantity:", error);
       })
       .finally(() => {
         // setLoading(false);
@@ -85,11 +83,9 @@ const Cart = () => {
   const incrementCartItemQuantity = (cartItemId) => {
     axiosInstance
       .put(`user/cart/items/increment/${cartItemId}`)
-      .then((response) => {
-
-      })
+      .then((response) => {})
       .catch((error) => {
-        console.error('Error incrementing quantity:', error);
+        console.error("Error incrementing quantity:", error);
       })
       .finally(() => {
         // setLoading(false);
@@ -100,19 +96,14 @@ const Cart = () => {
   const decrementCartItemQuantity = (cartItemId) => {
     axiosInstance
       .put(`user/cart/items/decrement/${cartItemId}`)
-      .then((response) => {
-
-      })
+      .then((response) => {})
       .catch((error) => {
-        console.error('Error decrementing quantity:', error);
+        console.error("Error decrementing quantity:", error);
       })
       .finally(() => {
         // setLoading(false);
       });
   };
-
-
-
 
   useEffect(() => {
     getCartItems();
@@ -142,8 +133,6 @@ const Cart = () => {
   const handleNotesButton = () => setNotesVisible(!isNotesVisible);
 
   const handleNotesChange = (e) => setNotesValue(e.target.value);
-
-
 
   const toggleLike = (productName) => {
     setProducts((prevProducts) =>
@@ -185,8 +174,8 @@ const Cart = () => {
     setSelectedProducts((prevSelected) =>
       isAllSelected
         ? prevSelected.filter(
-          (productName) => !storeProducts.includes(productName)
-        )
+            (productName) => !storeProducts.includes(productName)
+          )
         : [...prevSelected, ...storeProducts]
     );
   };
@@ -210,161 +199,154 @@ const Cart = () => {
     );
 
   if (loading) {
-    return <Spinner />;
+    return <FullPageLoader />;
   }
 
   return (
     <div>
       <Navbar />
-      <div className="container p-6 mx-auto">
+      <div className="container md:px-6 px-4 md:py-2 py-0 mx-auto">
         <Heading title={`${products.length} item di keranjang Anda`} />
-        <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5">
-          <div className="col-span-3 space-y-5">
-            {Object.keys(groupedProducts).map((storeName, index) => (
-              <div key={index} className="p-4 border rounded-xl">
-                <div className="flex items-start gap-2">
-                  {/* checkbox */}
-                  <div className="">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 bg-white border border-gray-300 rounded text-primary focus:ring-primary primary focus:ring-1"
-                      onChange={() => handleStoreSelect(storeName)}
-                      checked={groupedProducts[storeName].every((product) =>
-                        selectedProducts.includes(product.productName)
-                      )}
-                    />
-                  </div>
-                  {/* info toko */}
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={groupedProducts[storeName][0].storeAvatar ?? "https://via.placeholder.com/100"}
-                      alt={storeName}
-                      className="w-8 h-8 rounded-lg"
-                    />
-                    <div>
-                      <h2 className="text-sm">{storeName}</h2>
-                      <h2 className="text-xs text-gray-500">
-                        {groupedProducts[storeName][0].storeLocation}
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Produk */}
-                {groupedProducts[storeName].map((product, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <div className="mt-2">
+        {products.length === 0 ? (
+          <EmptyState message={"Tidak ada item di keranjang"} />
+        ) : (
+          <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5">
+            <div className="col-span-3 space-y-5 pb-8">
+              {Object.keys(groupedProducts).map((storeName, index) => (
+                <div key={index} className=" rounded-xl">
+                  <div className="flex items-start gap-2">
+                    {/* checkbox */}
+                    <div className="">
                       <input
                         type="checkbox"
                         className="w-4 h-4 bg-white border border-gray-300 rounded text-primary focus:ring-primary primary focus:ring-1"
-                        checked={selectedProducts.includes(product.productName)}
-                        onChange={() =>
-                          handleProductSelect(product.productName)
-                        }
+                        onChange={() => handleStoreSelect(storeName)}
+                        checked={groupedProducts[storeName].every((product) =>
+                          selectedProducts.includes(product.productName)
+                        )}
                       />
                     </div>
-                    <div className="flex-grow ">
-                      <ProductOrderCard
-                        product={product}
-
-                        onQuantityChange={(cartItemId, newQuantity) => updateCartItemQuantity(cartItemId, newQuantity)}
-                        button={
-                          <>
-                            <button
-                              onClick={() => handleDeleteCart(product.cart_item_id)}
-                            >
-                              <div className="flex items-center gap-1">
-                                <FaTrashCan className="text-gray-400" />
-                                <span className="text-sm text-gray-400">
-                                  Hapus
-                                </span>
-                              </div>
-                            </button>
-
-                            <button
-                              onClick={() => toggleLike(product.productName)}
-                            >
-                              {product.isLiked ? (
-                                <div className="flex items-center gap-1">
-                                  <IoHeart className="text-customRed" />
-                                  <span className="text-sm text-customRed">
-                                    Wishlist
-                                  </span>
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-1">
-                                  <IoHeartOutline className="text-gray-400" />
-                                  <span className="text-sm text-gray-400">
-                                    Wishlist
-                                  </span>
-                                </div>
-                              )}
-                            </button>
-                          </>
+                    {/* info toko */}
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={
+                          groupedProducts[storeName][0].storeAvatar ??
+                          "https://via.placeholder.com/100"
                         }
-                      // onRemoveProduct={handleRemoveProduct}
+                        alt={storeName}
+                        className="w-8 h-8 rounded-lg"
                       />
+                      <div>
+                        <h2 className="text-sm">{storeName}</h2>
+                        <h2 className="text-xs text-gray-500">
+                          {groupedProducts[storeName][0].storeLocation}
+                        </h2>
+                      </div>
                     </div>
                   </div>
-                ))}
 
-                {/* <div className="flex flex-wrap gap-2">
-                  <div>
-                    <button
-                      className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary"
-                      onClick={handleNotesButton}
-                    >
-                      <CgNotes />
-                      <div>Tambah catatan untuk {storeName}</div>
-                    </button>
-
-                    {isNotesVisible && (
-                      <div className="mt-1">
-                        <TextareaInput
-                          label="Catatan"
-                          placeholder="Masukkan catatan Anda di sini..."
-                          value={notesValue}
-                          name="catatan"
-                          onChange={handleNotesChange}
-                          rows={3}
+                  {/* Produk */}
+                  {groupedProducts[storeName].map((product, idx) => (
+                    <div key={idx} className="flex items-start gap-2">
+                      <div className="mt-2">
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 bg-white border border-gray-300 rounded text-primary focus:ring-primary primary focus:ring-1"
+                          checked={selectedProducts.includes(
+                            product.productName
+                          )}
+                          onChange={() =>
+                            handleProductSelect(product.productName)
+                          }
                         />
                       </div>
-                    )}
-                  </div>
+                      <div className="flex-grow ">
+                        <ProductOrderCard
+                          product={product}
+                          onQuantityChange={(cartItemId, newQuantity) =>
+                            updateCartItemQuantity(cartItemId, newQuantity)
+                          }
+                          button={
+                            <>
+                              <button
+                                onClick={() =>
+                                  handleDeleteCart(product.cart_item_id)
+                                }
+                              >
+                                <div className="flex items-center gap-1">
+                                  <FaTrashCan className="text-gray-400" />
+                                  <span className="text-sm text-gray-400">
+                                    Hapus
+                                  </span>
+                                </div>
+                              </button>
 
-                  <div>
-                    <ShippingOptions
-                      onShippingCostChange={(cost) =>
-                        handleShippingCostChange(storeName, cost)
-                      }
-                    />
-                  </div>
-                </div> */}
-              </div>
-            ))}
-          </div>
+                              <button
+                                onClick={() => toggleLike(product.productName)}
+                              >
+                                {product.isLiked ? (
+                                  <div className="flex items-center gap-1">
+                                    <IoHeart className="text-customRed" />
+                                    <span className="text-sm text-customRed">
+                                      Wishlist
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center gap-1">
+                                    <IoHeartOutline className="text-gray-400" />
+                                    <span className="text-sm text-gray-400">
+                                      Wishlist
+                                    </span>
+                                  </div>
+                                )}
+                              </button>
+                            </>
+                          }
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
 
-          {/* Order Summary */}
-          <div className="sticky col-span-2 top-20">
-            <OrderSummary
-              productTotal={totalPrice}
-              // shippingCost={}
-              serviceFee={serviceFee}
-            />
-            <button
-              onClick={handlePurchase}
-              className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl"
-            >
-              Beli <span className="font-nunito">({selectedProducts.length})</span>
-            </button>
+            {/* Order Summary for Desktop */}
+            <div className="hidden lg:block lg:sticky lg:top-20 col-span-2">
+              <OrderSummary
+                productTotal={totalPrice}
+                // shippingCost={}
+                // serviceFee={serviceFee}
+              />
+              <button
+                onClick={handlePurchase}
+                className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl"
+              >
+                Beli{" "}
+                <span className="font-nunito">({selectedProducts.length})</span>
+              </button>
+            </div>
           </div>
+        )}
+
+        {/* Bottom bar for mobile (only showing total price) */}
+        <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t px-4 py-3 flex justify-between items-center">
+          <div>
+            <p className="text-sm">Total Belanja</p>
+            <p className="text-lg font-semibold font-nunito">
+              {formatNumber(totalPrice)}
+            </p>
+          </div>
+          <button
+            onClick={handlePurchase}
+            className="px-4 py-2 font-semibold text-white bg-primary rounded-xl"
+          >
+            Beli{" "}
+            <span className="font-nunito">({selectedProducts.length})</span>
+          </button>
         </div>
-
-        <FooterLogo />
       </div>
     </div>
   );
 };
 
 export default Cart;
-

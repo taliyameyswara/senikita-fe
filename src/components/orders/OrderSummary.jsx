@@ -10,12 +10,17 @@ const OrderSummary = ({ productTotal, shippingCost, serviceFee }) => {
     <div className="">
       <h3 className="mb-3 text-lg font-semibold">Ringkasan Belanja</h3>
 
-      {productTotal > 0 && (
+      {productTotal > 0 ? (
         <div className="flex justify-between">
           <span>Total Harga</span>
           <span className="font-light font-nunito">
             {formatNumber(productTotal)}
           </span>
+        </div>
+      ) : (
+        <div className="flex justify-between">
+          <span>Total Harga</span>
+          <span className="font-light font-nunito">Rp0</span>
         </div>
       )}
 
@@ -37,17 +42,19 @@ const OrderSummary = ({ productTotal, shippingCost, serviceFee }) => {
         </div>
       )}
 
-      {(productTotal > 0 || shippingCost > 0 || serviceFee > 0) && (
-        <>
-          <hr className="my-3" />
-          <div className="flex justify-between text-lg font-semibold">
-            <span>Total Belanja</span>
+      <>
+        <hr className="my-3" />
+        <div className="flex justify-between text-lg font-semibold">
+          <span>Total Belanja</span>
+          {productTotal > 0 || shippingCost > 0 || serviceFee > 0 ? (
             <span className="font-semibold font-nunito">
               {formatNumber(total)}
             </span>
-          </div>
-        </>
-      )}
+          ) : (
+            <span className="font-semibold font-nunito">Rp0</span>
+          )}
+        </div>
+      </>
     </div>
   );
 };

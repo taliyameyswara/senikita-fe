@@ -33,11 +33,11 @@ const TotalCounter = ({ productPrice, quantity, onQuantityChange }) => {
   };
 
   return (
-    <div className="flex flex-row items-center gap-3">
-      <div className="flex items-center px-1 space-x-1 border rounded-lg">
+    <div className="flex flex-row items-center md:gap-3 gap-2">
+      <div className="flex items-center px-1 md:space-x-1 border rounded-lg">
         <button
           onClick={decreaseQuantity}
-          className="p-2 transition duration-200 bg-white rounded-md hover:bg-primary hover:text-white text-primary"
+          className="md:p-2 p-1 transition duration-200 bg-white rounded-md hover:bg-primary hover:text-white text-primary"
         >
           <AiOutlineMinus className="text-sm" />
         </button>
@@ -48,14 +48,14 @@ const TotalCounter = ({ productPrice, quantity, onQuantityChange }) => {
         />
         <button
           onClick={increaseQuantity}
-          className="p-2 transition duration-200 bg-white rounded-md hover:bg-primary hover:text-white text-primary"
+          className="md:p-2 p-1 transition duration-200 bg-white rounded-md hover:bg-primary hover:text-white text-primary"
         >
           <AiOutlinePlus className="text-sm" />
         </button>
       </div>
       <div className="flex flex-col">
         <div className="text-sm text-gray-500">Total Harga:</div>
-        <span className="font-semibold font-nunito">
+        <span className="font-semibold font-nunito md:text-base text-sm">
           Rp{totalPrice.toLocaleString()}
         </span>
       </div>

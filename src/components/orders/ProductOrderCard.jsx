@@ -10,7 +10,7 @@ const ProductOrderCard = ({ product, button, onQuantityChange }) => {
         <img
           src={product.productThumbnail}
           alt={product.productName}
-          className="object-cover rounded-lg w-36 h-28"
+          className="object-cover rounded-lg md:w-36 md:h-28 w-20 h-20"
         />
         <div className="flex flex-col gap-3">
           <div>
