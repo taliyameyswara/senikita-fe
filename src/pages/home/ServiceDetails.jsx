@@ -4,16 +4,20 @@ import ScrollTab from "../../components/ScrollTab";
 import ReviewSection from "../../components/product-details/ReviewSection";
 import ArtistProfileSection from "../../components/product-details/ArtistProfileSection";
 import ProductList from "../../components/card/ProductList";
-import { useState, useEffect } from "react";
-import { useAxiosInstance } from "../../config/axiosConfig";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import ServiceDetailSection from "../../components/product-details/ServiceDetailSection";
 import OrderBottomBarService from "../../components/product-details/OrderBottomBarService";
+import { useServiceApi } from "../../api/landing/ServiceApi";
+import FullPageLoader from "../../components/loading/FullPageLoader";
+import { UserContext } from "../../context/UserContext";
+
 
 const ServiceDetails = ({ setProgress }) => {
   const { id } = useParams();
-  // const serviceId = id.split("-")[0]; // Ekstrak hanya ID dari URL
   const [serviceId, setServiceId] = useState("");
+  const { fetchServiceById, fetchRandomService } = useServiceApi();
+  const { user, } = useContext(UserContext); // Use logout from context
 
   useEffect(() => {
     const decryptedId = atob(id);
@@ -21,43 +25,50 @@ const ServiceDetails = ({ setProgress }) => {
     setServiceId(serviceId);
   })
 
-  const axiosInstance = useAxiosInstance();
   const [service, setService] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // State for loading
+  const [products, setServices] = useState([]);
+  const [loading, setLoading] = useState(false); // State for loading
+
+  const getServiceById = async (serviceId) => {
+    try {
+      const response = await fetchServiceById(serviceId);
+      setService(response);
+    }
+    catch (error) {
+      console.error("Failed to fetch service:", error);
+    }
+  }
+
+  const getServices = async () => {
+    try {
+      const response = await fetchRandomService();
+      console.log(response);
+      setServices(response);
+    }
+    catch (error) {
+      console.error("Failed to fetch service:", error);
+    }
+  }
 
   useEffect(() => {
-    setProgress(30);
-
-    axiosInstance
-      .get("/random-services")
-      .then((res) => {
-        setProducts(res.data.data);
-        setLoading(false); // Stop loading after data is received
+    const fetchData = async () => {
+      setLoading(true);
+      setProgress(30);
+      if (serviceId) {
+        await getServiceById(serviceId);
         setProgress(60);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false); // Stop loading even if there's an error
-        setProgress(100);
-      });
-
-    if (serviceId) {
-      axiosInstance
-        .get(`service/${serviceId}`)
-        .then((res) => {
-          // console.log(res.data.service);
-          setService(res.data.service);
-          setLoading(false); // Stop loading after data is received
-          setProgress(100);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false); // Stop loading even if there's an error
-          setProgress(100);
-        });
+      }
+      await getServices();
+      setProgress(100);
+      setLoading(false);
     }
+
+    fetchData();
   }, [serviceId, setProgress]);
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -87,14 +98,24 @@ const ServiceDetails = ({ setProgress }) => {
     },
   ];
 
+
+  if (loading) {
+    return <FullPageLoader />
+  }
+
   return (
     <>
       <Navbar />
       <div className="container px-6 py-4 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
-        <OrderBottomBarService service={service} />
-        <ProductList  
+
+        {
+          service && user.id !== service.shop.user_id && (
+            <OrderBottomBarService service={service} />
+          )
+        }
+        <ProductList
           title={"Produk Lainnya"}
           products={products}
           type={"Service"}

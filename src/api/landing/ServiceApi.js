@@ -21,5 +21,20 @@ export const useServiceApi = () => {
         }
     };
 
-    return { fetchRandomService };
+    const fetchServiceById = async (serviceId) => {
+        try {
+            const response = await axiosInstance.get(`/service/${serviceId}`);
+
+            if (response.status === 200 && response.data && response.data.service) {
+                return response.data.service;
+            } else {
+                throw new Error("Invalid response data from service API");
+            }
+        } catch (error) {
+            console.error("Failed to fetch service:", error);
+            throw error;
+        }
+    }
+
+    return { fetchRandomService, fetchServiceById };
 };

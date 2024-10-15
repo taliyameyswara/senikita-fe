@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "../../../assets/avatar.png";
 import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
 import DateInput from "../../../components/form-input/DateInput";

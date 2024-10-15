@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import Heading from "../../../components/Heading";
 import { IoChevronDownOutline } from "react-icons/io5";
-import FaqImage from "../../../assets/home/faq.png";
+import FaqImage from "/assets/home/faq.png";
 
 const FaqSection = () => {
   const [openQuestion, setOpenQuestion] = useState(null);
@@ -35,12 +35,12 @@ const FaqSection = () => {
   };
 
   return (
-    <section className="pb-20 container">
+    <section className="container pb-20">
       {/* Grid layout */}
-      <div className="grid md:grid-cols-2 grid-cols-1">
+      <div className="grid grid-cols-1 md:grid-cols-2">
         {/* FAQ Section */}
         <div className="">
-          <div className="ml-4 pb-1">
+          <div className="pb-1 ml-4">
             <Heading title={"Pertanyaan Yang Sering Ditanyakan"} />
           </div>
           <div className="space-y-4 ">
@@ -54,13 +54,12 @@ const FaqSection = () => {
                   className="flex items-center justify-between w-full px-4 py-3 sm:p-4"
                   onClick={() => handleToggle(index)}
                 >
-                  <span className="flex text-start font-semibold md:text-lg text-base">
+                  <span className="flex text-base font-semibold text-start md:text-lg">
                     {faq.question}
                   </span>
                   <IoChevronDownOutline
-                    className={`md:text-lg text-base text-gray-400 transition-transform duration-300 ${
-                      openQuestion === index ? "rotate-180" : ""
-                    }`}
+                    className={`md:text-lg text-base text-gray-400 transition-transform duration-300 ${openQuestion === index ? "rotate-180" : ""
+                      }`}
                   />
                 </button>
 
@@ -74,7 +73,7 @@ const FaqSection = () => {
                   }}
                   className={`overflow-hidden transition-max-height duration-500 ease-in-out`}
                 >
-                  <div className="px-4 pb-5 sm:px-6 sm:pb-6 text-sm md:text-base">
+                  <div className="px-4 pb-5 text-sm sm:px-6 sm:pb-6 md:text-base">
                     <p>{faq.answer}</p>
                   </div>
                 </div>
@@ -82,19 +81,19 @@ const FaqSection = () => {
             ))}
           </div>
 
-          <p className="text-gray-600 text-base mt-9 px-4">
+          <p className="px-4 text-base text-gray-600 mt-9">
             Tidak menemukan jawaban yang Anda cari?{" "}
             <a
               href="#"
               title=""
-              className="font-medium text-primary transition-all duration-200 hover:text-tertiary focus:text-tertiary hover:underline"
+              className="font-medium transition-all duration-200 text-primary hover:text-tertiary focus:text-tertiary hover:underline"
             >
               Hubungi tim dukungan kami
             </a>
           </p>
         </div>
 
-        <div className="lg:mt-0 mt-10">
+        <div className="mt-10 lg:mt-0">
           <img
             src={FaqImage}
             className="object-cover w-full h-full"

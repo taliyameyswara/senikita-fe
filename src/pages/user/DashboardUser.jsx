@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import UserDashboardLayout from "../../layouts/UserDashboardLayout";
-import Welcoming from "../../assets/home/client1.png";
+import Welcoming from "/assets/home/client1.png";
 import { UserContext } from "../../context/UserContext";
 import { IoWalletOutline, IoCheckmarkCircleOutline } from "react-icons/io5";
 import Tabs from "../../components/Tabs";
-import ProfileAsset from "../../assets/home/faq.png";
+import ProfileAsset from "/assets/home/faq.png";
 import { Link } from "react-router-dom";
 import { IoIosHourglass } from "react-icons/io";
 import { BsTruck } from "react-icons/bs";

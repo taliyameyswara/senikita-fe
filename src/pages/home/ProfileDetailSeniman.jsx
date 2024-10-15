@@ -11,6 +11,7 @@ import ReviewTab from "../../components/review/ReviewTab";
 
 const ProfileDetailSeniman = ({ setProgress }) => {
   const { id } = useParams();
+  const [senimanId, setSenimanId] = useState("");
   const axiosInstance = useAxiosInstance();
   const [seniman, setSeniman] = useState(null);
   const [products, setProducts] = useState([]);
@@ -19,28 +20,34 @@ const ProfileDetailSeniman = ({ setProgress }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const decryptedId = atob(id);
+    const senimanId = decryptedId.split("-")[0];
+    setSenimanId(senimanId);
   }, []);
 
   useEffect(() => {
     setProgress(30);
-    axiosInstance
-      .get(`/shops/${id}`)
-      .then((res) => {
-        const data = res.data.data;
-        setSeniman(data);
-        setProducts(data.products || []);
-        setProgress(100);
-        setServices(data.services || []);
-        setProgress(100);
-      })
-      .catch((err) => {
-        console.error("Error fetching seniman details:", err);
-        setProgress(100);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    if (senimanId) {
+      axiosInstance
+        .get(`/shops/${senimanId}`)
+        .then((res) => {
+          const data = res.data.data;
+          setSeniman(data);
+          setProducts(data.products || []);
+          setProgress(100);
+          setServices(data.services || []);
+          setProgress(100);
+        })
+        .catch((err) => {
+          console.error("Error fetching seniman details:", err);
+          setProgress(100);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+
+  }, [senimanId]);
 
   const reviews = [
     {
@@ -121,12 +128,12 @@ const ProfileDetailSeniman = ({ setProgress }) => {
                   <div className="flex gap-3 mt-2">
                     <div className="text-center">
                       <div className="flex items-center gap-2">
-                        <FaStar className="text-yellow-500 text-lg" />
+                        <FaStar className="text-lg text-yellow-500" />
                         <div className="text-lg font-bold font-nunito">
                           {seniman?.rating}
                         </div>
                       </div>
-                      <div className="text-gray-400 text-xs">
+                      <div className="text-xs text-gray-400">
                         Rating & Ulasan
                       </div>
                     </div>
@@ -134,19 +141,19 @@ const ProfileDetailSeniman = ({ setProgress }) => {
                       <div className="text-lg font-bold font-nunito">
                         {seniman?.sold}
                       </div>
-                      <div className="text-gray-400 text-xs ">Penjualan</div>
+                      <div className="text-xs text-gray-400 ">Penjualan</div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg font-bold font-nunito ">
                         {products.length}
                       </div>
-                      <div className="text-gray-400 text-xs">Jumlah Produk</div>
+                      <div className="text-xs text-gray-400">Jumlah Produk</div>
                     </div>
                     <div className="text-center">
                       <div className="text-lg font-bold font-nunito">
                         {services.length}
                       </div>
-                      <div className="text-gray-400 text-xs">Jumlah Jasa</div>
+                      <div className="text-xs text-gray-400">Jumlah Jasa</div>
                     </div>
                   </div>
                 </div>

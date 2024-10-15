@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ProductList from "../../../components/card/ProductList";
 import { useAxiosInstance } from "../../../config/axiosConfig";
-import PromotionImage from "../../../assets/home/promotion.png";
+import PromotionImage from "/assets/home/promotion.png";
 import Heading from "../../../components/Heading";
 
 const PromotionSection = () => {
@@ -22,8 +22,8 @@ const PromotionSection = () => {
   }, []);
 
   return (
-    <div className="lg:mt-20 mt-10">
-      <div className="md:py-10 py-10 bg-gradient-to-r from-primary to-tertiary ">
+    <div className="mt-10 lg:mt-20">
+      <div className="py-10 md:py-10 bg-gradient-to-r from-primary to-tertiary ">
         {loading ? (
           <div>Loading...</div> // Display this while loading
         ) : (

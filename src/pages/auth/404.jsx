@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavbarLogo from "../../components/navbar/NavbarLogo";
-import ErrorImage from "../../assets/home/404.png";
+import ErrorImage from "/assets/home/404.png";
 import FooterLogo from "../../components/footer/FooterLogo";
 
 const NotFound = () => {
@@ -11,30 +11,30 @@ const NotFound = () => {
   }, []);
 
   return (
-    <div className="relative flex flex-col  bg-primary bg-opacity-5">
+    <div className="relative flex flex-col bg-primary bg-opacity-5">
       {/* Navbar */}
       <NavbarLogo />
 
       <div
-        className="container flex flex-col lg:flex-row items-center gap-10 px-6 relative"
+        className="container relative flex flex-col items-center gap-10 px-6 lg:flex-row"
         style={{ minHeight: "calc(100vh - 6rem)" }}
       >
         {/* 404 Text Section */}
-        <div className="col-span-2 flex flex-col items-start lg:w-1/2 mb-20">
+        <div className="flex flex-col items-start col-span-2 mb-20 lg:w-1/2">
           <h1 className="text-[4rem] lg:text-[6rem] font-extrabold text-brick leading-tight text-center lg:text-left">
             Oops!
           </h1>
           <h2 className="text-[2rem] lg:text-[3rem] font-bold mb-4">
             Halaman Tidak Ditemukan
           </h2>
-          <p className="text-gray-500 text-lg mb-6 ">
+          <p className="mb-6 text-lg text-gray-500 ">
             Maaf, halaman yang Anda cari tidak tersedia. Mungkin Anda salah
             ketik atau halaman telah dihapus.
           </p>
 
           <button
             onClick={() => navigate(-1)}
-            className="inline-block px-8 py-3 text-lg font-semibold text-white transition duration-300 rounded-full bg-brick hover:bg-customGreen shadow-md"
+            className="inline-block px-8 py-3 text-lg font-semibold text-white transition duration-300 rounded-full shadow-md bg-brick hover:bg-customGreen"
           >
             Kembali ke Beranda
           </button>

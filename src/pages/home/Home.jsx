@@ -15,8 +15,8 @@ import ClientTestimoniSection from "./landing/ClientTestimoniSection";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 import DropdownFilter from "../../components/DropdownFilter";
 import CustomSearchInput from "../../components/form-input/CustomSearchInput";
-import HeroTexture from "../../assets/home/hero-texture2.png";
-import HeroImage from "../../assets/home/hero.png";
+import HeroTexture from "/assets/home/hero-texture2.png";
+import HeroImage from "/assets/home/hero.png";
 import { IoIosList } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
 import { useProductApi } from "../../api/landing/ProductApi";
@@ -92,16 +92,16 @@ const Home = ({ setProgress }) => {
       setProgress(30);
       setLoading(true);
 
-      await getCategory(); // Tunggu getCategory selesai
+      await getCategory();
       setProgress(50);
 
-      await fetchProductsAndServices(); // Tunggu fetchProductsAndServices selesai
+      await fetchProductsAndServices();
       setProgress(80);
 
-      await fetchCities(); // Tunggu fetchCities selesai
+      await fetchCities();
       setProgress(100);
 
-      setLoading(false); // Setelah semuanya selesai
+      setLoading(false);
     };
 
     fetchData();
@@ -126,8 +126,6 @@ const Home = ({ setProgress }) => {
       setSelectedCategory(selectedCategoryData.id);
     }
   };
-
-
 
 
   return (

@@ -2,9 +2,9 @@ import React from "react";
 import Slider from "react-slick";
 import { IoStar } from "react-icons/io5";
 import Heading from "../../../components/Heading";
-import HeroTexture from "../../../assets/home/hero-texture2.png";
-import Client1 from "../../../assets/home/client1.png";
-import Client2 from "../../../assets/home/client2.png";
+import HeroTexture from "/assets/home/hero-texture2.png";
+import Client1 from "/assets/home/client1.png";
+import Client2 from "/assets/home/client2.png";
 
 const ClientTestimoniSection = () => {
   const testimonials = [
@@ -54,7 +54,7 @@ const ClientTestimoniSection = () => {
   };
 
   return (
-    <section className="lg:py-8 lg:my-20 my-10 relative overflow-hidden">
+    <section className="relative my-10 overflow-hidden lg:py-8 lg:my-20">
       {/* Background Texture Overlay */}
       <div
         className="absolute inset-0"
@@ -69,13 +69,13 @@ const ClientTestimoniSection = () => {
 
       {/* Fade Effect Overlays */}
 
-      <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent h-1/4 top-0 z-10"></div>
+      <div className="absolute inset-0 top-0 z-10 bg-gradient-to-b from-white to-transparent h-1/4"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent h-1/4 bottom-0 translate-y-[300%] z-10"></div>
 
-      <div className="container mx-auto px-4 relative z-20">
-        <div className="text-center lg:mb-10 mb-5">
+      <div className="container relative z-20 px-4 mx-auto">
+        <div className="mb-5 text-center lg:mb-10">
           <Heading title={"Testimoni Klien Tentang Senikita"} />
-          <p className="text-gray-500 text-sm lg:text-base">
+          <p className="text-sm text-gray-500 lg:text-base">
             Kata klien tentang Senikita
           </p>
         </div>
@@ -83,40 +83,40 @@ const ClientTestimoniSection = () => {
         <Slider {...settings} className="w-full md:w-[60%] mx-auto">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="p-4">
-              <div className="overflow-hidden flex flex-col md:flex-row">
+              <div className="flex flex-col overflow-hidden md:flex-row">
                 <div className="flex gap-3">
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-full m-2 md:m-4 mx-auto md:mx-0"
+                    className="object-cover w-20 h-20 m-2 mx-auto rounded-full md:w-24 md:h-24 md:m-4 md:mx-0"
                   />
                   <div className="flex flex-col justify-center">
                     {/* Bintang rating */}
                     <div className="flex items-center mb-2">
-                      <IoStar className="text-yellow-400 text-lg mb-1" />
+                      <IoStar className="mb-1 text-lg text-yellow-400" />
                       <span className="ml-2 text-lg font-semibold font-nunito">
                         {testimonial.rating}{" "}
-                        <span className="text-gray-400 font-light">/ 5.0</span>
+                        <span className="font-light text-gray-400">/ 5.0</span>
                       </span>
                     </div>
                     {/* mobile */}
-                    <p className="text-gray-600 mb-2 text-sm md:hidden block">
+                    <p className="block mb-2 text-sm text-gray-600 md:hidden">
                       {testimonial.name}, {testimonial.position}
                     </p>
                   </div>
                 </div>
 
-                <div className="py-2 px-0 flex-1 md:text-left">
+                <div className="flex-1 px-0 py-2 md:text-left">
                   {/* Ulasan */}
-                  <p className="text-gray-800 font-semibold mb-2 text-sm md:text-base">
+                  <p className="mb-2 text-sm font-semibold text-gray-800 md:text-base">
                     {testimonial.review}
                   </p>
                   {/* desktop*/}
-                  <p className="text-gray-600 mb-2 text-sm md:text-base hidden md:block">
+                  <p className="hidden mb-2 text-sm text-gray-600 md:text-base md:block">
                     {testimonial.name}, {testimonial.position}
                   </p>
                   {/* Jasa yang dipesan */}
-                  <div className="text-xs md:text-sm text-gray-500">
+                  <div className="text-xs text-gray-500 md:text-sm">
                     Jasa Yang Dipesan:{" "}
                     <span className="text-primary">{testimonial.service}</span>
                   </div>
@@ -130,13 +130,13 @@ const ClientTestimoniSection = () => {
       <img
         src={Client1}
         alt="Client1"
-        className="hidden lg:block absolute left-1/2 bottom-20 h-full"
+        className="absolute hidden h-full lg:block left-1/2 bottom-20"
         style={{ transform: "translate(-125%, 20%) scaleX(-1)" }}
       />
       <img
         src={Client2}
         alt="Client2"
-        className="hidden lg:block absolute right-1/2 -bottom-20 h-full object-fill"
+        className="absolute hidden object-fill h-full lg:block right-1/2 -bottom-20"
         style={{ transform: "translate(125%, -20%)" }}
       />
     </section>

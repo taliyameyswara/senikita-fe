@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import Welcoming from "../../assets/home/client1.png";
+import Welcoming from "/assets/home/client1.png";
 import { UserContext } from "../../context/UserContext";
 import { IoWalletOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";

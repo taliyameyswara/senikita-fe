@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import Navbar from "../../components/navbar/Navbar";
@@ -9,8 +9,14 @@ import ArtistProfileSection from "../../components/product-details/ArtistProfile
 import ProductDetailSection from "../../components/product-details/ProductDetailSection";
 import OrderBottomBar from "../../components/product-details/OrderBottomBar";
 import ProductList from "../../components/card/ProductList";
+import { UserContext } from "../../context/UserContext";
+import { useProductApi } from "../../api/landing/ProductApi";
+import FullPageLoader from "../../components/loading/FullPageLoader";
+
 
 const ProductDetails = ({ setProgress }) => {
+  const { user } = useContext(UserContext); // Use logout from context
+  const { fetchProductById, fetchRandomProduct } = useProductApi();
   const { id } = useParams();
   const [productId, setProductId] = useState("");
 
@@ -20,44 +26,45 @@ const ProductDetails = ({ setProgress }) => {
     setProductId(productId);
   })
 
-  // const productId = decryptText(id);
-  const axiosInstance = useAxiosInstance();
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const getProductById = async (productId) => {
+    try {
+      const response = await fetchProductById(productId);
+      setProduct(response);
+    } catch (error) {
+      console.error("Failed to fetch product:", error);
+    }
+  }
+
+  const getProducts = async () => {
+    try {
+      const response = await fetchRandomProduct();
+      setProducts(response);
+    } catch (error) {
+      console.error("Failed to fetch product:", error);
+    }
+  }
 
   useEffect(() => {
-    // Start loading bar
-    setProgress(30);
-
-    axiosInstance
-      .get("/random-product")
-      .then((res) => {
-        setProducts(res.data.data);
-        setLoading(false);
+    const fetchData = async () => {
+      setLoading(true);
+      setProgress(30);
+      if (productId) {
+        await getProductById(productId);
         setProgress(60);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-        setProgress(100);
-      });
-    if (productId) {
-      axiosInstance
-        .get(`products/${productId}`)
-        .then((res) => {
-          setProduct(res.data.product);
-          setLoading(false);
-          setProgress(100);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-          setProgress(100);
-        });
+      }
+
+      await getProducts();
+      setProgress(100);
+      setLoading(false);
     }
 
+    fetchData();
   }, [productId, setProgress]);
+
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -88,13 +95,22 @@ const ProductDetails = ({ setProgress }) => {
     },
   ];
 
+  if (loading) {
+    return <FullPageLoader />
+  }
+
   return (
     <>
       <Navbar />
       <div className="container px-6 py-4 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
-        <OrderBottomBar product={product} />
+        {
+          product && user.id !== product.shop.user_id ? (
+            <OrderBottomBar product={product} />
+          ) : null
+
+        }
         <ProductList
           title={"Produk Lainnya"}
           products={products}

@@ -21,5 +21,20 @@ export const useProductApi = () => {
         }
     };
 
-    return { fetchRandomProduct };
+    const fetchProductById = async (productId) => {
+        try {
+            const response = await axiosInstance.get(`/products/${productId}`);
+
+            if (response.status === 200 && response.data && response.data.product) {
+                return response.data.product;
+            } else {
+                throw new Error("Invalid response data from service API");
+            }
+        } catch (error) {
+            console.error("Failed to fetch product:", error);
+            throw error;
+        }
+    }
+
+    return { fetchRandomProduct, fetchProductById };
 };
