@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
-const PasswordInput = ({ label, value, onChange, required }) => {
+const PasswordInput = ({ label, placeholder, value, onChange, required }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -15,14 +15,14 @@ const PasswordInput = ({ label, value, onChange, required }) => {
       <div className="relative">
         <input
           type={showPassword ? "text" : "password"}
-          className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
-          placeholder={label}
+          className="w-full p-3 mt-1 md:text-base text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
+          placeholder={placeholder}
           value={value}
           onChange={onChange}
           required={required}
         />
         <div
-          className="absolute inset-y-0 flex items-center cursor-pointer right-4"
+          className="absolute inset-y-0 flex items-center cursor-pointer right-4 mt-1"
           onClick={togglePasswordVisibility}
         >
           {showPassword ? (

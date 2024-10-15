@@ -80,10 +80,10 @@ const LogIn = ({ setProgress }) => {
         {/* login form */}
         <div
           className="flex flex-col items-center justify-center "
-          style={{ minHeight: "calc(100vh - 6rem)" }}
+          style={{ minHeight: "calc(100vh - 10rem)" }}
         >
           {/* header */}
-          <div className="text-xl font-semibold">Masuk ke senikita</div>
+          <div className="text-xl font-semibold">Masuk ke Senikita</div>
           <div className="">
             Belum punya akun?{" "}
             <Link
@@ -110,7 +110,7 @@ const LogIn = ({ setProgress }) => {
               {/* divider */}
               <div className="flex items-center gap-4 py-1">
                 <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
-                <div className="">atau</div>
+                <div className="md:text-base text-sm">atau</div>
                 <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
               </div>
               {/* email */}
@@ -124,7 +124,7 @@ const LogIn = ({ setProgress }) => {
                 <input
                   type="email"
                   id="email"
-                  className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
+                  className="w-full p-3 mt-1 md:text-base text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
                   placeholder="Masukkan Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -135,6 +135,7 @@ const LogIn = ({ setProgress }) => {
               {/* password */}
               <PasswordInput
                 label="Password"
+                placeholder="Masukkan Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
