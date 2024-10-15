@@ -19,94 +19,116 @@ import HeroTexture from "../../assets/home/hero-texture2.png";
 import HeroImage from "../../assets/home/hero.png";
 import { IoIosList } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
-
+import { useProductApi } from "../../api/landing/ProductApi";
+import { useServiceApi } from "../../api/landing/ServiceApi";
+import { useCityApi } from "../../api/landing/CityApi";
+import { useCategoryApi } from "../../api/landing/CategoryApi";
+import SkeletonLoader from "../../components/loading/SkeletonLoader";
 const Home = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
+
+  const [loading, setLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+
+  const { fetchRandomProduct } = useProductApi();
+  const { fetchRandomService } = useServiceApi();
+  const { fetchAllCities } = useCityApi();
+  const { fetchAllCategories } = useCategoryApi();
+
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [service, setService] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState("Semua Kategori");
-  const status = ["Semua Kategori", "Seni Tari", "Seni Musik", "Seni Rupa"];
-  const [selectedCategory, setSelectedCategory] = useState(null); // State untuk kategori terpilih
+
+  // state for location handle
   const [cities, setCities] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null); // State untuk kota terpilih
+
+  // state for category handle
+  const [selectedStatus, setSelectedStatus] = useState("Semua Kategori");
+  const [selectedCategory, setSelectedCategory] = useState(null); // State untuk kategori terpilih
   const [categoryOptions, setCategoryOptions] = useState([]);
-  const [selectedId, setSelectedId] = useState(null);
+  const [categoryData, setCategoryData] = useState([]);
 
   const fetchProductsAndServices = async (cityId = null, categoryId = null) => {
-    setProgress(0);
-    const params = {};
-    if (cityId) params.city_id = cityId;
-    if (categoryId) params.category_id = categoryId;
-
     try {
+      setLoadingData(true);
+
       const [productResponse, serviceResponse] = await Promise.all([
-        axiosInstance.get(`/random-product`, { params }),
-        axiosInstance.get(`/random-services`, { params }),
+        fetchRandomProduct(categoryId, cityId),
+        fetchRandomService(categoryId, cityId),
       ]);
 
-      console.log("Product data:", productResponse.data.data); // Log data produk
-      console.log("Service data:", serviceResponse.data.data); // Log data jasa
+      setProducts(productResponse);
+      setService(serviceResponse);
 
-      setProducts(productResponse.data.data);
-      setService(serviceResponse.data.data);
-      setProgress(100);
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
-    finally {
-      setLoading(false);
+    } finally {
+      setLoadingData(false);
     }
   };
 
   const fetchCities = async () => {
     try {
-      const response = await axiosInstance.get("/cities");
-      if (response.data.status === "success") {
-        setCities(response.data.cities);
-      } else {
-        console.error("Failed to fetch cities");
-      }
+      const cities = await fetchAllCities();
+      setCities(cities);
     } catch (error) {
       console.error("Error fetching cities:", error);
     }
   };
 
-  const getCategory = () => {
-    axiosInstance
-      .get("/category")
-      .then((response) => {
-        const category_id = response.data.data.data.map((category) => ({
-          value: category.id.toString(),
-          label: category.name,
-        }));
-        setCategoryOptions(category_id);
-      })
-      .catch((err) => {
-        console.error("Error fetching categories:", err);
-      });
+  const getCategory = async () => {
+    try {
+      const categories = await fetchAllCategories();
+      const categoryOptions = categories.map((item) => item.name);
+      setCategoryOptions(categoryOptions);
+      setCategoryData(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
   useEffect(() => {
-    fetchCities();
-    fetchProductsAndServices();
-    getCategory();
+    const fetchData = async () => {
+      setProgress(30);
+      setLoading(true);
+
+      await getCategory(); // Tunggu getCategory selesai
+      setProgress(50);
+
+      await fetchProductsAndServices(); // Tunggu fetchProductsAndServices selesai
+      setProgress(80);
+
+      await fetchCities(); // Tunggu fetchCities selesai
+      setProgress(100);
+
+      setLoading(false); // Setelah semuanya selesai
+    };
+
+    fetchData();
   }, []);
 
-  const handleSelectLocation = (id) => {
-    setProducts(null);
-    setService(null);
-    fetchProductsAndServices(id, selectedCategory);
+
+  useEffect(() => {
+    if (selectedCity !== null || selectedCategory !== null) {
+      fetchProductsAndServices(selectedCity, selectedCategory);
+    }
+  }, [selectedCity, selectedCategory]);
+
+  const handleSelectLocation = (cityId) => {
+    if (selectedCity !== cityId) {
+      setSelectedCity(cityId);
+    }
   };
 
-  const handleSelectCategory = (category) => {
-    setProducts(null);
-    setService(null);
-    setSelectedCategory(category === "Semua Kategori" ? null : category);
-    fetchProductsAndServices(
-      null,
-      category === "Semua Kategori" ? null : category
-    );
+  const handleSelectCategory = (categoryName) => {
+    const selectedCategoryData = categoryData.find(item => item.name === categoryName);
+    if (selectedCategoryData && selectedCategory !== selectedCategoryData.id) {
+      setSelectedCategory(selectedCategoryData.id);
+    }
   };
+
+
+
 
   return (
     <div>
@@ -116,7 +138,7 @@ const Home = ({ setProgress }) => {
         <>
           <Navbar />
           <div className="container relative px-6 pt-10">
-            <div className="pb-12 pt-20 lg:py-28 md:py-16 rounded-3xl relative">
+            <div className="relative pt-20 pb-12 lg:py-28 md:py-16 rounded-3xl">
               <div className="absolute inset-0 z-10 opacity-100 bg-gradient-to-r from-primary to-tertiary rounded-3xl"></div>
               <div
                 className="absolute inset-0 z-20 bg-center bg-cover opacity-30 rounded-3xl"
@@ -124,7 +146,7 @@ const Home = ({ setProgress }) => {
                   backgroundImage: `url(${HeroTexture})`,
                 }}
               ></div>
-              <div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5 z-30">
+              <div className="z-30 grid grid-cols-1 gap-5 md:grid-cols-3 2xl:grid-cols-4">
                 <div className="">
                   <div className="absolute lg:-bottom-3 lg:w-[40%] md:w-[48%] w-[80%] lg:left-14 md:left-6 right-[10%] -top-12 z-20">
                     <img
@@ -137,26 +159,26 @@ const Home = ({ setProgress }) => {
                 </div>
 
                 {/* text */}
-                <div className="lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28 px-5 col-span-2 z-20">
+                <div className="z-20 col-span-2 px-5 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
                   <div className="flex flex-col gap-[0.4rem] text-white">
-                    <p className="lg:text-base text-sm">Selamat Datang,</p>
+                    <p className="text-sm lg:text-base">Selamat Datang,</p>
                     {/* desktop */}
-                    <h1 className="font-semibold font-raleway hidden lg:block lg:text-3xl text-xl text-white">
+                    <h1 className="hidden text-xl font-semibold text-white font-raleway lg:block lg:text-3xl">
                       Jelajahi
-                      <span className="ml-2 p-2 bg-brick/80 rounded-xl">
+                      <span className="p-2 ml-2 bg-brick/80 rounded-xl">
                         Seni Kebudayaan Daerah
                       </span>
                     </h1>
                     {/* mobile */}
-                    <div className="block lg:hidden font-semibold font-raleway  lg:text-3xl text-xl text-white">
+                    <div className="block text-xl font-semibold text-white lg:hidden font-raleway lg:text-3xl">
                       <h1 className="">Jelajahi</h1>
-                      <h2 className="p-2 bg-brick/80 rounded-xl flex w-fit">
+                      <h2 className="flex p-2 bg-brick/80 rounded-xl w-fit">
                         Seni Kebudayaan Daerah
                       </h2>
                     </div>
 
                     {/* desktop */}
-                    <p className="lg:text-base text-sm hidden lg:block">
+                    <p className="hidden text-sm lg:text-base lg:block">
                       Senikita merupakan marketplace pertama yang mempertemukan
                       produk dan jasa kesenian di Indonesia, tempat untuk
                       menemukan berbagai karya seni dan layanan dari seniman
@@ -164,7 +186,7 @@ const Home = ({ setProgress }) => {
                     </p>
 
                     {/* mobile */}
-                    <p className="lg:text-base text-sm block lg:hidden">
+                    <p className="block text-sm lg:text-base lg:hidden">
                       Temukan karya seni dan layanan dari seniman lokal dengan
                       Senikita. Marketplace pertama produk dan jasa kesenian di
                       Indonesia
@@ -175,21 +197,21 @@ const Home = ({ setProgress }) => {
             </div>
             {/* search filter */}
             <div className="flex justify-center mb-10 ">
-              <div className="w-3/4 h-16 bg-white shadow-lg rounded-2xl absolute -bottom-8 z-30 flex items-center justify-between px-4">
+              <div className="absolute z-30 flex items-center justify-between w-3/4 h-16 px-4 bg-white shadow-lg rounded-2xl -bottom-8">
                 {/*  */}
-                <div className="grid lg:grid-cols-2 w-full">
-                  <div className="flex items-center gap-3 w-full">
-                    <div className="font-semibold mr-4 hidden lg:block">
+                <div className="grid w-full lg:grid-cols-2">
+                  <div className="flex items-center w-full gap-3">
+                    <div className="hidden mr-4 font-semibold lg:block">
                       Telusuri
                     </div>
-                    <div className="lg:flex  hidden items-center gap-2 border-r mr-5 w-full">
+                    <div className="items-center hidden w-full gap-2 mr-5 border-r lg:flex">
                       <div className="p-2 bg-tertiary/20 rounded-xl">
                         <IoIosList className="text-xl text-primary" />
                       </div>
 
                       <DropdownFilter
                         title={"Status"}
-                        options={status}
+                        options={categoryOptions}
                         selectedOption={selectedStatus}
                         setSelectedOption={(option) => {
                           setSelectedStatus(option);
@@ -200,7 +222,7 @@ const Home = ({ setProgress }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 w-full">
+                  <div className="flex items-center w-full gap-2">
                     <div className="p-2 bg-tertiary/20 rounded-xl">
                       <IoLocationSharp className="text-xl text-primary" />
                     </div>
@@ -220,16 +242,26 @@ const Home = ({ setProgress }) => {
               </div>
             </div>
           </div>
-          <ProductList
-            title={"Produk Kesenian"}
-            products={products}
-            type={"Product"}
-          />
-          <ProductList
-            title={"Jasa Kesenian"}
-            products={service}
-            type={"Service"}
-          />
+          {loadingData ?
+            (
+              <SkeletonLoader />
+            ) :
+            (
+              <>
+                <ProductList
+                  title={"Produk Kesenian"}
+                  products={products}
+                  type={"Product"}
+                />
+                <ProductList
+                  title={"Jasa Kesenian"}
+                  products={service}
+                  type={"Service"}
+                />
+              </>
+            )
+          }
+
           <CategorySection />
           <PromotionSection />
           <PopularSenimanSection />
