@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import HeroImage from "../../assets/home/hero.png";
-import HeroTexture from "../../assets/home/hero-texture2.png";
+import HeroImage from "/assets/home/hero.png";
+import HeroTexture from "/assets/home/hero-texture2.png";
 import DropdownFilter from "../../components/DropdownFilter";
 import { IoIosList } from "react-icons/io";
 import LocationInput from "../form-input/LocationInput";

@@ -2,9 +2,9 @@ import React from "react";
 import Slider from "react-slick";
 import { IoStar } from "react-icons/io5";
 import Heading from "../../../components/Heading";
-import HeroTexture from "../../../assets/home/hero-texture2.png";
-import Client1 from "../../../assets/home/client1.png";
-import Client2 from "../../../assets/home/client2.png";
+import HeroTexture from "/assets/home/hero-texture2.png";
+import Client1 from "/assets/home/client1.png";
+import Client2 from "/assets/home/client2.png";
 
 const ClientTestimoniSection = () => {
   const testimonials = [
@@ -54,7 +54,7 @@ const ClientTestimoniSection = () => {
   };
 
   return (
-    <section className="lg:py-8 lg:my-20 my-10 relative overflow-hidden">
+    <section className="relative my-10 overflow-hidden lg:py-8 lg:my-20">
       {/* Background Texture Overlay */}
       <div
         className="absolute inset-0"
@@ -69,13 +69,13 @@ const ClientTestimoniSection = () => {
 
       {/* Fade Effect Overlays */}
 
-      <div className="absolute inset-0 bg-gradient-to-b from-white to-transparent h-1/4 top-0 z-10"></div>
+      <div className="absolute inset-0 top-0 z-10 bg-gradient-to-b from-white to-transparent h-1/4"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent h-1/4 bottom-0 translate-y-[300%] z-10"></div>
 
-      <div className="container mx-auto px-4 relative z-20">
-        <div className="text-center lg:mb-10 mb-5">
+      <div className="container relative z-20 px-4 mx-auto">
+        <div className="mb-5 text-center lg:mb-10">
           <Heading title={"Testimoni Klien Tentang Senikita"} />
-          <p className="text-gray-500 text-sm lg:text-base">
+          <p className="text-sm text-gray-500 lg:text-base">
             Kata klien tentang Senikita
           </p>
         </div>
@@ -97,7 +97,7 @@ const ClientTestimoniSection = () => {
                       <IoStar className="text-yellow-400 text-lg mb-1" />
                       <span className="ml-2 text-lg font-semibold font-nunito">
                         {testimonial.rating}{" "}
-                        <span className="text-gray-400 font-light">/ 5.0</span>
+                        <span className="font-light text-gray-400">/ 5.0</span>
                       </span>
                     </div>
                     {/* Mobile Name and Position */}
@@ -139,13 +139,13 @@ const ClientTestimoniSection = () => {
       <img
         src={Client1}
         alt="Client1"
-        className="hidden lg:block absolute left-1/2 bottom-20 h-full"
+        className="absolute hidden h-full lg:block left-1/2 bottom-20"
         style={{ transform: "translate(-125%, 20%) scaleX(-1)" }}
       />
       <img
         src={Client2}
         alt="Client2"
-        className="hidden lg:block absolute right-1/2 -bottom-20 h-full object-fill"
+        className="absolute hidden object-fill h-full lg:block right-1/2 -bottom-20"
         style={{ transform: "translate(125%, -20%)" }}
       />
     </section>

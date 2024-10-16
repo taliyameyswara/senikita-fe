@@ -1,4 +1,4 @@
-import Avatar from "../assets/images/avatar.png";
+import Avatar from "/assets/images/avatar.png";
 
 export const ProductDetailsData = {
   category: "Produk Kesenian",

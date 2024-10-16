@@ -11,9 +11,8 @@ import FullPageLoader from "../../../components/loading/FullPageLoader";
 // Custom ArrowButton Component
 const ArrowButton = ({ onClick, direction }) => (
   <button
-    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${
-      direction === "left" ? "-left-10" : "-right-10"
-    }`}
+    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${direction === "left" ? "-left-10" : "-right-10"
+      }`}
     onClick={onClick}
   >
     {direction === "left" ? (
@@ -79,20 +78,25 @@ const PopularSenimanSection = () => {
     ],
   };
 
+  const generateSlug = (id, name) => {
+    const encryptedId = btoa(id + "-" + name);
+    return encryptedId;
+  }
+
   return (
     <div>
-      <div className="lg:mt-20 mt-12">
+      <div className="mt-12 lg:mt-20">
         <div className="container mx-auto">
-          <div className="text-center px-16">
+          <div className="px-16 text-center">
             <Heading title={"Seniman Paling Populer"} />
-            <div className="md:text-base text-sm text-gray-500">
+            <div className="text-sm text-gray-500 md:text-base">
               Seniman dengan penjualan produk atau jasa terbanyak
             </div>
           </div>
 
           <Slider {...sliderSettings} className="mt-10 overflow-visible">
             {seniman.map((seniman) => (
-              <Link to={`/seniman/${seniman.id}`} key={seniman.id}>
+              <Link to={`/seniman/${generateSlug(seniman.id, seniman.name)}`} key={seniman.id}>
                 {" "}
                 <div className="relative p-8">
                   <div className="bg-white rounded-2xl border-[0.5px] shadow-md border-opacity-20 border-primary relative p-8 overflow-visible">

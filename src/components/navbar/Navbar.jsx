@@ -11,7 +11,7 @@ import {
 import { IoMdSearch, IoMdHeartEmpty } from "react-icons/io";
 import { Link } from "react-router-dom";
 import DropdownNav from "./DropdownNav";
-import Avatar from "../../assets/avatar.png";
+import Avatar from "/assets/avatar.png";
 import { UserContext } from "../../context/UserContext";
 import Header from "../../components/sidebar/Header";
 import { useNavigate } from "react-router-dom";
@@ -177,7 +177,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
 
                   <Link
                     to={"/user/dashboard/wishlist"}
-                    className="p-3 relative"
+                    className="relative p-3"
                   >
                     <IoMdHeartEmpty className="text-2xl text-secondary" />
                     {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
@@ -194,7 +194,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   >
                     Daftar
                   </Link>
-                  <div className="p-3 px-5  text-white rounded-full bg-primary">
+                  <div className="p-3 px-5 text-white rounded-full bg-primary">
                     <Link to="/login" className="">
                       Masuk
                     </Link>
@@ -287,7 +287,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     {/* liked */}
                     <Link
                       to={"/user/dashboard/wishlist"}
-                      className="p-3 relative"
+                      className="relative p-3"
                     >
                       <IoMdHeartEmpty className="text-2xl text-secondary" />
                       {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">

@@ -1,9 +1,10 @@
 import React from "react";
-import EmptyImage from "../assets/home/404.png";
+import EmptyImage from "/assets/home/404.png"; // Replace with your own empty state image
 
 const EmptyState = ({ message, ctaLabel, onCtaClick }) => {
   return (
-    <div className="flex flex-col items-center justify-center text-center py-10">
+    <div className="flex flex-col items-center justify-center py-10 text-center">
+      {/* Empty State Image */}
       <img
         src={EmptyImage}
         alt="No items"
@@ -12,13 +13,13 @@ const EmptyState = ({ message, ctaLabel, onCtaClick }) => {
       />
 
       {/* Message */}
-      <h2 className=" text-gray-400">
+      <h2 className="text-gray-400 ">
         {message || "Tidak ada item yang ditemukan"}
       </h2>
 
       {ctaLabel && onCtaClick && (
         <button
-          className="px-6 py-2 text-white bg-brick rounded-full hover:bg-opacity-90 transition"
+          className="px-6 py-2 text-white transition rounded-full bg-brick hover:bg-opacity-90"
           onClick={onCtaClick}
         >
           {ctaLabel}
