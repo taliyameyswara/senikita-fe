@@ -137,7 +137,7 @@ function App() {
           />
           <Route
             path="/seniman/dashboard/profil"
-            element={<SenimanProfile />}
+            element={<SenimanProfile setProgress={setProgress} />}
           />
           <Route path="/seniman/dashboard/order" element={<SenimanOrder />} />
           <Route
