@@ -5,11 +5,15 @@ import DateInput from "../../../components/form-input/DateInput";
 import PasswordInput from "../../../components/form-input/PasswordInput";
 import { useAxiosInstance } from '../../../config/axiosConfig';
 import { toast } from "react-toastify";
+import { useProfileUserApi } from "../../../api/user/ProfileUserApi";
+import Spinner from "../../../components/loading/Spinner";
+
 
 const UserBiodata = ({ setProgress }) => {
+  const { fetchProfileUser, updateProfileUser, updatePassword } = useProfileUserApi();
   const axiosInstance = useAxiosInstance();
   const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     profile_picture: "",
@@ -22,39 +26,40 @@ const UserBiodata = ({ setProgress }) => {
     password: "",
   });
 
-  const fetchUserData = () => {
-    axiosInstance
-      .get("/user/profile")
-      .then((res) => {
-        const userData = res.data.data;
-        setUserData(userData);
-        setFormData({
-          profile_picture: userData.profile_picture || "",
-          name: userData.name || "",
-          username: userData.username || "",
-          email: userData.email || "",
-          call_number: userData.call_number || "",
-          birth_date: userData.birth_date || "",
-          gender: userData.gender === "male" ? "Laki-laki" : "Perempuan",
-          password: "", // Password kosong untuk keamanan
-        });
-        setLoading(false);
-        setProgress(100);
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchProfileUser();
+      setUserData(response);
+      setFormData({
+        profile_picture: response.profile_picture || "",
+        name: response.name || "",
+        username: response.username || "",
+        email: response.email || "",
+        call_number: response.call_number || "",
+        birth_date: response.birth_date || "",
+        gender: response.gender === "male" ? "Laki-laki" : "Perempuan",
+        password: "",
       })
-      .catch((err) => {
-        setLoading(false);
-        setProgress(100);
-      });
-  }
-  // useEffect(() => {
-  //   setProgress(30);
-
-  // });
+    }
+    catch (error) {
+      console.error("Failed to fetch user data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setProgress(30);
-    fetchUserData();
+    const fetchData = async () => {
+      setLoading(true);
+      setProgress(30);
+      await fetchUserData();
+      setProgress(100);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -92,21 +97,16 @@ const UserBiodata = ({ setProgress }) => {
         formDataToSend.append("profile_picture", file);
         formDataToSend.append("_method", "PUT");
 
-        // Submit the profile picture change
-        axiosInstance({
-          method: "post",
-          url: "/user/edit-profile",
-          data: formDataToSend,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        setLoading(true);
+        updateProfileUser(formDataToSend)
           .then((response) => {
             toast.success("Foto profil berhasil diperbarui.");
             fetchUserData();
           })
           .catch((error) => {
             console.error("Error updating profile picture:", error);
+          }).finally(() => {
+            setLoading(false);
           });
       };
       reader.readAsDataURL(file);
@@ -115,29 +115,26 @@ const UserBiodata = ({ setProgress }) => {
 
   // Submit data
   const handleSubmit = () => {
-    // Buat FormData atau JSON payload tergantung field yang sedang diubah
     if (fieldToUpdate === "password") {
-      // Membuat objek data untuk password
       const passwordData = {
         old_password: oldPassword,
         password: password,
       };
-
-      axiosInstance
-        .put("/user/edit-profile/password", passwordData)
+      setLoading(true);
+      updatePassword(passwordData)
         .then((response) => {
-          console.log("Password updated successfully:", response.data);
           toast.success("Password berhasil diperbarui.");
           closeModal();
         })
         .catch((error) => {
-          console.error("Error updating password:", error);
           toast.error("Gagal memperbarui password.");
+        }).finally(() => {
+          setLoading(false);
         });
+
     } else {
-      // Membuat objek FormData untuk profil lainnya
       const formDataToSend = new FormData();
-      // Tambahkan data ke FormData
+
       formDataToSend.append("name", formData.name);
       formDataToSend.append("username", formData.username);
       formDataToSend.append("call_number", formData.call_number);
@@ -145,34 +142,30 @@ const UserBiodata = ({ setProgress }) => {
       formDataToSend.append("birth_location", "Semarang"); // Sesuaikan dengan input pengguna
       formDataToSend.append("gender", formData.gender === "Laki-laki" ? "male" : "female");
 
-      // Tangani foto profil jika diubah
       if (formData.profile_picture instanceof File) {
         formDataToSend.append("profile_picture", formData.profile_picture);
       }
 
       formDataToSend.append("_method", "PUT");
+      setLoading(true);
 
-      // Mengirim formData ke API untuk profil lainnya
-      axiosInstance({
-        method: "post",
-        url: "/user/edit-profile", // Endpoint untuk memperbarui profil
-        data: formDataToSend,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+      updateProfileUser(formDataToSend)
         .then((response) => {
-          console.log("Profile updated successfully:", response.data);
           toast.success("Profil berhasil diperbarui.");
           closeModal();
-          fetchUserData(); // Optionally refresh profile data
+          fetchUserData();
         })
         .catch((error) => {
-          console.error("Error updating profile:", error);
           toast.error("Gagal memperbarui profil.");
-        });
+        }).finally(() => {
+          setLoading(false);
+        });;
     }
   };
+
+  if (loading) {
+    return <Spinner />
+  }
 
   return (
     <div className="">

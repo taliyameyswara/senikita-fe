@@ -3,7 +3,7 @@ import SenimanDashboardLayout from "../../../layouts/SenimanDashboardLayout";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import SenimanBiodata from "./SenimanBiodata";
 
-const SenimanProfile = () => {
+const SenimanProfile = ({ setProgress }) => {
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/user/dashboard" },
@@ -20,7 +20,7 @@ const SenimanProfile = () => {
         <div className="flex flex-col gap-2 p-3">
           {/* Title */}
           <div className="mb-2 text-xl font-semibold">Profil Seniman</div>
-          <SenimanBiodata />
+          <SenimanBiodata setProgress={setProgress} />
         </div>
       </div>
     </SenimanDashboardLayout>

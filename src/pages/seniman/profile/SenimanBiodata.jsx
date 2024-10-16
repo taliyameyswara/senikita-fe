@@ -4,13 +4,15 @@ import TextInput from "../../../components/form-input/TextInput";
 import TextareaInput from "../../../components/form-input/TextareaInput";
 import Selection from "../../../components/Selection";
 import ReadMore from "../../../components/ReadMore";
-import CustomerAddress from "../../../components/orders/CustomerAddress";
-import { useAxiosInstance } from "../../../config/axiosConfig";
-import FullPageLoader from "../../../components/loading/FullPageLoader";
+import Spinner from "../../../components/loading/Spinner";
 import { toast } from "react-toastify";
-const SenimanBiodata = () => {
-  const axiosInstance = useAxiosInstance();
-  const [loading, setLoading] = useState(true);
+// import { useProfileShopApi } from "../../../api/shop/ProfileShopApi";
+import { useProfileShopApi } from "../../../api/shop/ProfileShopApi";
+
+
+const SenimanBiodata = ({ setProgress }) => {
+  const { fetchProfileShop, updateProfileShop } = useProfileShopApi();
+  const [loading, setLoading] = useState(false);
   const [senimanData, setSenimanData] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,52 +30,36 @@ const SenimanBiodata = () => {
     // category: ["Seni Tari", "Seni Musik"],
   });
 
-  const fetchUserData = () => {
-    axiosInstance.get('user/shop/view-login')
-      .then((res) => {
-        const senimanData = res.data.data;
-        console.log(senimanData)
-        setSenimanData(senimanData);
-        setFormData({
-          profile_picture: senimanData.profile_picture,
-          name: senimanData.name,
-          desc: senimanData.desc,
-          address: senimanData.address,
-          city_id: senimanData.city_id,
-          province_id: senimanData.province_id,
-        })
-      }).catch((res) => {
-        console.log(res)
-      }).finally(() => {
-        setLoading(false);
+  const fetchUserData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetchProfileShop();
+      setSenimanData(response);
+      setFormData({
+        profile_picture: response.profile_picture,
+        name: response.name,
+        desc: response.desc,
+        address: response.address,
+        city_id: response.city_id,
+        province_id: response.province_id,
       });
+    } catch (error) {
+      console.error("Failed to fetch profile shop:", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
-    fetchUserData();
-  }, [])
+    const fetchData = async () => {
+      setProgress(30);
+      await fetchUserData();
+      setProgress(100);
+    };
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    console.log(formData)
-  }, [formData])
 
-  // const [categoryOptions] = useState([
-  //   { label: "Seni Tari", value: "Seni Tari" },
-  //   { label: "Seni Rupa", value: "Seni Rupa" },
-  //   { label: "Seni Musik", value: "Seni Musik" },
-  // ]);
-
-  // const [address, setAddress] = useState({
-  //   label: "Kantor",
-  //   name: "Seni Apa Gt",
-  //   phone: "08123456789",
-  //   street: "Jl. Kebon Jeruk No 7 Blok F",
-  //   zipCode: "61314",
-  //   city: "Bandung",
-  //   district: "Cibaduyut",
-  //   province: "Jawa Barat",
-  //   note: "Rumah warna hijau pager oren", //optional
-  // });
 
   const openModal = (field, title, subtitle) => {
     setFieldToUpdate(field);
@@ -86,7 +72,7 @@ const SenimanBiodata = () => {
     setIsModalOpen(false);
   };
 
-  const handleProfilePictureChange = (event) => {
+  const handleProfilePictureChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -97,31 +83,23 @@ const SenimanBiodata = () => {
         formEditData.append("profile_picture", file);
         formEditData.append("_method", "PUT");
 
-        // Submit the profile picture change
-        axiosInstance({
-          method: "post",
-          url: `/user/shop/${senimanData.id}`,
-          data: formEditData,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+        setLoading(true);
+        updateProfileShop(formEditData, senimanData.id)
           .then((response) => {
             toast.success("Foto profil berhasil diperbarui.");
             fetchUserData();
           })
           .catch((error) => {
             console.error("Error updating profile picture:", error);
+            toast.error("Gagal memperbarui foto profil.");
+            fetchUserData();
+          }).finally(() => {
+            setLoading(false);
           });
       };
       reader.readAsDataURL(file);
     }
   };
-
-  // const handleCategorySelect = (selectedOptions) => {
-  //   const selectedCategories = selectedOptions.map((option) => option.value);
-  //   setFormData({ ...formData, category: selectedCategories });
-  // };
 
   const handleSubmit = () => {
     if (fieldToUpdate === "password") {
@@ -141,38 +119,25 @@ const SenimanBiodata = () => {
       }
 
       formEditData.append("_method", "PUT");
-      axiosInstance({
-        method: "post",
-        url: `/user/shop/${senimanData.id}`, // Endpoint untuk memperbarui profil
-        data: formEditData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then((response) => {
-          console.log("Profile updated successfully:", response.data);
+
+      // Submit the profile data change
+      updateProfileShop(formEditData, senimanData.id)
+        .then(() => {
           toast.success("Profil berhasil diperbarui.");
-          closeModal();
-          fetchUserData(); // Optionally refresh profile data
+          fetchUserData();
         })
         .catch((error) => {
           console.error("Error updating profile:", error);
           toast.error("Gagal memperbarui profil.");
+          fetchUserData();
         });
-
-      // profile_picture: "",
-      //   name: "",
-      //     desc: "",
-      //       address: "",
-      //         city_id: 0,
-      //           province_id: 0,
 
     }
     closeModal();
   };
 
   if (loading) {
-    return <FullPageLoader />
+    return <Spinner />
   }
 
   return (
@@ -182,6 +147,7 @@ const SenimanBiodata = () => {
         <div className="col-span-10 px-5 py-4 border xl:col-span-3 lg:col-span-4 rounded-xl">
           <div className="mb-2 font-semibold">Foto Profil</div>
           <img
+            loading="lazy"
             src={
               formData.profile_picture ||
               "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
