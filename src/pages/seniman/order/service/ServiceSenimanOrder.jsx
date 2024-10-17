@@ -15,6 +15,7 @@ import ServiceTransactionCard from "../../../user/transaction/service/ServiceTra
 import ServiceCardDetail from "../../../user/transaction/service/ServiceCardDetail";
 import ServiceOrderDetails from "../../../user/transaction/service/ServiceOrderDetails";
 import CustomerInfo from "../../../user/transaction/service/CustomerInfo";
+import Spinner from "../../../../components/loading/Spinner";
 const ProductSenimanOrder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const axios = useAxiosInstance();
@@ -32,17 +33,15 @@ const ProductSenimanOrder = () => {
     };
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [loading, setLoading] = useState(false);
-    const getOrders = () => {
-        axios.get("/user/shop/order-service")
+    const getOrders = async () => {
+        await axios.get("/user/shop/order-service")
             .then((res) => {
                 setOrders(res.data.orders);
                 console.log(res.data.orders);
             })
             .catch((err) => {
                 console.error(err);
-            }).finally(() => {
-                setLoading(false);
-            });
+            })
     }
 
     const handleConfirmOrder = (id) => {
@@ -74,8 +73,13 @@ const ProductSenimanOrder = () => {
 
 
     useEffect(() => {
-        setLoading(true);
-        getOrders();
+        const fetchData = async () => {
+            setLoading(true);
+            await getOrders();
+            setLoading(false);
+        };
+
+        fetchData();
     }, []);
 
     const filterOrderByStatus = (status) => {
@@ -166,7 +170,7 @@ const ProductSenimanOrder = () => {
 
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     return (

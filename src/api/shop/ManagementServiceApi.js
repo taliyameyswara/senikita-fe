@@ -3,10 +3,10 @@ import { useAxiosInstance } from "../../config/axiosConfig";
 export const useManagementServiceApi = () => {
     const axios = useAxiosInstance();
 
-    const getServices = async () => {
+    const getAllServices = async () => {
         try {
-            const response = await axios.get("/services");
-            return response.data.service;
+            const response = await axios.get("user/shop/service");
+            return response.data.services;
         } catch (error) {
             console.error(error);
         }
@@ -41,13 +41,13 @@ export const useManagementServiceApi = () => {
 
     const deleteService = async (id) => {
         try {
-            const response = await axios.delete(`/services/${id}`);
-            return response.data.service;
+            const response = await axios.delete(`/user/shop/service/${id}`);
+            return response.data;
         } catch (error) {
             console.error(error);
         }
     }
 
-    return { getServices, createService, updateService, getServiceById, deleteService };
+    return { getAllServices, createService, updateService, getServiceById, deleteService };
 
 }

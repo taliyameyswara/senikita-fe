@@ -8,6 +8,7 @@ import Modal from "../../../../components/Modal";
 import ReviewForm from "../../../../components/ReviewForm";
 import { formatNumber } from "../../../../utils/formatNumber";
 import EmptyState from "../../../../components/EmptyState"; // Import your EmptyState component
+import Spinner from "../../../../components/loading/Spinner";
 
 const ProductTransaction = ({ setProgress }) => {
   const axios = useAxiosInstance();
@@ -21,7 +22,6 @@ const ProductTransaction = ({ setProgress }) => {
       try {
         const response = await axios.get("user/transaction-history");
         setTransactions(response.data.data);
-        console.log(response.data.data);
       } catch (error) {
         setError(error);
       } finally {
@@ -45,6 +45,10 @@ const ProductTransaction = ({ setProgress }) => {
     setCurrentProduct(null);
     setIsModalOpen(false);
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="space-y-4">

@@ -9,9 +9,12 @@ import { useAxiosInstance } from "../../../../config/axiosConfig";
 import DeleteModal from "../../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
 import EmptyState from "../../../../components/EmptyState";
+import { useManagementServiceApi } from "../../../../api/shop/ManagementServiceApi";
+import Spinner from "../../../../components/loading/Spinner";
 
 const KesenianService = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
+  const { deleteService, getAllServices } = useManagementServiceApi();
 
   const [loading, setLoading] = useState(false);
   const [services, setServices] = useState([]);
@@ -22,23 +25,23 @@ const KesenianService = ({ setProgress }) => {
     setLoading(true);
     setProgress(30);
     try {
-      const response = await axiosInstance.delete(`user/shop/service/${id}`);
-      if (response.data.status === "success") {
+      const response = await deleteService(id);
+      if (response.status === "success") {
         setServices((prevServices) =>
           prevServices.filter((service) => service.id !== id)
         );
-        setIsModalOpen(false);
-        setProgress(100);
+        setProgress(30);
         toast.success("Produk berhasil dihapus");
       }
     } catch (error) {
       console.error(error);
-      setProgress(100);
       toast.error("Gagal menghapus produk");
     } finally {
+      setIsModalOpen(false);
       setLoading(false);
       setProgress(100);
     }
+
   };
 
   const handleToggle = (id) => {
@@ -60,40 +63,35 @@ const KesenianService = ({ setProgress }) => {
     );
   };
 
-  const fetchProducts = async () => {
-    setLoading(true);
-    setProgress(30);
+  const fetchServices = async () => {
     try {
-      const response = await axiosInstance.get("user/shop/service");
-      if (response.data.status === "success") {
-        const fetchedService = response.data.services.map((service) => ({
-          id: service.id,
-          thumbnail: service.thumbnail,
-          name: service.name,
-          category: service.category.name,
-          likes: service.sold,
-          cartCount: 0,
-          price: service.price,
-          stock: service.stock,
-          isActive: service.status == 0,
-        }));
-        setServices(fetchedService);
-      }
+      const response = await getAllServices();
+      const fetchedServices = response.map((service) => ({
+        id: service.id,
+        thumbnail: service.thumbnail,
+        name: service.name,
+        category: service.category.name,
+        likes: service.sold,
+        cartCount: 0,
+        price: service.price,
+        stock: service.stock,
+        isActive: service.status == 0,
+      }));
+      setServices(fetchedServices);
     } catch (error) {
-      if (error.response) {
-        console.error(error.response.data);
-        setProgress(100);
-      } else {
-        console.error("Error:", error.message);
-      }
-    } finally {
-      setLoading(false);
-      setProgress(100);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    const fetchData = async () => {
+      setLoading(true);
+      setProgress(30);
+      await fetchServices();
+      setLoading(false);
+      setProgress(100);
+    }
+    fetchData();
   }, []);
 
   return (
@@ -121,7 +119,9 @@ const KesenianService = ({ setProgress }) => {
 
       <div className="mt-5 overflow-x-auto bg-white border rounded-xl">
         {loading ? (
-          setProgress(100)
+
+          <Spinner />
+
         ) : services.length > 0 ? (
           <table className="min-w-full">
             <thead>
@@ -181,23 +181,20 @@ const KesenianService = ({ setProgress }) => {
                       className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                     >
                       <div
-                        className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
-                          service.isActive
-                            ? "translate-x-full bg-tertiary/10"
-                            : "bg-tertiary/10"
-                        }`}
+                        className={`absolute top-0 border left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${service.isActive
+                          ? "translate-x-full bg-tertiary/10"
+                          : "bg-tertiary/10"
+                          }`}
                       ></div>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
-                          service.isActive ? "text-gray-400" : "text-primary"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${service.isActive ? "text-gray-400" : "text-primary"
+                          }`}
                       >
                         Nonaktif
                       </span>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
-                          service.isActive ? "text-primary" : "text-gray-400"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${service.isActive ? "text-primary" : "text-gray-400"
+                          }`}
                       >
                         Aktif
                       </span>

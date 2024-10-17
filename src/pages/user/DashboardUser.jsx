@@ -13,16 +13,17 @@ import { FaRegCalendarCheck } from "react-icons/fa";
 import { PiListStar } from "react-icons/pi";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 import { useAxiosInstance } from "../../config/axiosConfig"
+import Spinner from "../../components/loading/Spinner";
 
 const DashboardUser = () => {
-  const { loading } = useContext(UserContext);
   const [user, setUser] = useState({});
   const [product, setProduct] = useState([]);
   const [service, setService] = useState([]);
+  const [loading, setLoading] = useState(false);
   const axiosInstance = useAxiosInstance()
   // user/order-service/status-order-count
-  const getProductCount = () => {
-    axiosInstance.get('/user/order/status-order-count')
+  const getProductCount = async () => {
+    await axiosInstance.get('/user/order/status-order-count')
       .then((res) => {
         console.log(res.data.data)
         setProduct(res.data.data)
@@ -31,8 +32,8 @@ const DashboardUser = () => {
       })
   }
 
-  const getServiceCount = () => {
-    axiosInstance.get('/user/order-service/status-order-count')
+  const getServiceCount = async () => {
+    await axiosInstance.get('/user/order-service/status-order-count')
       .then((res) => {
         console.log(res.data.data)
         setService(res.data.data)
@@ -41,8 +42,8 @@ const DashboardUser = () => {
       })
   }
 
-  const getProfile = () => {
-    axiosInstance.get('/user/profile')
+  const getProfile = async () => {
+    await axiosInstance.get('/user/profile')
       .then((res) => {
         setUser(res.data.data)
       }).catch((error) => {
@@ -51,16 +52,19 @@ const DashboardUser = () => {
   }
 
   useEffect(() => {
-    getProductCount();
-    getServiceCount();
-    getProfile();
+
+    const fetchData = async () => {
+      setLoading(true)
+      await getProductCount();
+      await getServiceCount();
+      await getProfile();
+      setLoading(false)
+    }
+
+    fetchData()
   }, [])
 
 
-
-  if (loading) {
-    return <FullPageLoader />;
-  }
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -190,61 +194,71 @@ const DashboardUser = () => {
 
         {/* Welcome Section */}
         <div className="grid grid-cols-1 gap-2 mt-2 xl:grid-cols-2">
-          {/* Welcoming */}
-          <div className="relative grid h-full grid-cols-2 px-10 py-16 text-white bg-gradient-to-r from-primary to-tertiary rounded-2xl">
-            <div>
-              <p>Selamat Datang,</p>
-              <h1 className="px-2 mt-2 text-2xl font-semibold font-crimson md:text-4xl bg-gradient-to-r from-brick to-transparent w-fit">
-                {user.name}
-              </h1>
-            </div>
-            <div>
-              <img
-                src={Welcoming}
-                alt=""
-                className="object-cover absolute bottom-0 left-[30%] md:left-1/2 lg:left-1/3 2xl:left-[45%] w-[40rem] md:w-[30rem]"
-                style={{ userSelect: "none", pointerEvents: "none" }}
-              />
-            </div>
-          </div>
 
-          {/* User Profile */}
-          <Link to={`/user/dashboard/profil`}>
-            <div className="h-full">
-              <div className="relative grid h-full grid-cols-2 p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
+          {loading ? (
+            <></>
+          ) : (
+            <>
+              <div className="relative grid h-full grid-cols-2 px-10 py-16 text-white bg-gradient-to-r from-primary to-tertiary rounded-2xl">
                 <div>
-                  <img
-                    src={user.profile_picture}
-                    alt="User Profile"
-                    className="object-cover w-24 h-24 md:w-32 md:h-32 rounded-xl "
-                  />
-                  <div className="mt-3 text-white">
-                    <h2 className="text-xl font-semibold">{user.name}</h2>
-                    <p>{user.email}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col text-white text-start md:text-end font-crimson">
-                  <h1 className="text-lg md:text-2xl">
-                    Lengkapi Profil untuk Kemudahan Transaksi
+                  <p>Selamat Datang,</p>
+                  <h1 className="px-2 mt-2 text-2xl font-semibold font-crimson md:text-4xl bg-gradient-to-r from-brick to-transparent w-fit">
+                    {user.name}
                   </h1>
                 </div>
-                <img
-                  src={ProfileAsset}
-                  alt=""
-                  className="absolute top-20 right-0 object-cover w-[12rem] xl:w-64"
-                  style={{ userSelect: "none", pointerEvents: "none" }}
-                />
+                <div>
+                  <img
+                    src={Welcoming}
+                    alt=""
+                    className="object-cover absolute bottom-0 left-[30%] md:left-1/2 lg:left-1/3 2xl:left-[45%] w-[40rem] md:w-[30rem]"
+                    style={{ userSelect: "none", pointerEvents: "none" }}
+                  />
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
 
-        <div className="p-6">
-          <div className="text-lg font-semibold">
-            <p className="mb-2">Pembelian Anda</p>
-            <Tabs tabs={tabs} />
-          </div>
+              <Link to={`/user/dashboard/profil`}>
+                <div className="h-full">
+                  <div className="relative grid h-full grid-cols-2 p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
+                    <div>
+                      <img
+                        src={user.profile_picture}
+                        alt="User Profile"
+                        className="object-cover w-24 h-24 md:w-32 md:h-32 rounded-xl "
+                      />
+                      <div className="mt-3 text-white">
+                        <h2 className="text-xl font-semibold">{user.name}</h2>
+                        <p>{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col text-white text-start md:text-end font-crimson">
+                      <h1 className="text-lg md:text-2xl">
+                        Lengkapi Profil untuk Kemudahan Transaksi
+                      </h1>
+                    </div>
+                    <img
+                      src={ProfileAsset}
+                      alt=""
+                      className="absolute top-20 right-0 object-cover w-[12rem] xl:w-64"
+                      style={{ userSelect: "none", pointerEvents: "none" }}
+                    />
+                  </div>
+                </div>
+              </Link>
+            </>
+          )}
+
         </div>
+        {loading ? (
+          <Spinner />
+        ) : (
+          <div className="p-6">
+            <div className="text-lg font-semibold">
+              <p className="mb-2">Pembelian Anda</p>
+              <Tabs tabs={tabs} />
+            </div>
+          </div>
+        )}
+
       </div>
     </UserDashboardLayout>
   );

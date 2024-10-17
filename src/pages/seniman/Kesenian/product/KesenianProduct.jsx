@@ -1,17 +1,19 @@
 import { IoAddOutline, IoCartOutline, IoTrashOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Await, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import PriceInput from "../../../../components/form-input/PriceInput";
 import TextInput from "../../../../components/form-input/TextInput";
 import { IoMdHeart } from "react-icons/io";
 import { BsPencil } from "react-icons/bs";
-import { useAxiosInstance } from "../../../../config/axiosConfig";
 import DeleteModal from "../../../../components/modal/DeleteModal";
 import { toast } from "react-toastify";
 import EmptyState from "../../../../components/EmptyState";
+import { useManagementProductApi } from "../../../../api/shop/ManagementProductApi";
+import Spinner from "../../../../components/loading/Spinner";
 
 const KesenianProduct = ({ setProgress }) => {
-  const axiosInstance = useAxiosInstance();
+  // service api
+  const { deleteProduct, getAllProducts } = useManagementProductApi();
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,59 +23,52 @@ const KesenianProduct = ({ setProgress }) => {
     setLoading(true);
     setProgress(30);
     try {
-      const response = await axiosInstance.delete(`user/shop/products/${id}`);
-      if (response.data.status === "success") {
+      const response = await deleteProduct(id);
+      if (response.status === "success") {
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== id)
         );
-        setIsModalOpen(false); // Tutup modal setelah menghapus
-        setProgress(100);
         toast.success("Produk berhasil dihapus");
       }
     } catch (error) {
-      console.error(error);
       toast.error("Gagal menghapus produk");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchProducts = async () => {
-    setLoading(true);
-    setProgress(30);
-    try {
-      const response = await axiosInstance.get("user/shop/products");
-      if (response.data.status === "success") {
-        console.log(response.data.products);
-        const fetchedProducts = response.data.products.map((product) => ({
-          id: product.id,
-          thumbnail: product.thumbnail,
-          name: product.name,
-          category: product.category.name,
-          likes: product.sold,
-          cartCount: 0,
-          price: product.price,
-          stock: product.stock,
-          isActive: product.status == 0,
-        }));
-        setProducts(fetchedProducts);
-      }
-    } catch (error) {
-      if (error.response) {
-        // Jika respons ada, lakukan sesuatu dengan error.response
-        console.error(error.response.data);
-      } else {
-        // Jika tidak ada respons (seperti koneksi gagal)
-        console.error("Error:", error.message);
-      }
-    } finally {
-      setLoading(false);
+      setIsModalOpen(false);
       setProgress(100);
     }
   };
 
+  const fetchProducts = async () => {
+    try {
+      const response = await getAllProducts();
+      const fetchedProducts = response.map((product) => ({
+        id: product.id,
+        thumbnail: product.thumbnail,
+        name: product.name,
+        category: product.category.name,
+        likes: product.sold,
+        cartCount: 0,
+        price: product.price,
+        stock: product.stock,
+        isActive: product.status == 0,
+      }));
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    fetchProducts();
+    const fetchData = async () => {
+      setLoading(true);
+      setProgress(30);
+      await fetchProducts();
+      setLoading(false);
+      setProgress(100);
+    }
+
+    fetchData();
   }, []);
 
   const handleToggle = (id) => {
@@ -121,7 +116,10 @@ const KesenianProduct = ({ setProgress }) => {
       <div className="mt-5 overflow-x-auto bg-white border rounded-xl">
         {/* Show loader while fetching data */}
         {loading ? (
-          setProgress(100)
+          <>
+            <Spinner />
+          </>
+
         ) : products.length > 0 ? (
           <table className="min-w-full">
             <thead>
@@ -194,23 +192,20 @@ const KesenianProduct = ({ setProgress }) => {
                       className="w-[9.8rem] h-9 border rounded-xl flex items-center p-1 cursor-pointer relative"
                     >
                       <div
-                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${
-                          product.isActive
-                            ? "translate-x-full bg-tertiary/10"
-                            : "bg-tertiary/10"
-                        }`}
+                        className={`absolute top-0 border-[0.5px] left-0 h-full w-1/2 rounded-xl transition-transform duration-300 ${product.isActive
+                          ? "translate-x-full bg-tertiary/10"
+                          : "bg-tertiary/10"
+                          }`}
                       ></div>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${
-                          product.isActive ? "text-gray-400" : "text-primary"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold mr-1 ${product.isActive ? "text-gray-400" : "text-primary"
+                          }`}
                       >
                         Nonaktif
                       </span>
                       <span
-                        className={`w-1/2 text-center z-10 text-sm font-semibold ${
-                          product.isActive ? "text-primary" : "text-gray-400"
-                        }`}
+                        className={`w-1/2 text-center z-10 text-sm font-semibold ${product.isActive ? "text-primary" : "text-gray-400"
+                          }`}
                       >
                         Aktif
                       </span>
@@ -234,7 +229,7 @@ const KesenianProduct = ({ setProgress }) => {
                         onClick={() => {
                           setProductIdToDelete(product.id);
                           setIsModalOpen(true);
-                        }} 
+                        }}
                         className="p-2 text-customRed hover:text-customRed/90 bg-customRed/10 rounded-xl"
                       >
                         <IoTrashOutline size={20} />
@@ -255,7 +250,7 @@ const KesenianProduct = ({ setProgress }) => {
         onClose={() => setIsModalOpen(false)}
         onConfirm={() => handleDelete(productIdToDelete)}
       />
-    </div>
+    </div >
   );
 };
 

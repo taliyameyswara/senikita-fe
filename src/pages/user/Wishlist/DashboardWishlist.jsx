@@ -6,6 +6,7 @@ import { ProductData } from "../../../utils/ProductData";
 import Tabs from "../../../components/Tabs";
 import { useAxiosInstance } from "../../../config/axiosConfig";
 import EmptyState from "../../../components/EmptyState";
+import Spinner from "../../../components/loading/Spinner";
 
 const DashboardWishlist = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
@@ -113,7 +114,7 @@ const DashboardWishlist = ({ setProgress }) => {
         <div className="flex flex-col gap-2 p-3">
           {/* Title */}
           <div className="text-xl font-semibold">Daftar Wishlist</div>
-          {loading ? setProgress(100) : <Tabs tabs={tabs} />}
+          {loading ? <Spinner /> : <Tabs tabs={tabs} />}
         </div>
       </div>
     </UserDashboardLayout>

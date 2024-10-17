@@ -15,8 +15,15 @@ import PriceInput from "../../../../components/form-input/PriceInput";
 import SelectionOne from "../../../../components/SelectionOne";
 import { toast } from "react-toastify";
 import * as tf from "@tensorflow/tfjs";
-
+// import { useManagemetnp } from "../../../../api/shop/ManagementServiceApi";
+import { useManagementProductApi } from "../../../../api/shop/ManagementProductApi";
+import { useCategoryApi } from "../../../../api/landing/CategoryApi";
 const AddProduct = () => {
+  // api
+  const { createProduct } = useManagementProductApi();
+  const { fetchAllCategories } = useCategoryApi();
+
+
   const [model, setModel] = useState(null);
   useEffect(() => {
     const loadModel = async () => {
@@ -136,13 +143,8 @@ const AddProduct = () => {
         });
       }
 
-      // Mengirim data ke server menggunakan axiosInstance
-      axiosInstance
-        .post("/user/shop/products", postFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Mengatur header untuk multipart/form-data
-          },
-        })
+
+      createProduct(postFormData)
         .then((response) => {
           toast.success("Produk berhasil ditambahkan");
           navigate("/seniman/dashboard/kesenian");
@@ -162,9 +164,6 @@ const AddProduct = () => {
           } else {
             toast.error("Terjadi kesalahan dalam menambahkan alamat");
           }
-        })
-        .finally(() => {
-          setLoading(false);
         });
     }
   };
@@ -189,22 +188,18 @@ const AddProduct = () => {
   };
 
   useEffect(() => {
-    axiosInstance
-      .get("/category")
-      .then((response) => {
-        console.log(response.data.data.data);
-        const category_id = response.data.data.data.map((category) => ({
-          value: category.id.toString(),
-          label: category.name,
-        }));
-        setCategoryOptions(category_id);
-      })
-      .catch((err) => { })
-      .finally(() => { });
+    const response = fetchAllCategories();
+    response.then((data) => {
+      const category_id = data.map((category) => ({
+        value: category.id.toString(),
+        label: category.name,
+      }));
+      setCategoryOptions(category_id);
+    });
   }, []);
 
   if (loading) {
-    return FullPageLoader();
+    return <FullPageLoader />;
   }
   return (
     <SenimanDashboardLayout pageTitle="Dashboard Seniman | Daftar Kesenian">

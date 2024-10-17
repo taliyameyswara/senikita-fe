@@ -11,6 +11,7 @@ import ShippingInfo from "../../../user/transaction/product/ShippingInfo";
 import PaymentDetail from "../../../user/transaction/PaymentDetail";
 import { toast } from "react-toastify";
 import ProductTransactionCard from "../../../user/transaction/product/ProductTransactionCard";
+import Spinner from "../../../../components/loading/Spinner";
 const ProductSenimanOrder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const axios = useAxiosInstance();
@@ -28,17 +29,15 @@ const ProductSenimanOrder = () => {
     };
     const [selectedStatus, setSelectedStatus] = useState("all");
     const [loading, setLoading] = useState(false);
-    const getOrders = () => {
-        axios.get("/user/shop/order-product")
+    const getOrders = async () => {
+        await axios.get("/user/shop/order-product")
             .then((res) => {
                 setOrders(res.data.orders);
                 console.log(res.data.orders);
             })
             .catch((err) => {
                 console.error(err);
-            }).finally(() => {
-                setLoading(false);
-            });
+            })
     }
 
     const sendProduct = (id) => {
@@ -55,8 +54,13 @@ const ProductSenimanOrder = () => {
     }
 
     useEffect(() => {
-        setLoading(true);
-        getOrders();
+        const fetchOrders = async () => {
+            setLoading(true);
+            await getOrders();
+            setLoading(false);
+        }
+
+        fetchOrders();
     }, []);
 
     const filterOrderByStatus = (status) => {
@@ -146,7 +150,7 @@ const ProductSenimanOrder = () => {
 
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     return (

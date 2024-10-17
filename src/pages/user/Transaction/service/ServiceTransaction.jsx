@@ -13,6 +13,7 @@ import MultipleImageUploader from "../../../../components/MultipleImageUploader"
 import TextareaInput from "../../../../components/form-input/TextareaInput";
 
 import EmptyState from "../../../../components/EmptyState"; // Import your EmptyState component
+import Spinner from "../../../../components/loading/Spinner";
 
 const ServiceTransaction = ({ setProgress }) => {
   const axios = useAxiosInstance();
@@ -92,6 +93,10 @@ const ServiceTransaction = ({ setProgress }) => {
     }
   };
 
+  if (loading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="space-y-4">
       {transactions.length > 0 ? (
@@ -170,9 +175,8 @@ const ServiceTransaction = ({ setProgress }) => {
               {[1, 2, 3, 4, 5].map((star) => (
                 <FaStar
                   key={star}
-                  className={`cursor-pointer text-3xl ${
-                    star <= rating ? "text-yellow-400" : "text-gray-300"
-                  }`}
+                  className={`cursor-pointer text-3xl ${star <= rating ? "text-yellow-400" : "text-gray-300"
+                    }`}
                   onClick={() => setRating(star)}
                 />
               ))}
