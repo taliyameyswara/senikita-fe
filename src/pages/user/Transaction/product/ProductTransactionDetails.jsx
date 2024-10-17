@@ -20,6 +20,7 @@ import Modal from "../../../../components/Modal";
 import { formatNumber } from "../../../../utils/formatNumber";
 import TextareaInput from "../../../../components/form-input/TextareaInput";
 import MultipleImageUploader from "../../../../components/MultipleImageUploader";
+import Spinner from "../../../../components/loading/Spinner";
 const TransactionDetail = () => {
   const { id } = useParams();
   const axios = useAxiosInstance();
@@ -125,13 +126,13 @@ const TransactionDetail = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi">
-        <div>Loading...</div>
-      </UserDashboardLayout>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi">
+  //       <Spinner />
+  //     </UserDashboardLayout>
+  //   );
+  // }
 
   return (
     <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi">
@@ -145,61 +146,73 @@ const TransactionDetail = () => {
           {/* Title */}
           <div className="text-xl font-semibold ">Detail Transaksi</div>
 
-          <OrderInfo
-            payment={transaction.status}
-            shipping={transaction.status_order}
-            type={"product"}
-            invoiceNumber={transaction.no_transaction}
-            purchaseDate={formatDate(transaction.created_at)}
-          />
-          <div>
-            {transaction.status === "Success" && transaction.status_order === "delivered" &&
-              <button onClick={() => doneTranscation(transaction.id)} className="px-4 py-2 mt-2 text-white rounded-xl bg-primary">Produk Diterima</button>
-            }
-          </div>
-
-          <div className="mt-3">
-            {transaction.product.map((produc, index) => (
-              <div key={index} className="mb-4">
-                <ProductTransactionCard
-                  product={produc}
-                  quantity={produc.pivot.qty}
-                  button={
-                    transaction.status === "DONE" && transaction.status_order === "DONE" &&
-                    <button onClick={() => openReviewModal(produc)} className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer">
-                      <FaStar className="text-yellow-400" />
-                      <div>Beri Ulasan</div>
-                    </button>
-                  }
-
+          {loading ?
+            (
+              <Spinner />
+            ) :
+            (
+              <>
+                <OrderInfo
+                  payment={transaction.status}
+                  shipping={transaction.status_order}
+                  type={"product"}
+                  invoiceNumber={transaction.no_transaction}
+                  purchaseDate={formatDate(transaction.created_at)}
                 />
-              </div>
-            ))}
-          </div>
+                <div>
+                  {transaction.status === "Success" && transaction.status_order === "delivered" &&
+                    <button onClick={() => doneTranscation(transaction.id)} className="px-4 py-2 mt-2 text-white rounded-xl bg-primary">Produk Diterima</button>
+                  }
+                </div>
 
-          <OrderNotes notes={transaction.note} />
+                <div className="mt-3">
+                  {transaction.product.map((produc, index) => (
+                    <div key={index} className="mb-4">
+                      <ProductTransactionCard
+                        product={produc}
+                        quantity={produc.pivot.qty}
+                        button={
+                          transaction.status === "DONE" && transaction.status_order === "DONE" &&
+                          <button onClick={() => openReviewModal(produc)} className="p-1 px-2 text-xs border-[0.5px] border-opacity-70 border-primary text-primary font-semibold rounded-lg flex gap-2 items-center hover:bg-primary hover:text-white duration-75 cursor-pointer">
+                            <FaStar className="text-yellow-400" />
+                            <div>Beri Ulasan</div>
+                          </button>
+                        }
 
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-            <ShippingInfo
-              courier={transaction.courier.toUpperCase() + ' - ' + transaction.service}
-              trackingNumber="Nomor Resi"
-              recipientName={transaction.address.name}
-              phone={transaction.address.phone}
-              address={transaction.address.address_detail}
-              city={transaction.address.city.name}
-              province={transaction.address.province.name}
-            />
+                      />
+                    </div>
+                  ))}
+                </div>
 
-            <PaymentDetail
-              paymentStatus={transaction.status}
-              shippingStatus={transaction.status_order}
-              urlInvoice={transaction.invoice_url}
-              totalPrice={transaction.price}
-              shippingCost={transaction.ongkir}
-              totalPayment={transaction.price + transaction.ongkir + 5000}
-              type="product"
-            />
-          </div>
+                <OrderNotes notes={transaction.note} />
+
+                <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+                  <ShippingInfo
+                    courier={transaction.courier.toUpperCase() + ' - ' + transaction.service}
+                    trackingNumber="Nomor Resi"
+                    recipientName={transaction.address.name}
+                    phone={transaction.address.phone}
+                    address={transaction.address.address_detail}
+                    city={transaction.address.city.name}
+                    province={transaction.address.province.name}
+                  />
+
+                  <PaymentDetail
+                    paymentStatus={transaction.status}
+                    shippingStatus={transaction.status_order}
+                    urlInvoice={transaction.invoice_url}
+                    totalPrice={transaction.price}
+                    shippingCost={transaction.ongkir}
+                    totalPayment={transaction.price + transaction.ongkir + 5000}
+                    type="product"
+                  />
+                </div>
+              </>
+            )
+          }
+
+
+
         </div>
       </div>
 
