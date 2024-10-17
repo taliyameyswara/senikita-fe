@@ -194,7 +194,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   >
                     Daftar
                   </Link>
-                  <div className="p-3 px-5 text-white rounded-full bg-primary">
+                  <div className="p-3 px-5 text-white rounded-full bg-primary font-semibold">
                     <Link to="/login" className="">
                       Masuk
                     </Link>
@@ -305,7 +305,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                       Daftar
                     </Link>
                     <Link to="/login" className="">
-                      <div className="p-3 px-5 text-sm text-white rounded-full bg-primary">
+                      <div className="p-2 px-5 text-sm text-white rounded-full bg-primary">
                         Masuk
                       </div>
                     </Link>
@@ -330,17 +330,22 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   ))}
                 </ul>
               </DropdownNav>
-              <div className="flex-grow ml-4 bg-red">
+              <div className="flex-grow ml-4">
                 <div className="relative group">
-                  <IoMdSearch className="absolute text-xl text-gray-600 -translate-y-1/2 left-3 top-1/2" />
                   <input
                     type="text"
                     placeholder="Cari kesenian.."
-                    className="w-full p-2.5 pl-10 bg-gray-100 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
+                    className="w-full p-2.5 pl-4 bg-gray-50 border border-gray-200 rounded-full search-bar focus:outline-none focus:ring-primary focus:border-primary/60"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={handleKeyPress}
                   />
+                  <button
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 text-sm text-primary bg-tertiary/20 p-1.5 rounded-full hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50"
+                    onClick={handleSearch}
+                  >
+                    <IoMdSearch className="text-xl" />
+                  </button>
                 </div>
               </div>
             </div>

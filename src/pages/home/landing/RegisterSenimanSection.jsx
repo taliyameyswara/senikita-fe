@@ -21,7 +21,7 @@ const RegisterSenimanSection = () => {
   const linkTo = getLink();
 
   return (
-    <div className="container px-6 mt-20">
+    <div className="container px-4 mt-20">
       <div className="flex gap-5">
         {/* 1 */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-5 md:gap-10 bg-gradient-to-r from-primary to-tertiary p-5 py-12 md:py-24 rounded-[2rem] relative w-full md:w-[80%] lg:w-[60%] mx-auto">

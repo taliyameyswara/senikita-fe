@@ -44,11 +44,11 @@ const CustomSearchInput = ({
               isFocused ? "text-neutral-600" : "text-neutral-200"
             } hover:text-neutral-400`,
           control: ({ isFocused }) =>
-            `px-4 py-2 rounded-xl border border-gray-200 shadow-sm w-full ${
+            `px-4 py-2 rounded-xl border border-gray-200 shadow-sm w-full md:text-base text-sm  ${
               isFocused ? "border-primary" : ""
             }`,
           option: ({ isSelected }) =>
-            `p-3 px-4 cursor-pointer hover:bg-gray-100 ${
+            `p-3 px-4 cursor-pointer hover:bg-gray-100 md:text-base !text-sm ${
               isSelected ? " text-primary" : "text-black"
             }`,
           menu: () => "bg-white rounded-xl shadow-lg",

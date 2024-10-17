@@ -2,11 +2,8 @@ import { useEffect, useState } from "react";
 import Slider from "react-slick";
 import { formatNumber } from "../../utils/formatNumber";
 import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { IoCartOutline, IoHeartOutline, IoHeart } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import LikeButton from "../LikeButton";
-import { encryptText, decryptText } from '../../helpers/cryptoHelper';
-
+import { limitText } from "../../utils/limitText";
 
 const PrevArrow = ({ onClick }) => (
   <button
@@ -38,7 +35,24 @@ const ProductCard = ({ product, type }) => {
     images,
     thumbnail,
   } = product;
+
   const [slug, setSlug] = useState("");
+  const [textLimit, setTextLimit] = useState(30); // Initial limit for mobile screens
+
+  useEffect(() => {
+    // Function to update text limit based on screen size
+    const updateTextLimit = () => {
+      if (window.innerWidth >= 768) {
+        setTextLimit(50); // Longer limit for larger screens
+      } else {
+        setTextLimit(30); // Shorter limit for smaller screens
+      }
+    };
+    updateTextLimit();
+
+    window.addEventListener("resize", updateTextLimit);
+    return () => window.removeEventListener("resize", updateTextLimit);
+  }, []);
 
   useEffect(() => {
     async function generateSlug() {
@@ -48,11 +62,8 @@ const ProductCard = ({ product, type }) => {
     generateSlug();
   }, [product.id]);
 
-
   const categoryName = category.name;
-  const shopName = shop.name;
   const region = shop.region;
-  // const slug = createSlug(name) + "-" + createSlug(shopName);
   const settings = {
     dots: true,
     infinite: true,
@@ -74,22 +85,18 @@ const ProductCard = ({ product, type }) => {
       </div>
     ),
   };
+
   const imageSlider =
     images && images.length > 0
       ? [thumbnail, ...images.map((image) => image.picture)]
       : [thumbnail];
 
   return (
-    <Link
-      to={
-        type === "Product" ? `/product/${slug}` : `/service/${slug}`
-      }
-    >
+    <Link to={type === "Product" ? `/product/${slug}` : `/service/${slug}`}>
       <div className="mb-2 mr-2 overflow-hidden rounded-xl md:mr-4 md:mb-4">
-        {/* image slider */}
+        {/* Image slider */}
         <div className="relative overflow-hidden group rounded-xl">
           {images && images.length > 0 ? (
-            // Jika ada gambar, render gambar
             <Slider {...settings}>
               {imageSlider.slice(0, 5).map((image, index) => (
                 <img
@@ -101,48 +108,22 @@ const ProductCard = ({ product, type }) => {
               ))}
             </Slider>
           ) : (
-            // Jika tidak ada gambar, render thumbnail
             <img
               src={thumbnail}
               alt={name}
               className="object-cover w-full lg:h-48 h-36"
             />
           )}
-
-          {/* <Slider {...settings}>
-            {images.slice(0, 5).map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                alt={name}
-                className="object-cover w-full h-48"
-              />
-            ))}
-          </Slider> */}
-          {/* like & cart */}
-          {/* <div className="absolute space-x-2 space-y-2 top-2 right-3"> */}
-          {/* like */}
-          {/* <LikeButton /> */}
-          {/* cart */}
-          {/* <button className="p-2 bg-white border rounded-full hover:bg-gray-100"> */}
-          {/* <IoCartOutline className="text-sm text-gray-700 md:text-base" /> */}
-          {/* </button> */}
-          {/* </div> */}
         </div>
 
-        {/* product info */}
+        {/* Product info */}
         <div className="py-1">
-          {/* category */}
           <span className="text-xs text-tertiary">{categoryName}</span>
-          {/* product name */}
-          <h3 className="text-sm md:text-base">{name}</h3>
-          {/* Price */}
+          <h3 className="text-sm md:text-base">{limitText(name, textLimit)}</h3>
           <span className="font-semibold md:text-lg font-nunito">
             {formatNumber(price)}
           </span>
-          {/* Store Name */}
           <p className="text-xs text-gray-500 md:text-sm">{region}</p>
-          {/* rating_count */}
           <div className="flex gap-2">
             <div className="flex items-center gap-2">
               <FaStar className="text-yellow-400" />

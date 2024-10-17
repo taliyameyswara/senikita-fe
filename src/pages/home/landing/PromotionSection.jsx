@@ -29,8 +29,8 @@ const PromotionSection = () => {
         ) : (
           <div className="relative">
             <div className="container">
-              <div className="md:w-[70%] mx-4">
-                <div className="bg-white rounded-2xl">
+              <div className="md:w-[70%] lg:mx-0 mx-4">
+                <div className="bg-white rounded-2xl px-5">
                   <ProductList
                     title={"Pementasan Cocok Untuk Acara Anda"}
                     products={service}

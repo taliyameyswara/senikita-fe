@@ -5,15 +5,17 @@ import OrderSummary from "../../components/orders/OrderSummary";
 import CustomerAddress from "../../components/orders/CustomerAddress";
 import { IoAddOutline } from "react-icons/io5";
 import Navbar from "../../components/navbar/Navbar";
-import FooterLogo from "../../components/footer/FooterLogo";
+import Modal from "../../components/Modal";
 import TextareaInput from "../../components/form-input/TextareaInput";
 import ProductOrderTransactionCard from "../user/Transaction/product/ProductOrderTransactionCard";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import FullPageLoader from "../../components/loading/FullPageLoader";
+import Spinner from "../../components/loading/Spinner";
 import { toast } from "react-toastify";
 import AddAddressModal from "../../components/address/AddAdressModal";
 import DeleteModal from "../../components/modal/DeleteModal";
+import { limitText } from "../../utils/limitText";
 
 const ProductOrder = () => {
   const location = useLocation();
@@ -40,7 +42,7 @@ const ProductOrder = () => {
 
     // Jika tidak ada produk, navigasi kembali ke cart
     if (selectedItems.length === 0) {
-      navigate('/cart');
+      navigate("/cart");
     }
   }, [location.state, navigate]);
 
@@ -56,7 +58,7 @@ const ProductOrder = () => {
 
   // Mengambil alamat dari API
   const fetchAddresses = async () => {
-    setLoadingAddress(true)
+    setLoadingAddress(true);
     try {
       const response = await axiosInstance.get("user/address");
       if (response.data.status === "success") {
@@ -66,7 +68,7 @@ const ProductOrder = () => {
     } catch (error) {
       console.error("Error fetching addresses:", error);
     } finally {
-      setLoadingAddress(false)
+      setLoadingAddress(false);
     }
   };
 
@@ -78,7 +80,6 @@ const ProductOrder = () => {
         destination: activeAddress.city_id,
         weight: 1000,
         courier: "jne",
-
       };
 
       try {
@@ -87,9 +88,9 @@ const ProductOrder = () => {
         const shippingOptions = response.data.map((item, index) => ({
           id: index + 1,
           name: item.description || item.service,
-          cost: item.cost[0].value
-          , courier: 'jne',
-          service: item.service
+          cost: item.cost[0].value,
+          courier: "jne",
+          service: item.service,
         }));
 
         setShippingOptions(shippingOptions);
@@ -108,7 +109,10 @@ const ProductOrder = () => {
     fetchShippingOptions();
   }, [activeAddress, selectedItems]);
 
-  const totalPrice = products.reduce((acc, item) => acc + item.productPrice * item.quantity, 0);
+  const totalPrice = products.reduce(
+    (acc, item) => acc + item.productPrice * item.quantity,
+    0
+  );
   const [isNotesVisible, setNotesVisible] = useState(false);
   const [notesValue, setNotesValue] = useState("");
 
@@ -116,17 +120,19 @@ const ProductOrder = () => {
   const handleNotesChange = (e) => setNotesValue(e.target.value);
 
   const handleChangeAddress = (id) => {
-    const selectedAddress = addresses.find(address => address.id === id);
+    const selectedAddress = addresses.find((address) => address.id === id);
     setActiveAddress(selectedAddress);
     setIsModalOpen(false);
   };
 
   // Fungsi untuk melakukan checkout
   const handleCheckout = async () => {
-    const productIds = products.map(product => product.product_id); // Ambil ID produk
-    const qtys = products.map(product => product.quantity); // Ambil kuantitas produk
-    const courier = shippingOptions.length > 0 ? shippingOptions[0].courier : ""; // Ambil courier
-    const service = shippingOptions.length > 0 ? shippingOptions[0].service : ""; // Ambil service
+    const productIds = products.map((product) => product.product_id); // Ambil ID produk
+    const qtys = products.map((product) => product.quantity); // Ambil kuantitas produk
+    const courier =
+      shippingOptions.length > 0 ? shippingOptions[0].courier : ""; // Ambil courier
+    const service =
+      shippingOptions.length > 0 ? shippingOptions[0].service : ""; // Ambil service
     const addressId = activeAddress ? activeAddress.id : null; // Ambil ID alamat aktif
 
     const orderData = {
@@ -138,7 +144,8 @@ const ProductOrder = () => {
     };
 
     setLoading(true);
-    axiosInstance.post("user/order", orderData)
+    axiosInstance
+      .post("user/order", orderData)
       .then((response) => {
         if (response.data.status === "success") {
           console.log("Order placed successfully:", response.data);
@@ -152,9 +159,9 @@ const ProductOrder = () => {
       .catch((error) => {
         console.error("Error placing order:", error);
         toast.error("Order gagal");
-      }).finally(() => {
+      })
+      .finally(() => {
         setLoading(false);
-
       });
   };
 
@@ -219,7 +226,6 @@ const ProductOrder = () => {
     }
   };
 
-
   const [addressToDelete, setAddressToDelete] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -230,7 +236,9 @@ const ProductOrder = () => {
 
   const handleDeleteAddress = async () => {
     try {
-      const response = await axiosInstance.delete(`user/address/${addressToDelete.id}`);
+      const response = await axiosInstance.delete(
+        `user/address/${addressToDelete.id}`
+      );
       if (response.data.status === "success") {
         fetchAddresses();
         closeDeleteModal();
@@ -239,7 +247,7 @@ const ProductOrder = () => {
       }
       toast.success("Alamat berhasil dihapus");
     } catch (error) {
-      toast(error)
+      toast(error);
     }
   };
 
@@ -248,33 +256,35 @@ const ProductOrder = () => {
     setAddressToDelete(null);
   };
 
-
-
   if (loading) {
-    return (
-      <FullPageLoader />
-    );
+    return <FullPageLoader />;
   }
-
 
   return (
     <div>
       <Navbar />
-      <div className="container p-6 mx-auto">
-        <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5 ">
+      <div className="container lg:p-6 px-4 mx-auto">
+        <div className="grid grid-cols-1 lg:gap-10 gap-4 mb-6 lg:grid-cols-5">
           <div className="col-span-3 space-y-5">
             {/* Looping per toko berdasarkan shop_id */}
             {Object.keys(groupedProducts).map((shopId) => (
               <div key={shopId} className="p-4 border rounded-xl">
                 <div className="flex items-center gap-2">
                   <img
-                    src={groupedProducts[shopId][0].storeAvatar ?? "https://via.placeholder.com/100"}
+                    src={
+                      groupedProducts[shopId][0].storeAvatar ??
+                      "https://via.placeholder.com/100"
+                    }
                     alt={groupedProducts[shopId][0].storeName}
                     className="w-8 h-8 rounded-lg"
                   />
                   <div>
-                    <h2 className="text-sm">{groupedProducts[shopId][0].storeName}</h2>
-                    <h2 className="text-xs text-gray-500">{groupedProducts[shopId][0].storeLocation}</h2>
+                    <h2 className="text-sm">
+                      {groupedProducts[shopId][0].storeName}
+                    </h2>
+                    <h2 className="text-xs text-gray-500">
+                      {groupedProducts[shopId][0].storeLocation}
+                    </h2>
                   </div>
                 </div>
 
@@ -290,14 +300,17 @@ const ProductOrder = () => {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap w-full gap-2">
+                <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 w-full">
                   <div>
                     <button
-                      className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary"
+                      className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary w-full"
                       onClick={handleNotesButton}
                     >
                       <IoAddOutline />
-                      <div>Tambah catatan untuk {groupedProducts[shopId][0].storeName}</div>
+                      <div className="md:text-sm text-xs">
+                        Tambah catatan untuk{" "}
+                        {limitText(groupedProducts[shopId][0].storeName, 18)}
+                      </div>
                     </button>
                     {isNotesVisible && (
                       <div className="mt-1">
@@ -312,7 +325,7 @@ const ProductOrder = () => {
                       </div>
                     )}
                   </div>
-                  <div>
+                  <div className="flex w-full">
                     <ShippingOptions
                       shippingOptions={shippingOptions}
                       onShippingCostChange={setShippingCost}
@@ -324,109 +337,135 @@ const ProductOrder = () => {
 
             {/* Alamat Pengiriman */}
             <div className="mb-6">
-              <h3 className="text-base font-semibold">Alamat Anda</h3>
+              <div className="flex justify-between items-center">
+                <h3 className="md:text-base text-sm font-semibold">
+                  Alamat Anda
+                </h3>
+                {activeAddress && !loadingAddress && (
+                  <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="text-sm font-semibold text-primary"
+                  >
+                    Ganti Alamat
+                  </button>
+                )}
+              </div>
+
               {loadingAddress ? (
-                <FullPageLoader />
+                <Spinner width="w-10 h-10" />
+              ) : activeAddress ? (
+                <>
+                  <CustomerAddress
+                    address={activeAddress}
+                    isOrder={true}
+                    openDeleteModal={openDeleteModal}
+                  />
+                </>
               ) : (
-                activeAddress ? (
-                  <>
-                    <CustomerAddress address={activeAddress} isOrder={true} openDeleteModal={openDeleteModal} />
-                    <button onClick={() => setIsModalOpen(true)} className="mt-2 text-sm font-semibold text-primary">
-                      Ganti Alamat
+                <>
+                  <p className="text-gray-500">Belum ada alamat</p>
+                  <div className="mt-2">
+                    <button
+                      onClick={openAddModal}
+                      className="p-3 py-2 text-sm font-semibold transition duration-100 border border-primary text-primary hover:bg-primary hover:text-white rounded-xl"
+                    >
+                      Tambah Alamat
                     </button>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-gray-500">Belum ada alamat</p>
-                    <div className="mt-2">
-                      <button onClick={openAddModal}
-                        className="p-3 py-2 text-sm font-semibold transition duration-100 border border-primary text-primary hover:bg-primary hover:text-white rounded-xl">
-                        Tambah Alamat
-                      </button>
-                    </div>
-                  </>
-                )
+                  </div>
+                </>
               )}
-
-
             </div>
           </div>
 
           {/* Ringkasan Pesanan */}
-          <div className="col-span-2">
+          <div className="col-span-3 md:col-span-2">
             <OrderSummary
               productTotal={totalPrice}
               shippingCost={shippingCost}
               serviceFee={serviceFee}
             />
-            <button onClick={handleCheckout}
-              className="w-full py-3 mt-6 font-semibold text-white bg-primary rounded-xl">
+            <button
+              onClick={handleCheckout}
+              className="w-full md:py-3 py-2.5 mt-3 font-semibold text-white bg-primary rounded-xl"
+            >
               Checkout
             </button>
           </div>
         </div>
-        <FooterLogo />
       </div>
 
       {/* Modal Ganti Alamat */}
-      {
-        isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="w-11/12 bg-white rounded-lg shadow-lg md:w-7/12">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-800 ">Pilih Alamat</h3>
-                </div>
-                <div className="overflow-y-auto max-h-80">
-                  {addresses.length > 0 ? (
-                    addresses.map(address => (
-                      <div key={address.id} className="flex items-start mb-5">
-                        <input
-                          type="radio"
-                          id={`address-${address.id}`}
-                          name="address"
-                          checked={selectedAddressId === address.id}
-                          onChange={() => setSelectedAddressId(address.id)}
-                          className="hidden peer"
-                        />
-                        <label
-                          htmlFor={`address-${address.id}`}
-                          className="relative flex-1 p-4 text-gray-700 transition border border-gray-300 rounded-lg cursor-pointer peer-checked:bg-tertiary/20 peer-checked:bg-opacity-30 peer-checked:border-primary peer-checked:text-primary-dark hover:bg-gray-100"
-                        >
-                          <div className="font-semibold">{address.label_address}</div>
-                          <div className="text-sm text-gray-500">
-                            {address.address_detail}, {address.city.name}, {address.province.name} - {address.postal_code}
-                          </div>
-                          <div className="mt-1 text-sm text-gray-600">
-                            <span className="font-medium">Nama:</span> {address.name} <br />
-                            <span className="font-medium">Telepon:</span> {address.phone}
-                          </div>
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-gray-500">Belum ada alamat tersimpan</p>
-                  )}
-                </div>
-                <div className="flex justify-end mt-4">
-                  <button
-                    onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 text-gray-600 rounded-lg hover:bg-gray-100"
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          isForm={false}
+          onClose={() => setIsModalOpen(false)}
+          title="Pilih Alamat"
+          subtitle={"Pilih alamat untuk pengiriman"}
+          width="w-11/12 md:w-7/12"
+        >
+          {/* Konten Modal */}
+          <div className="overflow-y-auto max-h-80">
+            {addresses.length > 0 ? (
+              addresses.map((address) => (
+                <div key={address.id} className="flex items-start mb-3">
+                  <input
+                    type="radio"
+                    id={`address-${address.id}`}
+                    name="address"
+                    checked={selectedAddressId === address.id}
+                    onChange={() => setSelectedAddressId(address.id)}
+                    className="hidden peer"
+                  />
+                  <label
+                    htmlFor={`address-${address.id}`}
+                    className="relative flex-1 p-4 text-gray-700 transition border-[0.5px] border-gray-300 rounded-lg cursor-pointer peer-checked:bg-tertiary/5 peer-checked:bg-opacity-30 peer-checked:border-primary peer-checked:text-primary-dark hover:bg-gray-100"
                   >
-                    Batal
-                  </button>
-                  <button
-                    onClick={() => handleChangeAddress(selectedAddressId)}
-                    className="px-4 py-2 ml-2 text-white rounded-lg bg-primary hover:bg-primary-dark"
-                  >
-                    Pilih Alamat
-                  </button>
+                    <span className="p-1.5 rounded-lg md:text-sm text-xs bg-tertiary/10 text-primary font-semibold">
+                      {address.label_address}
+                    </span>
+                    <p className="mt-1 md:text-lg font-semibold">
+                      {address.name}{" "}
+                    </p>
+                    <p className="font-light font-nunito md:text-base text-sm">
+                      {address.phone}
+                    </p>
+                    <div className="md:text-sm text-xs font-light text-gray-500">
+                      <p>{address.address_detail}</p>
+                      <p>
+                        {address.city.name}, {address.province.name},{" "}
+                        {address.province.name}{" "}
+                        <span className="font-nunito font-light">
+                          {address.postal_code}
+                        </span>
+                      </p>
+                      <p> ({address.note})</p>
+                    </div>
+                  </label>
                 </div>
-              </div>
-            </div>
+              ))
+            ) : (
+              <p className="text-gray-500">Belum ada alamat tersimpan</p>
+            )}
           </div>
-        )
-      }
+
+          {/* Tombol Aksi */}
+          <div className="flex justify-end mt-4">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="px-4 py-2 text-gray-600 rounded-lg"
+            >
+              Batal
+            </button>
+            <button
+              onClick={() => handleChangeAddress(selectedAddressId)}
+              className="px-4 py-2 ml-2 text-white rounded-lg bg-primary hover:bg-primary-dark"
+            >
+              Pilih Alamat
+            </button>
+          </div>
+        </Modal>
+      )}
       <AddAddressModal
         isOpen={isAddModalOpen}
         onClose={() => closeAddModal()}
@@ -438,9 +477,11 @@ const ProductOrder = () => {
       <DeleteModal
         isOpen={isDeleteModalOpen}
         onClose={closeDeleteModal}
-        onConfirm={handleDeleteAddress} // Pastikan onConfirm memanggil handleDeleteAddress
+        onConfirm={handleDeleteAddress}
         title="Konfirmasi Hapus"
-        subtitle={`Apakah Anda yakin ingin menghapus alamat ${addressToDelete ? addressToDelete.label_address : ''}?`} // Menampilkan label alamat yang akan dihapus
+        subtitle={`Apakah Anda yakin ingin menghapus alamat ${
+          addressToDelete ? addressToDelete.label_address : ""
+        }?`}
       />
     </div>
   );

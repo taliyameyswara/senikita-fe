@@ -1,9 +1,26 @@
-// ProductOrderCard.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import TotalCounter from "../../components/TotalCounter";
 import { formatNumber } from "../../utils/formatNumber";
+import { limitText } from "../../utils/limitText";
 
 const ProductOrderCard = ({ product, button, onQuantityChange }) => {
+  const [textLimit, setTextLimit] = useState(30);
+
+  // Set text limit based on screen size
+  useEffect(() => {
+    const updateTextLimit = () => {
+      if (window.innerWidth >= 768) {
+        setTextLimit(150);
+      } else {
+        setTextLimit(30);
+      }
+    };
+    updateTextLimit();
+
+    window.addEventListener("resize", updateTextLimit);
+    return () => window.removeEventListener("resize", updateTextLimit);
+  }, []);
+
   return (
     <div>
       <div className="flex items-start mt-3 space-x-4">
@@ -12,19 +29,20 @@ const ProductOrderCard = ({ product, button, onQuantityChange }) => {
           alt={product.productName}
           className="object-cover rounded-lg md:w-36 md:h-28 w-20 h-20"
         />
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           <div>
-            <h3 className="text">{product.productName}</h3>
+            <h3 className="md:text-base text-sm">
+              {limitText(product.productName, textLimit)}
+            </h3>
             <p className="font-semibold font-nunito text-light">
               {formatNumber(product.productPrice)}
             </p>
-            <div className="flex items-center gap-2 mt-2">{button}</div>
+            <div className="flex items-center gap-2 mt-1">{button}</div>
           </div>
 
           <TotalCounter
             productPrice={product.productPrice}
             quantity={product.quantity}
-            // Pass both cart_item.id and new quantity to onQuantityChange
             onQuantityChange={(newQuantity) => {
               onQuantityChange(product.cart_item_id, newQuantity);
             }}

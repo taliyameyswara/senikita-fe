@@ -63,7 +63,7 @@ const categories = [
 
 const KesenianCategory = () => {
   return (
-    <div className="container px-6 mb-6">
+    <div className="container px-4 mb-6">
       <Heading title={"Kategori Kesenian"} />
       <div className="grid grid-cols-2 md:grid-cols-4  gap-3">
         {categories.map((category) => (

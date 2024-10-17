@@ -8,7 +8,8 @@ import SearchInput from "../form-input/SearchInput";
 import { GrLocation } from "react-icons/gr";
 import { FaTrashCan } from "react-icons/fa6";
 
-const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima openDeleteModal sebagai prop
+const CustomerAddress = ({ address, isOrder, openDeleteModal }) => {
+  // Terima openDeleteModal sebagai prop
   const [isOpen, setIsOpen] = useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
@@ -19,15 +20,17 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
   };
 
   return (
-    <div className="p-5 mt-3 border border-gray-200 rounded-xl">
+    <div className="md:p-5 p-4 mt-3 border border-gray-200 rounded-xl">
       <div className="flex justify-between">
         <div className="">
-          <span className="p-1.5 rounded-lg text-sm bg-tertiary/10 text-primary font-semibold">
+          <span className="p-1.5 rounded-lg md:text-sm text-xs bg-tertiary/10 text-primary font-semibold">
             {address.label_address}
           </span>
-          <p className="mt-1 text-lg font-semibold">{address.name} </p>
-          <p className="font-light font-nunito">{address.phone}</p>
-          <div className="text-sm font-light text-gray-500">
+          <p className="mt-1 md:text-lg font-semibold">{address.name} </p>
+          <p className="font-light font-nunito md:text-base text-sm">
+            {address.phone}
+          </p>
+          <div className="md:text-sm text-xs font-light text-gray-500">
             <p>{address.street}</p>
             <p>
               {address.city?.name}, {address.province?.name}
@@ -35,14 +38,17 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
             <p> ({address.note})</p>
           </div>
           <button onClick={openModal} className="mt-3">
-            <div className="flex items-center gap-2 p-2 px-4 text-sm border rounded-lg ">
+            <div className="flex items-center gap-2 p-2 px-4 border rounded-lg md:text-sm text-xs">
               <FiEdit />
               Ubah Alamat
             </div>
           </button>
-          <button onClick={() => openDeleteModal(address)} className="mt-3 ml-2">
-            <div className="flex items-center gap-2 p-2 px-4 text-sm border rounded-lg ">
-              <FaTrashCan className="text-gray-400" />
+          <button
+            onClick={() => openDeleteModal(address)}
+            className="mt-3 ml-2"
+          >
+            <div className="flex items-center gap-2 p-2 px-4 border rounded-lg text-customRed md:text-sm text-xs">
+              <FaTrashCan className="text-customRed" />
               Hapus
             </div>
           </button>
@@ -54,9 +60,9 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
         onClose={closeModal}
         title="Edit Alamat"
         subtitle="Masukkan alamat lengkap"
-        width="w-1/2"
+        width="lg:w-1/2 w-[90%]"
       >
-        <div className="space-y-5">
+        <div className="md:space-y-5 space-y-3">
           <TextInput
             label="Label Alamat"
             placeholder="Masukkan label alamat. Contoh: Rumah, Kantor, dll."
@@ -64,7 +70,7 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
             name="label"
             onChange={handleChange}
           />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid md:grid-cols-2 grid-cols-1 gap-2">
             <TextInput
               label="Nama Penerima/Penanggung Jawab"
               placeholder="Masukkan nama"
@@ -89,10 +95,12 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
             onChange={handleChange}
           />
 
-          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <SearchInput
               label={
-                <div className="text-sm font-semibold text-black">Provinsi</div>
+                <div className="text-xs md:text-sm font-semibold text-black">
+                  Provinsi
+                </div>
               }
               placeholder="Pilih provinsi"
               dataKey="provinces"
@@ -100,7 +108,9 @@ const CustomerAddress = ({ address, isOrder, openDeleteModal }) => { // Terima o
               mapData={(item) => item.name}
               value={address.province_id}
               handleSelect={(selected) =>
-                handleChange({ target: { name: "province_id", value: selected } })
+                handleChange({
+                  target: { name: "province_id", value: selected },
+                })
               }
             />
             <SearchInput

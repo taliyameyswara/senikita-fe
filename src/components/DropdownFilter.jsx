@@ -47,18 +47,17 @@ const DropdownFilter = ({
 
   return (
     <>
-      {/* <div className="mb-1 text-sm">{title}</div> */}
-      <div className="relative inline-block text-left">
+      <div className="relative text-left">
         <button
           ref={trigger}
           onClick={() => setIsOpen(!isOpen)}
-          className={`inline-flex justify-between ${width} px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${
+          className={`flex justify-between ${width} px-4 py-2 rounded-xl items-center text-sm focus:outline-none transition-colors duration-200 ${
             isOpen
               ? "bg-tertiary/10 text-primary border border-opacity-20 border-primary"
               : "bg-gray-50 hover:bg-gray-100 border "
           }`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-xs md:text-sm ">
             {icon}
             {selectedOption || label}
           </div>

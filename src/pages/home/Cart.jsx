@@ -260,7 +260,7 @@ const Cart = () => {
                           }
                         />
                       </div>
-                      <div className="flex-grow ">
+                      <div className="flex-grow">
                         <ProductOrderCard
                           product={product}
                           onQuantityChange={(cartItemId, newQuantity) =>

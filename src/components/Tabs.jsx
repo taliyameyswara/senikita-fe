@@ -22,10 +22,11 @@ const Tabs = ({ tabs }) => {
           <button
             key={tab.name}
             onClick={() => setActiveTab(tab.name)}
-            className={`py-2 text-sm md:text-base font-medium w-full ${activeTab === tab.name
-              ? "border-b-2 border-primary text-primary w-full md:w-auto"
-              : "border-b-2 border-transparent text-gray-700 hover:text-primary w-full md:w-auto"
-              }`}
+            className={`py-2 text-sm md:text-base font-medium w-full ${
+              activeTab === tab.name
+                ? "border-b-2 border-primary text-primary w-full md:w-auto"
+                : "border-b-2 border-transparent text-gray-700 hover:text-primary w-full md:w-auto"
+            }`}
           >
             {tab.label}
           </button>

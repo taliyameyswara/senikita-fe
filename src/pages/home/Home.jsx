@@ -59,7 +59,6 @@ const Home = ({ setProgress }) => {
 
       setProducts(productResponse);
       setService(serviceResponse);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -107,7 +106,6 @@ const Home = ({ setProgress }) => {
     fetchData();
   }, []);
 
-
   useEffect(() => {
     if (selectedCity !== null || selectedCategory !== null) {
       fetchProductsAndServices(selectedCity, selectedCategory);
@@ -121,12 +119,13 @@ const Home = ({ setProgress }) => {
   };
 
   const handleSelectCategory = (categoryName) => {
-    const selectedCategoryData = categoryData.find(item => item.name === categoryName);
+    const selectedCategoryData = categoryData.find(
+      (item) => item.name === categoryName
+    );
     if (selectedCategoryData && selectedCategory !== selectedCategoryData.id) {
       setSelectedCategory(selectedCategoryData.id);
     }
   };
-
 
   return (
     <div>
@@ -135,8 +134,8 @@ const Home = ({ setProgress }) => {
       ) : (
         <>
           <Navbar />
-          <div className="container relative px-6 pt-10">
-            <div className="relative pt-20 pb-12 lg:py-28 md:py-16 rounded-3xl">
+          <div className="container relative px-4 pt-10">
+            <div className="relative pt-24 pb-10 lg:py-28 md:py-16 rounded-3xl">
               <div className="absolute inset-0 z-10 opacity-100 bg-gradient-to-r from-primary to-tertiary rounded-3xl"></div>
               <div
                 className="absolute inset-0 z-20 bg-center bg-cover opacity-30 rounded-3xl"
@@ -150,14 +149,14 @@ const Home = ({ setProgress }) => {
                     <img
                       src={HeroImage}
                       alt=""
-                      className="h-full -rotate-3 scale-x-[-1]"
+                      className="h-full w-full object-contain -rotate-3 scale-x-[-1]"
                       style={{ userSelect: "none", pointerEvents: "none" }}
                     />
                   </div>
                 </div>
 
                 {/* text */}
-                <div className="z-20 col-span-2 px-5 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
+                <div className="z-20 col-span-2 2xl:col-span-3 px-5 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
                   <div className="flex flex-col gap-[0.4rem] text-white">
                     <p className="text-sm lg:text-base">Selamat Datang,</p>
                     {/* desktop */}
@@ -195,7 +194,7 @@ const Home = ({ setProgress }) => {
             </div>
             {/* search filter */}
             <div className="flex justify-center mb-10 ">
-              <div className="absolute z-30 flex items-center justify-between w-3/4 h-16 px-4 bg-white shadow-lg rounded-2xl -bottom-8">
+              <div className="absolute z-30 flex items-center justify-between w-3/4 md:h-16 py-2 md:pl-4 px-2 bg-white shadow-lg rounded-2xl -bottom-8">
                 {/*  */}
                 <div className="grid w-full lg:grid-cols-2">
                   <div className="flex items-center w-full gap-3">
@@ -222,7 +221,7 @@ const Home = ({ setProgress }) => {
                   </div>
                   <div className="flex items-center w-full gap-2">
                     <div className="p-2 bg-tertiary/20 rounded-xl">
-                      <IoLocationSharp className="text-xl text-primary" />
+                      <IoLocationSharp className="md:text-xl text-base text-primary" />
                     </div>
                     <div className="w-full">
                       <CustomSearchInput
@@ -240,25 +239,22 @@ const Home = ({ setProgress }) => {
               </div>
             </div>
           </div>
-          {loadingData ?
-            (
-              <SkeletonLoader />
-            ) :
-            (
-              <>
-                <ProductList
-                  title={"Produk Kesenian"}
-                  products={products}
-                  type={"Product"}
-                />
-                <ProductList
-                  title={"Jasa Kesenian"}
-                  products={service}
-                  type={"Service"}
-                />
-              </>
-            )
-          }
+          {loadingData ? (
+            <SkeletonLoader />
+          ) : (
+            <div class="px-4 container">
+              <ProductList
+                title={"Produk Kesenian"}
+                products={products}
+                type={"Product"}
+              />
+              <ProductList
+                title={"Jasa Kesenian"}
+                products={service}
+                type={"Service"}
+              />
+            </div>
+          )}
 
           <CategorySection />
           <PromotionSection />
