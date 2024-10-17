@@ -32,16 +32,17 @@ const Review = ({ review }) => {
   return (
     <div className="col-span-2 space-y-4 lg:mt-0 md:mt-4 text-sm">
       {review.map(({ name, date, rating, comment, image }, index) => (
-        <div key={index} className="">
-          <div className="flex lg:flex-row flex-col lg:items-center lg:gap-2">
+        <div key={index} className="bg-gray-100 p-3 rounded-xl">
+          <div className="flex lg:items-center lg:gap-2">
             <div className="font-semibold">{name}</div>
             <div className="hidden lg:block"> - </div>
             <div className="flex items-center ">
               {renderStars(rating)}
-              <div className="md:text-lg font-semibold ml-2 font-nunito">
+              <div className="font-semibold ml-2 font-nunito">
                 {rating.toFixed(1)}
               </div>
             </div>
+            <div className="text-gray-500">{date}</div>
           </div>
 
           <p className="text-gray-700 my-1">{comment}</p>
