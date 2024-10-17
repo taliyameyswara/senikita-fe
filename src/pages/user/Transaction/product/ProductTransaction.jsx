@@ -74,7 +74,7 @@ const ProductTransaction = ({ setProgress }) => {
               }
               button={
                 <div className="flex items-center justify-end w-full gap-3">
-                  {shippingStatus === "DONE" &&
+                  {/* {shippingStatus === "DONE" &&
                     paymentStatus === "DONE" && (
                       <div
                         onClick={() => openReviewModal(transaction.product[0])}
@@ -83,7 +83,7 @@ const ProductTransaction = ({ setProgress }) => {
                         <FaStar className="text-yellow-400" />
                         <div className="">Beri Ulasan</div>
                       </div>
-                    )}
+                    )} */}
                   <CardButton
                     buttonLink={`/user/dashboard/transaction/product/details/${transaction.id}`}
                     buttonLabel="Lihat Detail Transaksi"

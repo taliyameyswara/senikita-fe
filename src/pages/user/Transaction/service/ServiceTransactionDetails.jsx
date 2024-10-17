@@ -67,13 +67,7 @@ const ServiceTransactionDetails = () => {
     fetchTransaction();
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi Jasa">
-  //       <div>Loading...</div>
-  //     </UserDashboardLayout>
-  //   );
-  // }
+  
 
   return (
     <UserDashboardLayout pageTitle="Dashboard | Detail Transaksi Jasa">
