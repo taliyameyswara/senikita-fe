@@ -86,7 +86,7 @@ const ProductDetails = ({ setProgress }) => {
     {
       label: "Ulasan",
       target: "section2",
-      content: <ReviewSection review={product ? product.ratings : []} />,
+      content: <ReviewSection review={product ? product.ratings : []} type={'product'} />,
     },
     {
       label: "Profil Seniman",
