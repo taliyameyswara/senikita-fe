@@ -97,7 +97,7 @@ const TransactionDetail = () => {
     });
 
     try {
-      await axios.post(`/user/service/rating/${currentService.id}`, formData, {
+      await axios.post(`/user/product/rating/${currentService.id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         }

@@ -46,6 +46,5 @@ const createAxiosInstance = () => {
 };
 
 export const useAxiosInstance = () => {
-  // Mengembalikan axios instance yang baru dibuat
   return createAxiosInstance();
 };

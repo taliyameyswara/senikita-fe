@@ -86,7 +86,7 @@ const ServiceDetails = ({ setProgress }) => {
     {
       label: "Ulasan",
       target: "section2",
-      content: <ReviewSection review={service ? service.ratings : []} />,
+      content: <ReviewSection review={service ? service.ratings : []} type={"service"} />,
     },
     {
       label: "Profil Seniman",

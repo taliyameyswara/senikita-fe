@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 
-const Review = ({ review }) => {
+const Review = ({ review, type }) => {
   if (!review || review.length === 0) {
     return null;
   }
@@ -30,33 +30,44 @@ const Review = ({ review }) => {
   };
 
   return (
-    <div className="col-span-2 space-y-4 lg:mt-0 md:mt-4 text-sm">
-      {review.map(({ name, date, rating, comment, image }, index) => (
+    <div className="col-span-2 space-y-4 text-sm lg:mt-0 md:mt-4">
+      {review.map(({ user, date, rating, comment, rating_images }, index) => (
         <div key={index} className="">
-          <div className="flex lg:flex-row flex-col lg:items-center lg:gap-2">
-            <div className="font-semibold">{name}</div>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:gap-2">
+            <div className="font-semibold">{user.name}</div>
             <div className="hidden lg:block"> - </div>
             <div className="flex items-center ">
               {renderStars(rating)}
-              <div className="md:text-lg font-semibold ml-2 font-nunito">
+              <div className="ml-2 font-semibold md:text-lg font-nunito">
                 {rating.toFixed(1)}
               </div>
             </div>
           </div>
 
-          <p className="text-gray-700 my-1">{comment}</p>
-          {image && image.length > 0 && (
+          <p className="my-1 text-gray-700">{comment}</p>
+
+          {rating_images && rating_images.length > 0 && (
             <div className="flex gap-2">
-              {image.map((imgUrl, idx) => (
-                <img
-                  key={idx}
-                  src={imgUrl}
-                  alt={`Review image ${idx}`}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-              ))}
+              {rating_images.map((data, idx) =>
+                type === "product" ? (
+                  <img
+                    key={idx}
+                    src={data.picture_rating_product}
+                    alt={`Review image ${idx}`}
+                    className="object-cover w-20 h-20 rounded-lg"
+                  />
+                ) : (
+                  <img
+                    key={idx}
+                    src={data.picture_rating_service}
+                    alt={`Review image ${idx}`}
+                    className="object-cover w-20 h-20 rounded-lg"
+                  />
+                )
+              )}
             </div>
           )}
+
         </div>
       ))}
     </div>
