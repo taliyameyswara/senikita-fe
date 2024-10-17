@@ -7,19 +7,27 @@ import MultipleImageUploader from "../../../../components/MultipleImageUploader"
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import PriceInput from "../../../../components/form-input/PriceInput";
-import { useAxiosInstance } from "../../../../config/axiosConfig";
 import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectionOne from "../../../../components/SelectionOne";
+import { useManagementServiceApi } from "../../../../api/shop/ManagementServiceApi";
+import { useCategoryApi } from "../../../../api/landing/CategoryApi";
+import { useImageCorsApi } from "../../../../api/shop/ImageCorsApi";
 
 const EditService = () => {
-  const { id } = useParams();
-  const axiosInstance = useAxiosInstance();
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // import navigate
   const navigate = useNavigate();
 
+  // api service
+  const { getServiceById, updateService } = useManagementServiceApi();
+  const { fetchAllCategories } = useCategoryApi();
+  const { fetchImage } = useImageCorsApi();
+
+  // params id 
+  const { id } = useParams();
+
+  // breadcrumb
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/seniman/dashboard" },
@@ -27,86 +35,11 @@ const EditService = () => {
     { label: "Edit Jasa", to: `/seniman/dashboard/kesenian/editservice/${id}` },
   ];
 
+  // handle steps page
   const steps = ["Informasi Jasa", "Foto Jasa", "Publish"];
   const [currentStep, setCurrentStep] = useState(0);
-
-  const [formData, setFormData] = useState({
-    category_id: null, // Simpan sebagai satu objek
-    name: "",
-    desc: "",
-    price: 0,
-    images: [],
-    agreeTerms: false,
-    person_amount: 0,
-    type: null, // Simpan sebagai satu objek
-  });
-
-  const options = [
-    { value: "hari", label: "Pembayaran per hari" },
-    { value: "tampil", label: "Pembayaran per tampil" },
-    { value: "jam", label: "Pembayaran per jam" },
-  ];
-
   const handleNextStep = () => setCurrentStep((prevStep) => prevStep + 1);
   const handlePreviousStep = () => setCurrentStep((prevStep) => prevStep - 1);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handledescChange = (value) => {
-    setFormData((prevFormData) => ({ ...prevFormData, desc: value }));
-  };
-
-  const handleCheckboxChange = () => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      agreeTerms: !prevFormData.agreeTerms,
-    }));
-  };
-
-  const handleSubmit = () => {
-    if (isStepValid()) {
-      console.log("Service submitted:", formData);
-
-      const postFormData = new FormData();
-      postFormData.append("category_id", formData.category_id.value);
-      postFormData.append("name", formData.name);
-      postFormData.append("desc", formData.desc);
-      postFormData.append("price", formData.price);
-      postFormData.append("person_amount", formData.person_amount);
-      postFormData.append("type", formData.type.value);
-
-      if (formData.images[0]) {
-        postFormData.append("thumbnail", formData.images[0].file);
-      }
-      formData.images.slice(1).forEach((image) => {
-        postFormData.append(`service_image[]`, image.file);
-      });
-
-      postFormData.append('_method', 'PUT'); // Metode PUT
-
-      setLoading(true);
-      axiosInstance
-        .post(`/user/shop/service/${id}`, postFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Jasa Kesenian berhasil diubah");
-          navigate("/seniman/dashboard/kesenian");
-        })
-        .catch(() => {
-          toast.error("Gagal mengubah jasa");
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  };
-
   const isStepValid = () => {
     switch (currentStep) {
       case 0:
@@ -127,80 +60,152 @@ const EditService = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchServiceData = async () => {
-      setLoading(true);
-      try {
-        const response = await axiosInstance.get(`/user/shop/service/${id}`);
-        if (response.data.status === "success") {
-          const service = response.data.service;
+  // handle state management
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    category_id: null, // Simpan sebagai satu objek
+    name: "",
+    desc: "",
+    price: 0,
+    images: [],
+    agreeTerms: false,
+    person_amount: 0,
+    type: null, // Simpan sebagai satu objek
+  });
 
-          const thumbnailUrl = service.thumbnail.split('/storage/')[1];
-          const thumbnailResponse = await axiosInstance.get('fetch-image', {
-            params: { path: thumbnailUrl },
-            responseType: 'blob',
-          });
-          const thumbnailBlob = await thumbnailResponse.data;
-          const thumbnailFile = new File([thumbnailBlob], "thumbnail.jpg", {
-            type: thumbnailBlob.type,
-          });
+  // option category
+  const options = [
+    { value: "hari", label: "Pembayaran per hari" },
+    { value: "tampil", label: "Pembayaran per tampil" },
+    { value: "jam", label: "Pembayaran per jam" },
+  ];
 
-          const imagesPromises = service.images.map(async (image, index) => {
-            const imageUrl = image.picture.split('/storage/')[1];
-            const response = await axiosInstance.get('fetch-image', {
-              params: { path: imageUrl },
-              responseType: 'blob',
-            });
-            const blob = await response.data;
-            return new File([blob], `image_${index + 1}.jpg`, {
-              type: blob.type,
-            });
-          });
 
-          const imagesFiles = await Promise.all(imagesPromises);
+  // handle input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  };
+  const handledescChange = (value) => {
+    setFormData((prevFormData) => ({ ...prevFormData, desc: value }));
+  };
 
-          setFormData({
-            category_id: categoryOptions.find(
-              (option) => option.value === service.category_id.toString()
-            ),
-            name: service.name,
-            desc: service.desc,
-            price: service.price,
-            person_amount: service.person_amount,
-            type: options.find((option) => option.value === service.type),
-            images: [
-              { file: thumbnailFile, preview: service.thumbnail },
-              ...imagesFiles.map((file, index) => ({
-                file: file,
-                preview: service.images[index].picture,
-              })),
-            ],
-            agreeTerms: false,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching service data:", error);
-      } finally {
-        setLoading(false);
+  const handleCheckboxChange = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      agreeTerms: !prevFormData.agreeTerms,
+      // price: service.price,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    if (isStepValid()) {
+      const postFormData = new FormData();
+      postFormData.append("category_id", formData.category_id.value);
+      postFormData.append("name", formData.name);
+      postFormData.append("desc", formData.desc);
+      postFormData.append("price", formData.price);
+      postFormData.append("person_amount", formData.person_amount);
+      postFormData.append("type", formData.type.value);
+      if (formData.images[0]) {
+        postFormData.append("thumbnail", formData.images[0].file);
       }
-    };
-    setLoading(true)
-    axiosInstance
-      .get("/category")
-      .then((response) => {
-        const categories = response.data.data.data.map((category) => ({
-          value: category.id.toString(),
-          label: category.name,
-        }));
-        setCategoryOptions(categories);
-      })
-      .catch((err) => console.error(err)).finally(() => {
-        setLoading(false)
+      formData.images.slice(1).forEach((image) => {
+        postFormData.append(`service_image[]`, image.file);
       });
-    fetchServiceData();
+      postFormData.append('_method', 'PUT'); // Metode PUT
+
+      setLoading(true);
+      await updateService(id, postFormData)
+        .then(() => {
+          toast.success("Jasa Kesenian berhasil diubah");
+          navigate("/seniman/dashboard/kesenian");
+        })
+        .catch(() => {
+          toast.error("Gagal mengubah jasa");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
 
 
+
+  const getServiceData = async () => {
+    try {
+      const response = await getServiceById(id);
+
+      const thumbnailBlob = await fetchImage(response.thumbnail);
+      const thumbnailFile = new File([thumbnailBlob], "thumbnail.jpg", {
+        type: thumbnailBlob.type,
+      });
+
+      const imagesPromises = response.images.map(async (image, index) => {
+        const blob = await fetchImage(image.picture);
+        return new File([blob], `image_${index + 1}.jpg`, {
+          type: blob.type,
+        });
+      });
+
+      const imagesFiles = await Promise.all(imagesPromises);
+
+      setFormData({
+        category_id: categoryOptions.find(
+          (option) => option.value === response.category_id.toString()
+        ),
+        name: response.name,
+        desc: response.desc,
+        price: response.price,
+        person_amount: response.person_amount,
+        type: options.find((option) => option.value === response.type),
+        images: [
+          { file: thumbnailFile, preview: response.thumbnail },
+          ...imagesFiles.map((file, index) => ({
+            file: file,
+            preview: response.images[index].picture,
+          })),
+        ],
+        agreeTerms: false,
+      });
+
+    } catch (error) {
+      console.error("Error fetching service data:", error);
+    }
+
+  }
+
+  const getAllCategories = async () => {
+    try {
+      const categories = await fetchAllCategories();
+      setCategoryOptions(categories.map((category) => ({
+        value: category.id.toString(),
+        label: category.name,
+      })));
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await getAllCategories();
+    };
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await getServiceData();
+      setLoading(false);
+    }
+
+    fetchData();
+  }, [categoryOptions])
+
 
   if (loading) {
     return <FullPageLoader />;
@@ -284,7 +289,7 @@ const EditService = () => {
                   <PriceInput
                     label="Harga Jasa"
                     placeholder="Masukkan harga jasa"
-                    value={formData.price}
+                    value={formData.price} // Pastikan value ini benar dari state
                     name="price"
                     onChange={handleInputChange}
                   />

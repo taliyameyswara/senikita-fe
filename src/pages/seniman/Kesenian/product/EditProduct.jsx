@@ -8,27 +8,39 @@ import SelectionOne from "../../../../components/SelectionOne";
 import MultipleImageUploader from "../../../../components/MultipleImageUploader";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
-import { useAxiosInstance } from "../../../../config/axiosConfig";
 import FullPageLoader from "../../../../components/loading/FullPageLoader";
 import PriceInput from "../../../../components/form-input/PriceInput";
 import { toast } from "react-toastify";
 import FormData from "form-data";
+import { useManagementProductApi } from "../../../../api/shop/ManagementProductApi";
+import { useCategoryApi } from "../../../../api/landing/CategoryApi";
+import { useImageCorsApi } from "../../../../api/shop/ImageCorsApi";
 
 const EditProduct = () => {
-  const { id } = useParams();
-  const axiosInstance = useAxiosInstance();
-  const [categoryOptions, setCategoryOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // import navigate
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(0);
-  const steps = ["Informasi Produk", "Foto Produk", "Publish"];
 
+  // api service
+  const { updateProduct, getProductById } = useManagementProductApi();
+  const { fetchAllCategories } = useCategoryApi();
+  const { fetchImage } = useImageCorsApi();
+
+  // params id
+  const { id } = useParams();
+
+  // breadcrumb
   const breadcrumbItems = [
     { label: "Home", to: "/" },
     { label: "Dashboard", to: "/seniman/dashboard" },
     { label: "Daftar Kesenian", to: "/seniman/dashboard/kesenian" },
     { label: "Edit Produk", to: `/seniman/dashboard/kesenian/editproduct/${id}` },
   ];
+
+  // state
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = ["Informasi Produk", "Foto Produk", "Publish"];
 
   const [formData, setFormData] = useState({
     category_id: null,
@@ -81,84 +93,76 @@ const EditProduct = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchProductData = async () => {
-      setLoading(true);
-      try {
-        const response = await axiosInstance.get(`/user/shop/products/${id}`);
-        if (response.data.status === "success") {
-          const product = response.data.product;
+  const getProductData = async () => {
+    try {
+      const response = await getProductById(id);
 
-          const thumbnailUrl = product.thumbnail.split('/storage/')[1];
-          const thumbnailResponse = await axiosInstance.get('fetch-image', {
-            params: {
-              path: thumbnailUrl
-            },
-            responseType: 'blob',
-          });
-          const thumbnailBlob = await thumbnailResponse.data;
-          const thumbnailFile = new File([thumbnailBlob], "thumbnail.jpg", {
-            type: thumbnailBlob.type,
-          });
-          // }
-
-          const imagesPromises = product.images.map(async (image, index) => {
-            const imageUrl = image.picture.split('/storage/')[1];
-            const response = await axiosInstance.get('fetch-image', {
-              params: {
-                path: imageUrl
-              },
-              responseType: 'blob',
-            });
-            const blob = await response.data;
-            return new File([blob], `image_${index + 1}.jpg`, {
-              type: blob.type,
-            });
-          });
-
-          const imagesFiles = await Promise.all(imagesPromises);
-
-          // Set formData dengan thumbnail dan images
-          setFormData({
-            category_id: categoryOptions.find(
-              (option) => option.value === product.category_id.toString()
-            ), // Set category_id dengan objek
-            name: product.name,
-            desc: product.desc,
-            price: product.price,
-            stock: product.stock,
-            images: [
-              { file: thumbnailFile, preview: product.thumbnail }, // Thumbnail sebagai file
-              ...imagesFiles.map((file, index) => ({
-                file: file,
-                preview: product.images[index].picture, // Gambar tambahan sebagai file
-              })),
-            ],
-            agreeTerms: false,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching product data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    axiosInstance
-      .get("/category")
-      .then((response) => {
-        const categoryOptions = response.data.data.data.map((category) => ({
-          value: category.id.toString(),
-          label: category.name,
-        }));
-        setCategoryOptions(categoryOptions);
-      })
-      .catch((err) => {
-        console.log(err);
+      const thumbnailBlob = await fetchImage(response.thumbnail);
+      const thumbnailFile = new File([thumbnailBlob], "thumbnail.jpg", {
+        type: thumbnailBlob.type,
       });
-    fetchProductData();
+
+      const imagesPromises = response.images.map(async (image, index) => {
+        const blob = await fetchImage(image.picture);
+        return new File([blob], `image_${index + 1}.jpg`, {
+          type: blob.type,
+        });
+      });
+      const imagesFiles = await Promise.all(imagesPromises);
+
+      setFormData({
+        category_id: categoryOptions.find(
+          (option) => option.value === response.category_id.toString()
+        ),
+        name: response.name,
+        desc: response.desc,
+        price: response.price,
+        stock: response.stock,
+        images: [
+          { file: thumbnailFile, preview: response.thumbnail },
+          ...imagesFiles.map((file, index) => ({
+            file: file,
+            preview: response.images[index].picture,
+          })),
+        ],
+        agreeTerms: false,
+      });
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  }
+
+  const getAllCategories = async () => {
+    try {
+      const categories = await fetchAllCategories();
+      setCategoryOptions(categories.map((category) => ({
+        value: category.id.toString(),
+        label: category.name,
+      })));
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await getAllCategories();
+
+    }
+    fetchData();
 
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await getProductData();
+      setLoading(false);
+    }
+    fetchData();
+  }, [categoryOptions]);
 
   const handleSubmit = () => {
     if (isStepValid()) {
@@ -184,23 +188,15 @@ const EditProduct = () => {
       postFormData.append('_method', 'PUT'); // Metode PUT
 
       setLoading(true);
-      axiosInstance
-        .post(`/user/shop/products/${id}`, postFormData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+
+      updateProduct(id, postFormData)
         .then((response) => {
           toast.success("Produk berhasil diubah");
           navigate("/seniman/dashboard/kesenian");
         })
         .catch((error) => {
           toast.error("Gagal mengubah produk");
-          console.log(error);
         })
-        .finally(() => {
-          setLoading(false);
-        });
     }
   };
 
