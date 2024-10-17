@@ -14,11 +14,11 @@ const ReviewTab = ({ reviews }) => {
       <h1 className="lg:text-lg text-base font-semibold mb-4">
         Ulasan Pilihan
       </h1>
-      <div className="flex flex-col lg:gap-4 gap-3">
+      <div className="flex flex-col gap-3">
         {reviews.map((review, index) => (
           <div
             key={index}
-            className="grid border border-gray-100 p-3 rounded-2xl lg:grid-cols-12 md:gap-4 gap-2 items-start"
+            className="grid rounded-2xl lg:grid-cols-12 md:gap-4 gap-2 items-start"
           >
             {/* Product Section */}
             <div className="lg:col-span-2 col-span-1 flex md:flex-col flex-row  md:items-start items-center gap-2 w-full">
