@@ -18,7 +18,7 @@ const ReviewTab = ({ reviews }) => {
         {reviews.map((review, index) => (
           <div
             key={index}
-            className="grid bg-gray-100 p-3 rounded-2xl lg:grid-cols-12 md:gap-4 gap-2 items-start"
+            className="grid border border-gray-100 p-3 rounded-2xl lg:grid-cols-12 md:gap-4 gap-2 items-start"
           >
             {/* Product Section */}
             <div className="lg:col-span-2 col-span-1 flex md:flex-col flex-row  md:items-start items-center gap-2 w-full">
