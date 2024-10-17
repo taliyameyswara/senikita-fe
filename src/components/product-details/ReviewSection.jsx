@@ -6,7 +6,7 @@ import Review from "../../components/review/Review";
 const ReviewSection = ({ review, type }) => {
   return (
     <div className="p-6 my-6 bg-white border rounded-xl">
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
+      <div className="grid grid-cols-1 md:gap-10 gap-5 lg:grid-cols-3">
         <RatingAccumulation review={review} />
         <Review review={review} type={type} />
       </div>

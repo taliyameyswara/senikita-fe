@@ -42,6 +42,7 @@ const Review = ({ review, type }) => {
                 {rating.toFixed(1)}
               </div>
             </div>
+            <div className="text-gray-500">{date}</div>
           </div>
 
           <p className="my-1 text-gray-700">{comment}</p>
@@ -67,7 +68,6 @@ const Review = ({ review, type }) => {
               )}
             </div>
           )}
-
         </div>
       ))}
     </div>
