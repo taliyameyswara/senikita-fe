@@ -146,15 +146,22 @@ const SenimanBiodata = ({ setProgress }) => {
       <div className="grid grid-cols-10 gap-2 xl:gap-5 lg:gap-4">
         <div className="col-span-10 px-5 py-4 border xl:col-span-3 lg:col-span-4 rounded-xl">
           <div className="mb-2 font-semibold">Foto Profil</div>
-          <img
-            loading="lazy"
-            src={
-              formData.profile_picture ||
-              "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
-            }
-            alt="Profile"
-            className="object-cover w-full h-48 rounded-xl"
-          />
+          {
+            formData.profile_picture ?
+              (
+                <img
+                  loading="lazy"
+                  src={
+                    formData.profile_picture ||
+                    "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
+                  }
+                  alt="Profile"
+                  className="object-cover w-full h-48 rounded-xl"
+                />
+              ) :
+              <div className="container object-cover w-full h-48 bg-gray-500 rounded-xl"></div>
+          }
+
           <input
             type="file"
             id="profilePictureInput"
