@@ -25,8 +25,6 @@ const useStyles = createUseStyles(() => ({
   },
 }));
 
-
-
 const GradientColors = () => (
   <>
     <linearGradient id="productSalesGradient" x1="0" y1="0" x2="0" y2="1">
@@ -50,7 +48,9 @@ const GradientChart = () => {
 
   const fetchData = async (year) => {
     try {
-      const response = await axiosInstance.get(`/user/shop/products/summary-sales?year=${year}`);
+      const response = await axiosInstance.get(
+        `/user/shop/products/summary-sales?year=${year}`
+      );
       if (response.data && response.data.status === "success") {
         setData(response.data.summary.salesData);
       } else {
@@ -73,7 +73,7 @@ const GradientChart = () => {
   return (
     <div className={classes.container}>
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-lg font-semibold font-raleway">
+        <h2 className="lg:text-lg text-base  font-semibold font-raleway">
           Data Penjualan Produk dan Jasa
         </h2>
         <DropdownFilter
