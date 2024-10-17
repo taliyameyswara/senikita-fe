@@ -165,7 +165,7 @@ const SearchResult = ({ setProgress }) => {
   return (
     <div>
       <Navbar />
-      <div className="container px-6 py-4">
+      <div className="container px-6 py-2">
         {/* breadcrumbs */}
         <Breadcrumbs items={breadcrumbItems} />
         {/* heading and filter */}
@@ -180,13 +180,11 @@ const SearchResult = ({ setProgress }) => {
               <ToggleButton icon={<IoFilterOutline />} title="Filter">
                 <div className="grid grid-rows-3 gap-3 mt-3">
                   <SearchInput
-                    name="Filter karakter"
-                    apiUrl="https://rickandmortyapi.com/api/character"
+                    label="Filter karakter"
                     placeholder="Cari karakter..."
                     mapData={mapData}
                     handleSelect={handleLocationSelect}
                   />
-
                   <Selection
                     name={"Filter harga"}
                     options={priceOptions}
@@ -206,7 +204,7 @@ const SearchResult = ({ setProgress }) => {
             {/* desktop */}
             <div className="items-end hidden gap-3 md:grid md:grid-cols-3">
               <SearchInput
-                apiUrl="https://rickandmortyapi.com/api/character"
+                // apiUrl="https://rickandmortyapi.com/api/character"
                 placeholder="Filter Daerah"
                 mapData={mapData}
                 handleSelect={handleLocationSelect}
@@ -233,7 +231,7 @@ const SearchResult = ({ setProgress }) => {
           <button
             onClick={handlePreviousPage}
             disabled={Number(page) === 1}
-            className={`px-4 py-2 text-white rounded-md ${
+            className={`px-4 py-2 text-white rounded-xl text-sm lg:text-base ${
               Number(page) === 1
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-primary"
@@ -242,14 +240,14 @@ const SearchResult = ({ setProgress }) => {
             Sebelumnya
           </button>
 
-          <span className="font-nunito font-light text-gray-500">
-            Halaman {page} dari {totalPages}
+          <span className="font-nunito font-light text-gray-500 text-sm lg:text-base">
+            {page} dari {totalPages}
           </span>
 
           <button
             onClick={handleNextPage}
             disabled={Number(page) === totalPages}
-            className={`px-4 py-2 text-white rounded-md ${
+            className={`px-4 py-2 text-white rounded-xl text-sm lg:text-base ${
               Number(page) === totalPages
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-primary"

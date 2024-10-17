@@ -12,18 +12,17 @@ import { useServiceApi } from "../../api/landing/ServiceApi";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 import { UserContext } from "../../context/UserContext";
 
-
 const ServiceDetails = ({ setProgress }) => {
   const { id } = useParams();
   const [serviceId, setServiceId] = useState("");
   const { fetchServiceById, fetchRandomService } = useServiceApi();
-  const { user, } = useContext(UserContext); // Use logout from context
+  const { user } = useContext(UserContext); // Use logout from context
 
   useEffect(() => {
     const decryptedId = atob(id);
     const serviceId = decryptedId.split("-")[0];
     setServiceId(serviceId);
-  })
+  });
 
   const [service, setService] = useState(null);
   const [products, setServices] = useState([]);
@@ -33,22 +32,20 @@ const ServiceDetails = ({ setProgress }) => {
     try {
       const response = await fetchServiceById(serviceId);
       setService(response);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Failed to fetch service:", error);
     }
-  }
+  };
 
   const getServices = async () => {
     try {
       const response = await fetchRandomService();
       console.log(response);
       setServices(response);
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Failed to fetch service:", error);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +58,7 @@ const ServiceDetails = ({ setProgress }) => {
       await getServices();
       setProgress(100);
       setLoading(false);
-    }
+    };
 
     fetchData();
   }, [serviceId, setProgress]);
@@ -98,23 +95,20 @@ const ServiceDetails = ({ setProgress }) => {
     },
   ];
 
-
   if (loading) {
-    return <FullPageLoader />
+    return <FullPageLoader />;
   }
 
   return (
     <>
       <Navbar />
-      <div className="container px-6 py-4 mb-20">
+      <div className="container px-4 py-6 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
 
-        {
-          service && user.id !== service.shop.user_id && (
-            <OrderBottomBarService service={service} />
-          )
-        }
+        {service && user.id !== service.shop.user_id && (
+          <OrderBottomBarService service={service} />
+        )}
         <ProductList
           title={"Produk Lainnya"}
           products={products}

@@ -11,7 +11,7 @@ const FullPageLoader = () => {
         <div className="animate-spin-slow">
           <img
             src={LoadingImage}
-            className="w-20 h-20 rotate-45 lg:w-28 lg:h-28 animate-pulse-slow"
+            className="lg:w-24 lg:h-24 w-20 h-20 animate-pulse-slow rotate-45"
             alt="Loading"
           />
         </div>

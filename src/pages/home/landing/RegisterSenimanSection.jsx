@@ -21,7 +21,7 @@ const RegisterSenimanSection = () => {
   const linkTo = getLink();
 
   return (
-    <div className="container px-6 mt-20">
+    <div className="container px-4 mt-20">
       <div className="flex gap-5">
         {/* 1 */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-5 md:gap-10 bg-gradient-to-r from-primary to-tertiary p-5 py-12 md:py-24 rounded-[2rem] relative w-full md:w-[80%] lg:w-[60%] mx-auto">
@@ -35,7 +35,7 @@ const RegisterSenimanSection = () => {
           </div>
           {/* <div className="hidden col-span-1 lg:block"> */}
           <div className="col-span-1 ">
-            <div className="absolute xl:-bottom-10 xl:w-[32%] lg:w-[40%] md:w-[40%] w-[60%] sm:hidden block md:block lg:left-[25%] md:left-[20%] -right-5 lg:-top-20 md:-top-16 bottom-[10rem] z-20 lg:rotate-0 rotate-2 scale-x-[-1]">
+            <div className="absolute xl:-bottom-10 xl:w-[32%] lg:w-[40%] md:w-[40%] w-[60%] sm:hidden block md:block lg:left-[25%] md:left-[20%] -right-5 lg:-top-20 md:-top-16 bottom-[10rem] z-20  scale-x-[-1]">
               <img
                 src={SenimanRegister}
                 alt=""

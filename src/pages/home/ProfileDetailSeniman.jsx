@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Import useParams for getting the URL parameters
+import { useParams } from "react-router-dom";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import Navbar from "../../components/navbar/Navbar";
 import MainFooter from "../../components/footer/Footer";
 import ProductList from "../../components/card/ProductList";
-import Review from "../../components/review/Review";
+import ReviewTab from "../../components/review/ReviewTab";
 import { FaStar } from "react-icons/fa";
 import Tabs from "../../components/Tabs";
-import ReviewTab from "../../components/review/ReviewTab";
+import ProductCard from "../../components/card/ProductCard";
 
 const ProfileDetailSeniman = ({ setProgress }) => {
   const { id } = useParams();
@@ -34,7 +34,6 @@ const ProfileDetailSeniman = ({ setProgress }) => {
           const data = res.data.data;
           setSeniman(data);
           setProducts(data.products || []);
-          setProgress(100);
           setServices(data.services || []);
           setProgress(100);
         })
@@ -46,7 +45,6 @@ const ProfileDetailSeniman = ({ setProgress }) => {
           setLoading(false);
         });
     }
-
   }, [senimanId]);
 
   const reviews = [
@@ -57,10 +55,11 @@ const ProfileDetailSeniman = ({ setProgress }) => {
       comment:
         "Produk ini sangat bagus dan sesuai ekspektasi. Kualitasnya sangat baik!",
       image: [
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
+        "https://via.placeholder.com/100",
+        "https://via.placeholder.com/100",
       ],
-      productName: "Patung Naga NagaNagaNagaNagaNagaNaga",
+      productName:
+        "Patung Naga Besar Naga Besar Naga Besar Naga Besar Naga Besar Naga Besar Naga BesarNaga Besar Naga BesarNaga Besar Naga Besar",
       price: 10000,
     },
     {
@@ -79,22 +78,34 @@ const ProfileDetailSeniman = ({ setProgress }) => {
       name: "product",
       label: "Produk Kesenian",
       content: (
-        <ProductList
-          title="Produk dari Seniman"
-          products={products}
-          type="Product"
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {products.length > 0 ? (
+            products.map((product, index) => (
+              <ProductCard key={index} product={product} type="Product" />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              Tidak ada produk yang tersedia.
+            </p>
+          )}
+        </div>
       ),
     },
     {
       name: "service",
       label: "Jasa Kesenian",
       content: (
-        <ProductList
-          title="Jasa dari Seniman"
-          products={services}
-          type="Service"
-        />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+          {services.length > 0 ? (
+            services.map((service, index) => (
+              <ProductCard key={index} product={service} type="Service" />
+            ))
+          ) : (
+            <p className="text-center col-span-full text-gray-500">
+              Tidak ada jasa yang tersedia.
+            </p>
+          )}
+        </div>
       ),
     },
     {
@@ -107,62 +118,62 @@ const ProfileDetailSeniman = ({ setProgress }) => {
   return (
     <>
       <Navbar />
-      <div className="container px-6">
+      <div className="container mx-auto px-4 md:px-6">
         <div className="pt-5">
-          <div className="">
-            <div className="p-6 mb-3 bg-white border rounded-xl">
-              <div className="flex items-center gap-4 text-sm">
-                <img
-                  src={
-                    seniman?.profile_picture ||
-                    "https://via.placeholder.com/100"
-                  } // Use optional chaining for safe access
-                  alt={seniman?.name || "Seniman"} // Fallback name if seniman is null
-                  className="object-cover w-16 h-16 rounded-full"
-                />
-                <div className="flex flex-wrap justify-between w-full">
-                  <div>
-                    <div className="text-lg font-semibold">{seniman?.name}</div>
-                    <div className="text-gray-600">{seniman?.region}</div>
+          <div className="p-6 mb-3 bg-white border rounded-xl">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-sm">
+              <img
+                src={
+                  seniman?.profile_picture || "https://via.placeholder.com/100"
+                }
+                alt={seniman?.name || "Seniman"}
+                className="object-cover w-24 h-24 rounded-full"
+              />
+              <div className="flex flex-col w-full md:w-full md:flex-row md:justify-between md:items-center md:gap-4 ">
+                <div className="text-center md:text-left mb-4 md:mb-0">
+                  <div className="md:text-lg text-base font-semibold">
+                    {seniman?.name}
                   </div>
-                  <div className="flex gap-3 mt-2">
-                    <div className="text-center">
-                      <div className="flex items-center gap-2">
-                        <FaStar className="text-lg text-yellow-500" />
-                        <div className="text-lg font-bold font-nunito">
-                          {seniman?.rating}
-                        </div>
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        Rating & Ulasan
+                  <div className="text-gray-600 text-xs md:text-sm">
+                    {seniman?.region}
+                  </div>
+                </div>
+                <div className="grid grid-cols-4  gap-3 justify-center md:justify-end">
+                  <div className="text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <FaStar className="text-lg text-yellow-500" />
+                      <div className="md:text-lg text-base font-bold font-nunito">
+                        {seniman?.rating || 0}
                       </div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold font-nunito">
-                        {seniman?.sold}
-                      </div>
-                      <div className="text-xs text-gray-400 ">Penjualan</div>
+                    <div className="text-xs text-gray-400">Rating & Ulasan</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="md:text-lg text-base font-bold font-nunito">
+                      {seniman?.sold || 0}
                     </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold font-nunito ">
-                        {products.length}
-                      </div>
-                      <div className="text-xs text-gray-400">Jumlah Produk</div>
+                    <div className="text-xs text-gray-400">Penjualan</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="md:text-lg text-base font-bold font-nunito">
+                      {products.length}
                     </div>
-                    <div className="text-center">
-                      <div className="text-lg font-bold font-nunito">
-                        {services.length}
-                      </div>
-                      <div className="text-xs text-gray-400">Jumlah Jasa</div>
+                    <div className="text-xs text-gray-400">Jumlah Produk</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="md:text-lg text-base font-bold font-nunito">
+                      {services.length}
                     </div>
+                    <div className="text-xs text-gray-400">Jumlah Jasa</div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
 
-            <div>
-              <Tabs tabs={tabs} />
-            </div>
+          {/* Tabs Section */}
+          <div className="pt-2">
+            <Tabs tabs={tabs} />
           </div>
         </div>
       </div>

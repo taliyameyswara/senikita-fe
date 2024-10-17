@@ -58,10 +58,10 @@ const Modal = ({
         className={`bg-white rounded-xl ${width} max-w-4xl max-h-[90vh] flex flex-col modal-content`}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b">
-          <div className="flex flex-col gap-2 ">
-            <div className="text-xl font-bold">{title}</div>
-            <div className="text-gray-500">{subtitle}</div>
+        <div className="flex items-start justify-between lg:p-5 p-3 border-b">
+          <div className="flex flex-col md:gap-2 ">
+            <div className="md:text-xl font-bold">{title}</div>
+            <div className="md:text-base text-sm text-gray-500">{subtitle}</div>
           </div>
           <button onClick={onClose} className="px-4 py-2 text-gray-500">
             <IoClose className="text-xl" />
@@ -69,14 +69,14 @@ const Modal = ({
         </div>
 
         {/* Modal content */}
-        <div className="flex-grow p-4 px-6 overflow-auto">{children}</div>
+        <div className="flex-grow p-4 lg:px-6 overflow-auto">{children}</div>
 
         {/* Footer buttons */}
         {isForm && (
           <div className="flex justify-end p-4 border-t">
             <button
               onClick={handleSubmit}
-              className="flex-grow px-4 py-3 font-semibold text-white bg-primary rounded-xl"
+              className="flex-grow px-4 py-3 md:text-base text-sm font-semibold text-white bg-primary rounded-xl"
             >
               Simpan
             </button>

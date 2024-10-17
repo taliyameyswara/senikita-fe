@@ -80,43 +80,52 @@ const ClientTestimoniSection = () => {
           </p>
         </div>
 
-        <Slider {...settings} className="w-full md:w-[60%] mx-auto">
+        <Slider {...settings} className="w-full md:w-[50%] mx-auto">
           {testimonials.map((testimonial) => (
             <div key={testimonial.id} className="p-4">
-              <div className="flex flex-col overflow-hidden md:flex-row">
+              <div className="overflow-hidden flex flex-col md:flex-row gap-4 md:gap-6">
+                {/* Image and Basic Info */}
                 <div className="flex gap-3">
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
-                    className="object-cover w-20 h-20 m-2 mx-auto rounded-full md:w-24 md:h-24 md:m-4 md:mx-0"
+                    className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-full mx-auto md:m-0"
                   />
-                  <div className="flex flex-col justify-center">
-                    {/* Bintang rating */}
-                    <div className="flex items-center mb-2">
-                      <IoStar className="mb-1 text-lg text-yellow-400" />
+                  <div className="flex flex-col justify-center ">
+                    {/* Rating */}
+                    <div className="items-center  mb-2 flex md:hidden">
+                      <IoStar className="text-yellow-400 text-lg mb-1" />
                       <span className="ml-2 text-lg font-semibold font-nunito">
                         {testimonial.rating}{" "}
                         <span className="font-light text-gray-400">/ 5.0</span>
                       </span>
                     </div>
-                    {/* mobile */}
-                    <p className="block mb-2 text-sm text-gray-600 md:hidden">
+                    {/* Mobile Name and Position */}
+                    <p className="text-gray-600 mb-2 text-sm block md:hidden">
                       {testimonial.name}, {testimonial.position}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex-1 px-0 py-2 md:text-left">
-                  {/* Ulasan */}
-                  <p className="mb-2 text-sm font-semibold text-gray-800 md:text-base">
+                {/* Review and Service Information */}
+                <div className="flex-1">
+                  {/* Rating */}
+                  <div className="md:flex hidden items-center  mb-2">
+                    <IoStar className="text-yellow-400 text-lg mb-1" />
+                    <span className="ml-2 text-lg font-semibold font-nunito">
+                      {testimonial.rating}{" "}
+                      <span className="text-gray-400 font-light">/ 5.0</span>
+                    </span>
+                  </div>
+                  <p className="text-gray-800 font-semibold mb-2 text-sm md:text-base">
                     {testimonial.review}
                   </p>
-                  {/* desktop*/}
-                  <p className="hidden mb-2 text-sm text-gray-600 md:text-base md:block">
+                  {/* Desktop Name and Position */}
+                  <p className="text-gray-600 mb-2 text-sm md:text-base hidden md:block">
                     {testimonial.name}, {testimonial.position}
                   </p>
-                  {/* Jasa yang dipesan */}
-                  <div className="text-xs text-gray-500 md:text-sm">
+                  {/* Ordered Service */}
+                  <div className="text-xs md:text-sm text-gray-500">
                     Jasa Yang Dipesan:{" "}
                     <span className="text-primary">{testimonial.service}</span>
                   </div>

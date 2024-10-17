@@ -1,90 +1,3 @@
-// import React, { useRef, useEffect, useState } from "react";
-
-// const ScrollTab = ({ tabs }) => {
-//   const sectionsRef = useRef([]);
-//   const [activeTab, setActiveTab] = useState(tabs[0].target);
-
-//   useEffect(() => {
-//     scrollToSection(tabs[0].target);
-
-//     const observer = new IntersectionObserver(handleIntersection, {
-//       root: null,
-//       rootMargin: "-100px",
-//       threshold: 0.5,
-//     });
-
-//     sectionsRef.current.forEach((section) => {
-//       if (section instanceof Element) {
-//         observer.observe(section);
-//       }
-//     });
-
-//     return () => {
-//       observer.disconnect();
-//     };
-//   }, [tabs]);
-
-//   const handleIntersection = (entries) => {
-//     entries.forEach((entry) => {
-//       if (entry.isIntersecting) {
-//         setActiveTab(entry.target.getAttribute("id"));
-//       }
-//     });
-//   };
-
-//   const scrollToSection = (target) => {
-//     const section = document.getElementById(target);
-//     if (section) {
-//       window.scrollTo({
-//         top: section.offsetTop - 150,
-//         behavior: "smooth",
-//       });
-//     }
-//   };
-
-//   const handleTabClick = (target) => {
-//     scrollToSection(target);
-//     setActiveTab(target);
-//   };
-
-//   return (
-//     <div>
-//       {/* Tab Navigation */}
-//       <div className="flex bg-white sticky md:top-20 top-[9.1rem] z-30 my-3 min-w-[100vh]">
-//         {tabs.map((tab, index) => (
-//           <button
-//             key={index}
-//             className={`py-3 px-4 text-sm font-semibold focus:outline-none ${
-//               activeTab === tab.target
-//                 ? "text-tertiary border-b-2 border-tertiary"
-//                 : "text-primary border-b-2 border-transparent"
-//             }`}
-//             onClick={() => handleTabClick(tab.target)}
-//           >
-//             {tab.label}
-//           </button>
-//         ))}
-//       </div>
-
-//       {/* Tab Sections */}
-//       <div>
-//         {tabs.map((tab, index) => (
-//           <section
-//             key={index}
-//             id={tab.target}
-//             ref={(el) => (sectionsRef.current[index] = el)}
-//             className="scroll-section"
-//           >
-//             {tab.content}
-//           </section>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ScrollTab;
-
 import React, { useRef, useEffect, useState } from "react";
 
 const ScrollTab = ({ tabs }) => {
@@ -145,9 +58,9 @@ const ScrollTab = ({ tabs }) => {
   };
 
   return (
-    <div>
+    <div className="">
       {/* Tab Navigation */}
-      <div className="flex bg-white sticky md:top-20 top-[9.1rem] z-30 my-3 min-w-[100vh]">
+      <div className="flex bg-white sticky md:top-20 top-[8rem] z-30 my-3">
         {tabs.map((tab, index) => (
           <button
             key={index}

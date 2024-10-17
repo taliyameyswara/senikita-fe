@@ -8,7 +8,7 @@ const EmptyState = ({ message, ctaLabel, onCtaClick }) => {
       <img
         src={EmptyImage}
         alt="No items"
-        className="md:w-[10%] w-[20%] object-contain opacity-20 filter grayscale"
+        className="md:w-[10%] w-[25%] object-contain opacity-20 filter grayscale"
         style={{ userSelect: "none", pointerEvents: "none" }}
       />
 
@@ -17,7 +17,6 @@ const EmptyState = ({ message, ctaLabel, onCtaClick }) => {
         {message || "Tidak ada item yang ditemukan"}
       </h2>
 
-      {/* Call-to-Action Button (Optional) */}
       {ctaLabel && onCtaClick && (
         <button
           className="px-6 py-2 text-white transition rounded-full bg-brick hover:bg-opacity-90"

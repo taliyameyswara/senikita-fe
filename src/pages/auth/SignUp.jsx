@@ -66,11 +66,11 @@ const SignUp = () => {
       {/* login form */}
       <div
         className="flex flex-col items-center justify-center"
-        style={{ minHeight: "calc(100vh - 5rem)" }}
+        style={{ minHeight: "calc(100vh - 10rem)" }}
       >
         {/* header */}
-        <div className="text-xl font-semibold">Daftar di senikita</div>
-        <div className="">
+        <div className="text-xl font-semibold">Daftar di Senikita</div>
+        <div className="md:text-base text-sm">
           Sudah punya akun?{" "}
           <Link
             to="/login"
@@ -96,7 +96,7 @@ const SignUp = () => {
             {/* divider */}
             <div className="flex items-center gap-4 py-1">
               <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
-              <div className="">atau</div>
+              <div className="md:text-base text-sm">atau</div>
               <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
             </div>
 
@@ -111,7 +111,7 @@ const SignUp = () => {
               <input
                 type="name"
                 id="name"
-                className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
+                className="w-full p-3 mt-1 md:text-base text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
                 placeholder="Masukkan Nama Lengkap"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -130,7 +130,7 @@ const SignUp = () => {
               <input
                 type="email"
                 id="email"
-                className="w-full p-3 mt-1 border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
+                className="w-full p-3 mt-1 md:text-base text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
                 placeholder="Masukkan Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -141,6 +141,7 @@ const SignUp = () => {
             {/* password */}
             <PasswordInput
               label="Password"
+              placeholder="Masukkan Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -149,20 +150,14 @@ const SignUp = () => {
             {/* confirm password */}
             <PasswordInput
               label="Konfirmasi Password"
+              placeholder="Masukkan Ulang Password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
 
-            {/* forgot password */}
-            <div className="text-sm text-primary">
-              <a href="#" className="hover:underline">
-                Lupa Password?
-              </a>
-            </div>
-
             {/* submit button */}
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
                 className={`w-full py-3 text-white font-semibold rounded-xl ${

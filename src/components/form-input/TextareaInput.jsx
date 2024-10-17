@@ -10,13 +10,13 @@ const TextareaInput = ({
 }) => {
   return (
     <div className="">
-      <label className="text-sm font-semibold">{label}</label>
+      <label className="md:text-sm text-xs font-semibold">{label}</label>
       <textarea
         placeholder={placeholder}
         value={value}
         name={name}
         onChange={onChange}
-        className="w-full p-3 py-2 border rounded-xl mt-1 focus:ring-primary focus:border-primary/60 border-gray-200 resize-none"
+        className="w-full md:text-base text-sm p-3 py-2 border rounded-xl mt-1 focus:ring-primary focus:border-primary/60 border-gray-200 resize-none"
         rows={rows}
       />
     </div>

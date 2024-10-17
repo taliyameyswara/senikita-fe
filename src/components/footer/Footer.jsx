@@ -8,7 +8,7 @@ const MainFooter = () => {
     <>
       <hr />
       <div className=" container border-gray-200">
-        <footer className="bg-white py-10 w-full">
+        <footer className="bg-white pt-10 w-full">
           <div className="container mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {/* col 1 */}
             <div>

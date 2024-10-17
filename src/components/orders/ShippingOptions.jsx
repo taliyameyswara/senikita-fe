@@ -26,10 +26,11 @@ const ShippingOptions = ({ shippingOptions = null, onShippingCostChange }) => {
   };
 
   return (
-    <div>
+    <div className="w-[100%] ">
       <DropdownFilter
         label="Pilih Pengiriman"
         icon={<BsTruck />}
+        width="w-[100%]"
         options={options.map((option) => getShippingLabel(option))}
         selectedOption={
           selectedShipping ? getShippingLabel(selectedShipping) : ""
