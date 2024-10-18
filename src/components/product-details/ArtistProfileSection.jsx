@@ -9,6 +9,12 @@ const ArtistProfileSection = ({ shop }) => {
     return null; // Return null if no shop data is available
   }
 
+  const generateSlug = (id, name) => {
+    const encryptedId = btoa(id + "-" + name);
+    return encryptedId;
+  }
+
+
   // Set text limit based on screen size
   useEffect(() => {
     const updateTextLimit = () => {
@@ -25,11 +31,11 @@ const ArtistProfileSection = ({ shop }) => {
     return () => window.removeEventListener("resize", updateTextLimit);
   }, []);
 
-  const { name, region, profile_picture, desc } = shop;
+  const { name, region, profile_picture, desc, id } = shop;
 
   return (
     <div className="p-6 mb-3 bg-white border rounded-xl">
-      <Link to={`/profileseniman`}>
+      <Link to={`/seniman/${generateSlug(id, name)}`}>
         <h2 className="mb-4 text-lg font-semibold md:text-xl">
           Profil Seniman
         </h2>
