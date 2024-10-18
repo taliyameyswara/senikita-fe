@@ -35,9 +35,21 @@ const DashboardSeniman = () => {
   const [loadingData, setLoadingData] = useState(false);
 
   const [seniman, setSeniman] = useState({});
+  const [textLimit, setTextLimit] = useState(30);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    const updateTextLimit = () => {
+      if (window.innerWidth >= 768) {
+        setTextLimit(50);
+      } else {
+        setTextLimit(40);
+      }
+    };
+    updateTextLimit();
+    window.addEventListener("resize", updateTextLimit);
+    return () => window.removeEventListener("resize", updateTextLimit);
   }, []);
 
   const getCountProductOrder = async () => {
@@ -296,10 +308,15 @@ const DashboardSeniman = () => {
                       <div className="relative h-full p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
                         <div className="flex  gap-3">
                           <img
-                            src={seniman.profile_picture || { DefaultPict }}
+                            src={
+                              seniman.profile_picture
+                                ? seniman.profile_picture
+                                : DefaultPict
+                            }
                             alt="User Profile"
                             className="object-cover w-16 h-16 md:w-20 md:h-20 rounded-xl"
                           />
+
                           <div className="text-white">
                             <div className="flex gap-2">
                               <p className="mb-1 text-xs">
@@ -324,7 +341,6 @@ const DashboardSeniman = () => {
                         </div>
                         <div className="mt-2 md:text-sm text-xs text-white">
                           {limitText(seniman.desc, 300)}
-                          {/* {seniman.desc} */}
                         </div>
                       </div>
                     </div>
@@ -379,7 +395,9 @@ const DashboardSeniman = () => {
                           className="object-cover w-16 h-16 rounded-lg"
                         />
                         <div className="flex flex-col">
-                          <span className="font-semibold">{product.name}</span>
+                          <span className="font-semibold text-sm">
+                            {limitText(product.name, textLimit)}
+                          </span>
                           <span className="text-gray-600 font-nunito">
                             Stok: {product.stock}
                           </span>
@@ -403,7 +421,6 @@ const DashboardSeniman = () => {
             </div>
           </>
         )}
-        {/* Count Section */}
       </div>
     </SenimanDashboardLayout>
   );

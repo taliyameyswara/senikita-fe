@@ -13,7 +13,6 @@ import { UserContext } from "../../context/UserContext";
 import { useProductApi } from "../../api/landing/ProductApi";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 
-
 const ProductDetails = ({ setProgress }) => {
   const { user } = useContext(UserContext); // Use logout from context
   const { fetchProductById, fetchRandomProduct } = useProductApi();
@@ -24,7 +23,7 @@ const ProductDetails = ({ setProgress }) => {
     const decryptedId = atob(id);
     const productId = decryptedId.split("-")[0];
     setProductId(productId);
-  })
+  });
 
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
@@ -37,7 +36,7 @@ const ProductDetails = ({ setProgress }) => {
     } catch (error) {
       console.error("Failed to fetch product:", error);
     }
-  }
+  };
 
   const getProducts = async () => {
     try {
@@ -46,7 +45,7 @@ const ProductDetails = ({ setProgress }) => {
     } catch (error) {
       console.error("Failed to fetch product:", error);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,11 +59,10 @@ const ProductDetails = ({ setProgress }) => {
       await getProducts();
       setProgress(100);
       setLoading(false);
-    }
+    };
 
     fetchData();
   }, [productId, setProgress]);
-
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -86,7 +84,12 @@ const ProductDetails = ({ setProgress }) => {
     {
       label: "Ulasan",
       target: "section2",
-      content: <ReviewSection review={product ? product.ratings : []} type={'product'} />,
+      content: (
+        <ReviewSection
+          review={product ? product.ratings : []}
+          type={"product"}
+        />
+      ),
     },
     {
       label: "Profil Seniman",
@@ -96,21 +99,18 @@ const ProductDetails = ({ setProgress }) => {
   ];
 
   if (loading) {
-    return <FullPageLoader />
+    return <FullPageLoader />;
   }
 
   return (
     <>
       <Navbar />
-      <div className="container px-6 py-4 mb-20">
+      <div className="container px-6 py-4">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
-        {
-          product && user.id !== product.shop.user_id ? (
-            <OrderBottomBar product={product} />
-          ) : null
-
-        }
+        {product && user && user.id !== product.shop.user_id ? (
+          <OrderBottomBar product={product} />
+        ) : null}
         <ProductList
           title={"Produk Lainnya"}
           products={products}
