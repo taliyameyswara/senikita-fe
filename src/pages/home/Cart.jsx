@@ -78,14 +78,24 @@ const Cart = () => {
   const updateCartItemQuantity = (cartItemId, newQuantity) => {
     axiosInstance
       .put(`user/cart/items/${cartItemId}`, { qty: newQuantity })
-      .then((response) => { })
+      .then((response) => {
+        // Perbarui state produk dengan kuantitas baru
+        setProducts((prevProducts) =>
+          prevProducts.map((product) =>
+            product.cart_item_id === cartItemId
+              ? { ...product, quantity: newQuantity }
+              : product
+          )
+        );
+      })
       .catch((error) => {
         console.error("Error updating quantity:", error);
       })
       .finally(() => {
-        // setLoading(false);
+        HandleTotalPrice(); // Memanggil fungsi setelah state diperbarui
       });
   };
+
 
   // Fungsi untuk menambah quantity
   const incrementCartItemQuantity = (cartItemId) => {
@@ -188,23 +198,20 @@ const Cart = () => {
     );
   };
 
-  const handleQuantityChange = (product, newQuantity) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((p) =>
-        p.productName === product.productName
-          ? { ...p, quantity: newQuantity }
-          : p
-      )
-    );
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const HandleTotalPrice = () => {
+    const price = products
+      .filter((product) => selectedProducts.includes(product.productName))
+      .reduce((total, product) => total + product.productPrice * (product.quantity || 1), 0);
+    setTotalPrice(price);
   };
 
-  const totalPrice = products
-    .filter((product) => selectedProducts.includes(product.productName))
-    .reduce(
-      (total, product) =>
-        total + product.productPrice * (product.quantity || 1),
-      0
-    );
+
+  useEffect(() => {
+    HandleTotalPrice();
+  }, [selectedProducts, products]); // Panggil ketika `selectedProducts` atau `products` berubah
+
 
   if (loading) {
     return <FullPageLoader />;

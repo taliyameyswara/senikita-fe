@@ -27,11 +27,11 @@ const ProductOrderCard = ({ product, button, onQuantityChange }) => {
         <img
           src={product.productThumbnail}
           alt={product.productName}
-          className="object-cover rounded-lg md:w-36 md:h-28 w-20 h-20"
+          className="object-cover w-20 h-20 rounded-lg md:w-36 md:h-28"
         />
         <div className="flex flex-col gap-2">
           <div>
-            <h3 className="md:text-base text-sm">
+            <h3 className="text-sm md:text-base">
               {limitText(product.productName, textLimit)}
             </h3>
             <p className="font-semibold font-nunito text-light">
