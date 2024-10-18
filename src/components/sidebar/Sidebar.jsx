@@ -143,8 +143,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar  shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-64"
+        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen  lg:overflow-y-auto no-scrollbar shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
+          sidebarOpen ? "translate-x-0 overflow-hidden" : "-translate-x-64"
         }`}
       >
         <div className="flex justify-between pr-3 mb-5 sm:px-2">

@@ -60,7 +60,7 @@ const ScrollTab = ({ tabs }) => {
   return (
     <div className="">
       {/* Tab Navigation */}
-      <div className="flex bg-white sticky md:top-20 top-[8rem] z-30 my-3">
+      <div className="flex bg-white sticky md:top-20 top-[7rem] z-30 my-3">
         {tabs.map((tab, index) => (
           <button
             key={index}

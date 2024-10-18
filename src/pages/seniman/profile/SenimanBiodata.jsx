@@ -6,9 +6,8 @@ import Selection from "../../../components/Selection";
 import ReadMore from "../../../components/ReadMore";
 import Spinner from "../../../components/loading/Spinner";
 import { toast } from "react-toastify";
-// import { useProfileShopApi } from "../../../api/shop/ProfileShopApi";
+import DefaultPict from "/assets/home/defaultpic.png";
 import { useProfileShopApi } from "../../../api/shop/ProfileShopApi";
-
 
 const SenimanBiodata = ({ setProgress }) => {
   const { fetchProfileShop, updateProfileShop } = useProfileShopApi();
@@ -48,7 +47,7 @@ const SenimanBiodata = ({ setProgress }) => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,8 +57,6 @@ const SenimanBiodata = ({ setProgress }) => {
     };
     fetchData();
   }, []);
-
-
 
   const openModal = (field, title, subtitle) => {
     setFieldToUpdate(field);
@@ -93,7 +90,8 @@ const SenimanBiodata = ({ setProgress }) => {
             console.error("Error updating profile picture:", error);
             toast.error("Gagal memperbarui foto profil.");
             fetchUserData();
-          }).finally(() => {
+          })
+          .finally(() => {
             setLoading(false);
           });
       };
@@ -112,10 +110,10 @@ const SenimanBiodata = ({ setProgress }) => {
       const formEditData = new FormData();
       formEditData.append("name", formData.name);
       formEditData.append("desc", formData.desc);
-      formEditData.append('address', formData.address);
+      formEditData.append("address", formData.address);
 
       if (formData.profile_picture instanceof File) {
-        formEditData.append('profile_picture', formData.profile_picture);
+        formEditData.append("profile_picture", formData.profile_picture);
       }
 
       formEditData.append("_method", "PUT");
@@ -131,13 +129,12 @@ const SenimanBiodata = ({ setProgress }) => {
           toast.error("Gagal memperbarui profil.");
           fetchUserData();
         });
-
     }
     closeModal();
   };
 
   if (loading) {
-    return <Spinner />
+    return <Spinner />;
   }
 
   return (
@@ -146,21 +143,21 @@ const SenimanBiodata = ({ setProgress }) => {
       <div className="grid grid-cols-10 gap-2 xl:gap-5 lg:gap-4">
         <div className="col-span-10 px-5 py-4 border xl:col-span-3 lg:col-span-4 rounded-xl">
           <div className="mb-2 font-semibold">Foto Profil</div>
-          {
-            formData.profile_picture ?
-              (
-                <img
-                  loading="lazy"
-                  src={
-                    formData.profile_picture ||
-                    "https://cdngnfi2.sgp1.cdn.digitaloceanspaces.com/gnfi/uploads/images/2022/11/0715042022-Lukisan-Balinese-Procession-karya-Lee-Man-Fong-menjadi-salah-satu-lukisan-terkenal-dunia-asal-Indonesia-Good-News-From-Indonesia.jpg"
-                  }
-                  alt="Profile"
-                  className="object-cover w-full h-48 rounded-xl"
-                />
-              ) :
-              <div className="container object-cover w-full h-48 bg-gray-500 rounded-xl"></div>
-          }
+          {formData.profile_picture ? (
+            <img
+              loading="lazy"
+              src={formData.profile_picture || DefaultPict}
+              alt="Profile"
+              className="object-cover w-full h-48 rounded-xl"
+            />
+          ) : (
+            <img
+              loading="lazy"
+              src={DefaultPict}
+              alt="Default Profile"
+              className="object-cover w-full h-48 rounded-xl"
+            />
+          )}
 
           <input
             type="file"
@@ -242,28 +239,9 @@ const SenimanBiodata = ({ setProgress }) => {
                     Ubah
                   </button>
                 </div>
-                {/* <div className="flex items-center col-span-2">
-                  {formData.category.join(", ") || "Belum ada kategori"}
-                  <button
-                    onClick={() =>
-                      openModal(
-                        "category",
-                        "Kategori Kesenian",
-                        "Pilih kategori kesenian Anda."
-                      )
-                    }
-                    className="ml-3 text-tertiary"
-                  >
-                    Ubah
-                  </button>
-                </div> */}
               </div>
             </div>
           </div>
-
-          {/* <div className="">
-            <CustomerAddress address={address} isOrder={true} />
-          </div> */}
         </div>
 
         {/* Address Section */}

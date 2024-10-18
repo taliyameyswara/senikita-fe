@@ -17,96 +17,125 @@ import ProductTransactionCard from "../user/transaction/product/ProductTransacti
 import ServiceTransactionCard from "../user/transaction/service/ServiceTransactionCard";
 import CardButton from "../user/transaction/CardButton";
 import CardHeader from "../user/transaction/CardHeader";
-import { useAxiosInstance } from "../../config/axiosConfig"
+import { useAxiosInstance } from "../../config/axiosConfig";
 import EmptyState from "../../components/EmptyState";
 import Spinner from "../../components/loading/Spinner";
+import DefaultPict from "/assets/home/defaultpic.png";
 
 const DashboardSeniman = () => {
   const { user } = useContext(UserContext);
   const [countProduct, setCountProduct] = useState(0);
   const [countService, setCountService] = useState(0);
   const [totalCount, setTotalCount] = useState(0); // Tambahkan state untuk total
-  const [totalPendapatan, setTotalPendapatan] = useState(0)
+  const [totalPendapatan, setTotalPendapatan] = useState(0);
   const [lowStock, setLowStock] = useState([]);
   const [pendingProduct, setPendingProduct] = useState([]);
   const [pendingService, setPendingService] = useState([]);
   const axiosInstance = useAxiosInstance();
   const [loadingData, setLoadingData] = useState(false);
 
-  const [seniman, setSeniman] = useState({})
+  const [seniman, setSeniman] = useState({});
+  const [textLimit, setTextLimit] = useState(30);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    const updateTextLimit = () => {
+      if (window.innerWidth >= 768) {
+        setTextLimit(50);
+      } else {
+        setTextLimit(40);
+      }
+    };
+    updateTextLimit();
+    window.addEventListener("resize", updateTextLimit);
+    return () => window.removeEventListener("resize", updateTextLimit);
+  }, []);
 
   const getCountProductOrder = async () => {
-    await axiosInstance.get('/user/shop/service/sold-count')
+    await axiosInstance
+      .get("/user/shop/service/sold-count")
       .then((res) => {
-        console.log(res.data.sold_count)
-        setCountService(res.data.sold_count)
-      }).catch((error) => {
-        console.log(error.response)
+        console.log(res.data.sold_count);
+        setCountService(res.data.sold_count);
       })
-  }
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
 
   const getSeniman = async () => {
-    await axiosInstance.get('user/shop/view-login')
+    await axiosInstance
+      .get("user/shop/view-login")
       .then((res) => {
         const senimanData = res.data.data;
-        console.log(senimanData)
+        console.log(senimanData);
         setSeniman(senimanData);
-      }).catch((res) => {
-        console.log(res)
-      }).finally(() => {
-
-      });
-  }
+      })
+      .catch((res) => {
+        console.log(res);
+      })
+      .finally(() => {});
+  };
 
   const getCountServiceOrder = async () => {
-    await axiosInstance.get('/user/shop/products/sold-count')
+    await axiosInstance
+      .get("/user/shop/products/sold-count")
       .then((res) => {
-        console.log(res.data.sold_products_count)
-        setCountProduct(res.data.sold_products_count)
-      }).catch((error) => {
-        console.log(error.response)
+        console.log(res.data.sold_products_count);
+        setCountProduct(res.data.sold_products_count);
       })
-  }
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
 
   const getLowStockProduct = async () => {
-    await axiosInstance.get('/user/shop/products/low-stock')
+    await axiosInstance
+      .get("/user/shop/products/low-stock")
       .then((res) => {
-        console.log(res.data.low_stock_products)
-        setLowStock(res.data.low_stock_products)
-      }).catch((err) => {
-        console.log(err.response)
+        console.log(res.data.low_stock_products);
+        setLowStock(res.data.low_stock_products);
       })
-  }
-
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
 
   const getPendingService = async () => {
-    await axiosInstance.get('/user/shop/order-service/pending-delivery')
+    await axiosInstance
+      .get("/user/shop/order-service/pending-delivery")
       .then((res) => {
-        console.log(res.data.data)
-        setPendingService(res.data.data)
-      }).catch((err) => {
-        console.log(err.response)
+        console.log(res.data.data);
+        setPendingService(res.data.data);
       })
-  }
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
   const getPendingProduct = async () => {
-    await axiosInstance.get('/user/shop/order-product/pending-delivery')
+    await axiosInstance
+      .get("/user/shop/order-product/pending-delivery")
       .then((res) => {
-        console.log(res.data.data)
-        setPendingProduct(res.data.data)
-      }).catch((err) => {
-        console.log(err.response)
+        console.log(res.data.data);
+        setPendingProduct(res.data.data);
       })
-  }
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
 
   const getTotalPendapatan = async () => {
-    await axiosInstance.get('/user/shop/revenue')
+    await axiosInstance
+      .get("/user/shop/revenue")
       .then((res) => {
         console.log(res.data.revenue);
         setTotalPendapatan(res.data.revenue);
-      }).catch((err) => {
-        console.log(err.response)
       })
-  }
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
 
   // /user/shop/order-product/pending-delivery
 
@@ -121,15 +150,13 @@ const DashboardSeniman = () => {
       await getPendingService();
       await getTotalPendapatan();
       setLoadingData(false);
-    }
+    };
     fetchData();
-  }, [])
+  }, []);
 
   useEffect(() => {
     setTotalCount(countProduct + countService);
   }, [countProduct, countService]);
-
-
 
   const breadcrumbItems = [
     { label: "Home", to: "/" },
@@ -175,7 +202,6 @@ const DashboardSeniman = () => {
       content: (
         <div className="flex flex-col ">
           {pendingProduct.length > 0 ? (
-
             pendingProduct.map((transaction) => (
               <ProductTransactionCard
                 key={transaction.id}
@@ -200,11 +226,9 @@ const DashboardSeniman = () => {
                 }
               />
             ))
-
           ) : (
             <EmptyState message={"Tidak ada transaksi yang perlu diproses"} />
-          )
-          }
+          )}
         </div>
       ),
     },
@@ -213,34 +237,34 @@ const DashboardSeniman = () => {
       label: "Transaksi Jasa",
       content: (
         <div className="flex flex-col ">
-          {pendingService.length > 0 ? (pendingService.map((transaction) => (
-            <ServiceTransactionCard
-              key={transaction.id}
-              service={transaction.service}
-              quantity={transaction.quantity}
-              header={
-                <CardHeader
-                  item={transaction.service}
-                  payment={transaction.payment_status}
-                  shipping={transaction.shipping_status}
-                  type={"service"}
-                  invoice={transaction.no_transaction}
-                  date={transaction.created_at}
-                  customer={transaction.customer}
-                />
-              }
-              button={
-                <CardButton
-                  buttonLink={`seniman/dashboard/order`}
-                  buttonLabel="Lihat Detail Transaksi"
-                />
-              }
-            />
-          ))) :
-            (
-              <EmptyState message={"Tidak ada transaksi yang perlu diproses"} />
-            )
-          }
+          {pendingService.length > 0 ? (
+            pendingService.map((transaction) => (
+              <ServiceTransactionCard
+                key={transaction.id}
+                service={transaction.service}
+                quantity={transaction.quantity}
+                header={
+                  <CardHeader
+                    item={transaction.service}
+                    payment={transaction.payment_status}
+                    shipping={transaction.shipping_status}
+                    type={"service"}
+                    invoice={transaction.no_transaction}
+                    date={transaction.created_at}
+                    customer={transaction.customer}
+                  />
+                }
+                button={
+                  <CardButton
+                    buttonLink={`seniman/dashboard/order`}
+                    buttonLabel="Lihat Detail Transaksi"
+                  />
+                }
+              />
+            ))
+          ) : (
+            <EmptyState message={"Tidak ada transaksi yang perlu diproses"} />
+          )}
         </div>
       ),
     },
@@ -257,14 +281,14 @@ const DashboardSeniman = () => {
         <div className="grid grid-cols-1 gap-2 mt-2 md:grid-cols-2">
           {/* Welcoming */}
 
-          {
-            loadingData ? (
-              <></>
-            ) : (
-              <><div className="relative grid h-full grid-cols-2 p-16 px-10 text-white bg-gradient-to-r from-primary to-tertiary rounded-2xl">
+          {loadingData ? (
+            <></>
+          ) : (
+            <>
+              <div className="relative grid h-full grid-cols-2 lg:p-16 lg:px-10 px-5 p-10 text-white bg-gradient-to-r from-primary to-tertiary rounded-2xl">
                 <div>
-                  <p>Selamat Datang, </p>
-                  <h1 className="px-2 mt-2 text-4xl font-semibold font-crimson bg-gradient-to-r from-brick to-transparent w-fit">
+                  <p className="md:text-base text-sm">Selamat Datang, </p>
+                  <h1 className="px-2 mt-2 md:text-4xl text-2xl font-semibold font-crimson bg-gradient-to-r from-brick to-transparent w-fit">
                     {user ? user.name : ""}
                   </h1>
                 </div>
@@ -277,54 +301,60 @@ const DashboardSeniman = () => {
                   />
                 </div>
               </div>
-                <div className="h-full">
-                  <div className="h-full rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
-                    <Link to={`/user/dashboard/profil`}>
-                      <div className="h-full">
-                        <div className="relative h-full p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
-                          <div className="flex items-center gap-3">
-                            <img
-                              src={seniman.profile_picture || "https://via.placeholder.com/100"}
-                              alt="User Profile"
-                              className="object-cover w-16 h-16 md:w-20 md:h-20 rounded-xl"
-                            />
-                            <div className="text-white">
-                              <div className="flex gap-2">
-                                <p className="mb-1 text-xs">
-                                  {seniman.categories && seniman.categories.map((category, index) => (
+              <div className="h-full">
+                <div className="h-full rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
+                  <Link to={`/user/dashboard/profil`}>
+                    <div className="h-full">
+                      <div className="relative h-full p-5 overflow-hidden rounded-2xl bg-gradient-to-r from-brick to-lightBrick">
+                        <div className="flex  gap-3">
+                          <img
+                            src={
+                              seniman.profile_picture
+                                ? seniman.profile_picture
+                                : DefaultPict
+                            }
+                            alt="User Profile"
+                            className="object-cover w-16 h-16 md:w-20 md:h-20 rounded-xl"
+                          />
+
+                          <div className="text-white">
+                            <div className="flex gap-2">
+                              <p className="mb-1 text-xs">
+                                {seniman.categories &&
+                                  seniman.categories.map((category, index) => (
                                     <span key={index}>
                                       {category.name}
-                                      {index < seniman.categories.length - 1 && ", "}
+                                      {index < seniman.categories.length - 1 &&
+                                        ", "}
                                     </span>
                                   ))}
-                                </p>
-                              </div>
-                              <h2 className="text-xl font-semibold bg-customGreen">
-                                {seniman.name}                        </h2>
-                              <p>{seniman.region}</p>
+                              </p>
                             </div>
-                          </div>
-                          <div className="mt-2 text-sm text-white">
-                            {limitText(
-                              seniman.desc,
-                              300
-                            )}
-                            {/* {seniman.desc} */}
+                            <h2 className="md:text-xl text-lg font-semibold bg-customGreen w-fit">
+                              {seniman.name}{" "}
+                            </h2>
+                            <p className="text-sm lg:text-base">
+                              {" "}
+                              {seniman.region}
+                            </p>
                           </div>
                         </div>
+                        <div className="mt-2 md:text-sm text-xs text-white">
+                          {limitText(seniman.desc, 300)}
+                        </div>
                       </div>
-                    </Link>
-                  </div>
-                </div></>
-
-            )
-          }
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         {loadingData ? (
           <Spinner />
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-3 mt-4 md:grid-cols-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 lg:grid-cols-4">
               {statisticsData.map((stat, index) => (
                 <div key={index} className="">
                   <div
@@ -349,12 +379,12 @@ const DashboardSeniman = () => {
                 <GradientChart />
               </div>
               <div className="flex flex-col col-span-2 p-5 border rounded-2xl">
-                <div className="mb-3 text-lg font-semibold">
+                <div className="mb-3 lg:text-lg text-base font-semibold">
                   Produk dengan stok kurang dari 10
                 </div>
-                <div className="flex flex-col gap-4">
-                  {lowStock.length > 0 ? (
-                    lowStock.map((product) => (
+                {lowStock.length > 0 ? (
+                  <div className="flex flex-col gap-4">
+                    {lowStock.map((product) => (
                       <div
                         key={product.id}
                         className="flex items-center gap-3 p-3 border bg-gray-50 rounded-xl"
@@ -365,17 +395,21 @@ const DashboardSeniman = () => {
                           className="object-cover w-16 h-16 rounded-lg"
                         />
                         <div className="flex flex-col">
-                          <span className="font-semibold">{product.name}</span>
+                          <span className="font-semibold text-sm">
+                            {limitText(product.name, textLimit)}
+                          </span>
                           <span className="text-gray-600 font-nunito">
                             Stok: {product.stock}
                           </span>
                         </div>
                       </div>
-                    ))
-                  ) : (
+                    ))}
+                  </div>
+                ) : (
+                  <div className="flex w-full h-full">
                     <EmptyState message={"Produk tidak tersedia"} />
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -387,10 +421,8 @@ const DashboardSeniman = () => {
             </div>
           </>
         )}
-        {/* Count Section */}
-
       </div>
-    </SenimanDashboardLayout >
+    </SenimanDashboardLayout>
   );
 };
 
