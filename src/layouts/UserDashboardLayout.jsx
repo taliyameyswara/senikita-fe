@@ -22,21 +22,20 @@ const UserDashboardLayout = ({ children, pageTitle }) => {
         isDashboard={true}
       />
 
-      <div className="container">
-        <div className="flex overflow-hidden">
-          <Sidebar
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            userRole={"user"}
-          />
+      <div className="container flex">
+        {/* Sidebar */}
+        <Sidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          userRole={"user"}
+        />
 
-          {/* Main page content */}
-          <main className="flex-1 relative">
-            <div className="w-full px-4 py-8 mx-auto max-w-9xl">{children}</div>
-          </main>
-          {/* </div> */}
-        </div>
+        {/* Main content area */}
+        <main className="flex-1 overflow-y-auto relative">
+          <div className="w-full px-4 py-8 mx-auto max-w-9xl">{children}</div>
+        </main>
       </div>
+
       <Footer />
     </div>
   );
