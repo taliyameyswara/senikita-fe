@@ -86,7 +86,12 @@ const ServiceDetails = ({ setProgress }) => {
     {
       label: "Ulasan",
       target: "section2",
-      content: <ReviewSection review={service ? service.ratings : []} type={"service"} />,
+      content: (
+        <ReviewSection
+          review={service ? service.ratings : []}
+          type={"service"}
+        />
+      ),
     },
     {
       label: "Profil Seniman",
@@ -102,11 +107,11 @@ const ServiceDetails = ({ setProgress }) => {
   return (
     <>
       <Navbar />
-      <div className="container px-4 py-6 mb-20">
+      <div className="container px-4 py-6">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
 
-        {service && user.id !== service.shop.user_id && (
+        {service && user && user.id !== service.shop.user_id && (
           <OrderBottomBarService service={service} />
         )}
         <ProductList

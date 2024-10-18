@@ -49,27 +49,34 @@ const ProfileDetailSeniman = ({ setProgress }) => {
 
   const reviews = [
     {
-      name: "John Doe",
-      date: "12 Oktober 2024",
-      rating: 4.0,
+      user: { name: "Ali Rahman" },
+      date: "1 Oktober 2024",
+      productName: "Patung Naga Besar",
+      price: 15000000,
+      rating: 4.5,
       comment:
-        "Produk ini sangat bagus dan sesuai ekspektasi. Kualitasnya sangat baik!",
-      image: [
-        "https://via.placeholder.com/100",
-        "https://via.placeholder.com/100",
+        "Patungnya sangat detail dan kualitasnya bagus sekali! Sangat cocok untuk koleksi.",
+      rating_images: [
+        {
+          picture_rating_product: "https://via.placeholder.com/100",
+        },
+        {
+          picture_rating_product: "https://via.placeholder.com/100",
+        },
       ],
-      productName:
-        "Patung Naga Besar Naga Besar Naga Besar Naga Besar Naga Besar Naga Besar Naga BesarNaga Besar Naga BesarNaga Besar Naga Besar",
-      price: 10000,
     },
     {
-      name: "Jane Smith",
-      date: "10 Oktober 2024",
-      rating: 4.0,
-      comment: "Kualitas produk cukup bagus, namun pengirimannya agak lambat.",
-      image: [],
+      user: { name: "Budi Santoso" },
+      date: "15 September 2024",
       productName: "Wayang Kulit",
-      price: 10000,
+      price: 3500000,
+      rating: 4,
+      comment: "Wayang kulitnya keren, tetapi pengirimannya agak terlambat.",
+      rating_images: [
+        {
+          picture_rating_product: "https://via.placeholder.com/100",
+        },
+      ],
     },
   ];
 
