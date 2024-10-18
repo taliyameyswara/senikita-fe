@@ -53,7 +53,7 @@ const ServiceDetailSection = ({ service }) => {
           <div className="">•</div>
           <div className="flex items-center gap-1">
             <FaStar className="mb-1 text-yellow-500" />
-            <div className="text-sm font-nunito">{service.average_rating.toFixed(1)}</div>
+            <div className="text-sm font-nunito">{service.average_rating ? service.average_rating.toFixed(1) : 0}</div>
             <div className="text-sm text-gray-500 font-nunito">
               ({service.ratings.length} Rating)
             </div>

@@ -128,7 +128,7 @@ const ProductCard = ({ product, type }) => {
             <div className="flex items-center gap-2">
               <FaStar className="text-yellow-400" />
               <span className="text-xs text-gray-500 md:text-sm font-nunito">
-                {average_rating.toFixed(1)}
+                {average_rating ? average_rating.toFixed(1) : 0}
               </span>
             </div>
             <div className="text-xs text-gray-500 md:text-sm"> | </div>

@@ -111,6 +111,19 @@ const ProductDetails = ({ setProgress }) => {
         {product && user && user.id !== product.shop.user_id ? (
           <OrderBottomBar product={product} />
         ) : null}
+        {
+          user && product ? (
+            user.id !== product.shop.user_id ? (
+              <OrderBottomBar product={product} />
+            ) : (
+              <></>
+            )
+          ) : (
+            <OrderBottomBar product={product} />
+          )
+        }
+
+
         <ProductList
           title={"Produk Lainnya"}
           products={products}
