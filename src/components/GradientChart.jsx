@@ -104,14 +104,14 @@ const GradientChart = () => {
           <XAxis dataKey="month" tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <YAxis tick={{ fill: "#B6BAC3" }} stroke="#EEEEEE" />
           <Area
-            dataKey="productSales"
+            dataKey="Penjualan Produk"
             type="monotone"
             stroke="#CD5151"
             strokeWidth={2}
             fill="url(#productSalesGradient)"
           />
           <Area
-            dataKey="serviceSales"
+            dataKey="Penjualan Jasa"
             type="monotone"
             stroke="#CD9651"
             strokeWidth={2}

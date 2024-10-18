@@ -156,7 +156,7 @@ const Home = ({ setProgress }) => {
                 </div>
 
                 {/* text */}
-                <div className="z-20 col-span-2 2xl:col-span-3 px-5 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
+                <div className="z-20 col-span-2 px-5 2xl:col-span-3 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
                   <div className="flex flex-col gap-[0.4rem] text-white">
                     <p className="text-sm lg:text-base">Selamat Datang,</p>
                     {/* desktop */}
@@ -194,7 +194,7 @@ const Home = ({ setProgress }) => {
             </div>
             {/* search filter */}
             <div className="flex justify-center mb-10 ">
-              <div className="absolute z-30 flex items-center justify-between w-3/4 md:h-16 py-2 md:pl-4 px-2 bg-white shadow-lg rounded-2xl -bottom-8">
+              <div className="absolute z-30 flex items-center justify-between w-3/4 px-2 py-2 bg-white shadow-lg md:h-16 md:pl-4 rounded-2xl -bottom-8">
                 {/*  */}
                 <div className="grid w-full lg:grid-cols-2">
                   <div className="flex items-center w-full gap-3">
@@ -221,7 +221,7 @@ const Home = ({ setProgress }) => {
                   </div>
                   <div className="flex items-center w-full gap-2">
                     <div className="p-2 bg-tertiary/20 rounded-xl">
-                      <IoLocationSharp className="md:text-xl text-base text-primary" />
+                      <IoLocationSharp className="text-base md:text-xl text-primary" />
                     </div>
                     <div className="w-full">
                       <CustomSearchInput

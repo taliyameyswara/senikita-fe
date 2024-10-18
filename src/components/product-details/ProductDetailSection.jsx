@@ -33,7 +33,7 @@ const ProductDetailSection = ({ product }) => {
           <div className="">•</div>
           <div className="flex items-center gap-1">
             <FaStar className="mb-1 text-yellow-500" />
-            <div className="text-sm font-nunito">{product.rating}</div>
+            <div className="text-sm font-nunito">{product.average_rating}</div>
             <div className="text-sm text-gray-500 font-nunito">
               ({product.ratings.length} Rating)
             </div>

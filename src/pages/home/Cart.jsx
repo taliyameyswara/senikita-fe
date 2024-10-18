@@ -14,9 +14,15 @@ import FullPageLoader from "../../components/loading/FullPageLoader";
 import { useNavigate } from "react-router-dom";
 import EmptyState from "../../components/EmptyState";
 import { formatNumber } from "../../utils/formatNumber";
+import DeleteModal from "../../components/modal/DeleteModal";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const navigate = useNavigate();
+
+  // state deleteModal
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState(null);
 
   const axiosInstance = useAxiosInstance();
   const [products, setProducts] = useState([]);
@@ -57,12 +63,14 @@ const Cart = () => {
       .delete(`user/cart/items/${cartItemId}`)
       .then((response) => {
         getCartItems();
+        toast.success("Produk berhasil dihapus dari keranjang");
       })
       .catch((error) => {
         console.error("Error deleting data:", error);
       })
       .finally(() => {
         setLoading(false);
+        setIsDeleteModalOpen(false);
       });
   };
 
@@ -70,7 +78,7 @@ const Cart = () => {
   const updateCartItemQuantity = (cartItemId, newQuantity) => {
     axiosInstance
       .put(`user/cart/items/${cartItemId}`, { qty: newQuantity })
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.error("Error updating quantity:", error);
       })
@@ -83,7 +91,7 @@ const Cart = () => {
   const incrementCartItemQuantity = (cartItemId) => {
     axiosInstance
       .put(`user/cart/items/increment/${cartItemId}`)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.error("Error incrementing quantity:", error);
       })
@@ -96,7 +104,7 @@ const Cart = () => {
   const decrementCartItemQuantity = (cartItemId) => {
     axiosInstance
       .put(`user/cart/items/decrement/${cartItemId}`)
-      .then((response) => {})
+      .then((response) => { })
       .catch((error) => {
         console.error("Error decrementing quantity:", error);
       })
@@ -174,8 +182,8 @@ const Cart = () => {
     setSelectedProducts((prevSelected) =>
       isAllSelected
         ? prevSelected.filter(
-            (productName) => !storeProducts.includes(productName)
-          )
+          (productName) => !storeProducts.includes(productName)
+        )
         : [...prevSelected, ...storeProducts]
     );
   };
@@ -205,13 +213,13 @@ const Cart = () => {
   return (
     <div>
       <Navbar />
-      <div className="container md:px-6 px-4 md:py-2 py-0 mx-auto">
+      <div className="container px-4 py-0 mx-auto md:px-6 md:py-2">
         <Heading title={`${products.length} item di keranjang Anda`} />
         {products.length === 0 ? (
           <EmptyState message={"Tidak ada item di keranjang"} />
         ) : (
           <div className="grid grid-cols-1 gap-10 mb-6 lg:grid-cols-5">
-            <div className="col-span-3 space-y-5 pb-8">
+            <div className="col-span-3 pb-8 space-y-5">
               {Object.keys(groupedProducts).map((storeName, index) => (
                 <div key={index} className=" rounded-xl">
                   <div className="flex items-start gap-2">
@@ -270,7 +278,11 @@ const Cart = () => {
                             <>
                               <button
                                 onClick={() =>
-                                  handleDeleteCart(product.cart_item_id)
+                                // handleDeleteCart(product.cart_item_id)
+                                {
+                                  setIsDeleteModalOpen(true);
+                                  setProductIdToDelete(product.cart_item_id);
+                                }
                                 }
                               >
                                 <div className="flex items-center gap-1">
@@ -311,11 +323,11 @@ const Cart = () => {
             </div>
 
             {/* Order Summary for Desktop */}
-            <div className="hidden lg:block lg:sticky lg:top-20 col-span-2">
+            <div className="hidden col-span-2 lg:block lg:sticky lg:top-20">
               <OrderSummary
                 productTotal={totalPrice}
-                // shippingCost={}
-                // serviceFee={serviceFee}
+              // shippingCost={}
+              // serviceFee={serviceFee}
               />
               <button
                 onClick={handlePurchase}
@@ -329,7 +341,7 @@ const Cart = () => {
         )}
 
         {/* Bottom bar for mobile (only showing total price) */}
-        <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white border-t px-4 py-3 flex justify-between items-center">
+        <div className="fixed bottom-0 left-0 flex items-center justify-between w-full px-4 py-3 bg-white border-t lg:hidden">
           <div>
             <p className="text-sm">Total Belanja</p>
             <p className="text-lg font-semibold font-nunito">
@@ -345,6 +357,13 @@ const Cart = () => {
           </button>
         </div>
       </div>
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => handleDeleteCart(productIdToDelete)}
+        subtitle="Apakah Anda yakin ingin menghapus produk ini dari keranjang?"
+      />
     </div>
   );
 };
