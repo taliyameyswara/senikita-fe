@@ -107,7 +107,7 @@ const ServiceDetails = ({ setProgress }) => {
   return (
     <>
       <Navbar />
-      <div className="container px-4 py-6">
+      <div className="container px-4 py-6 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
         {/* 
@@ -115,17 +115,15 @@ const ServiceDetails = ({ setProgress }) => {
           <OrderBottomBarService service={service} />
         )} */}
 
-        {
-          user && service ? (
-            user.id !== service.shop.user_id ? (
-              <OrderBottomBarService service={service} />
-            ) : (
-              <></>
-            )
-          ) : (
+        {user && service ? (
+          user.id !== service.shop.user_id ? (
             <OrderBottomBarService service={service} />
+          ) : (
+            <></>
           )
-        }
+        ) : (
+          <OrderBottomBarService service={service} />
+        )}
 
         <ProductList
           title={"Produk Lainnya"}

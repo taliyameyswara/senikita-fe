@@ -106,7 +106,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [sidebarOpen]);
 
   // Handle escape key to close sidebar
   useEffect(() => {
@@ -116,7 +116,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
     };
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
-  });
+  }, [sidebarOpen]);
 
   // Handle sidebar expanded state in localStorage
   useEffect(() => {
@@ -133,6 +133,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
 
   return (
     <div>
+      {/* Overlay for mobile view */}
       <div
         className={`fixed inset-0 bg-slate-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
           sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -140,14 +141,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
         aria-hidden="true"
       ></div>
 
+      {/* Sidebar */}
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen  lg:overflow-y-auto no-scrollbar shrink-0 transition-all duration-200 ease-in-out bg-white p-4 py-2 ${
-          sidebarOpen ? "translate-x-0 overflow-hidden" : "-translate-x-64"
+        className={`flex flex-col fixed z-40 left-0 top-0 h-screen w-64 lg:w-64 lg:static lg:overflow-y-auto no-scrollbar shrink-0 transition-all duration-300 ease-in-out bg-white p-4 py-2 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-64 lg:translate-x-0"
         }`}
       >
-        <div className="flex justify-between pr-3 mb-5 sm:px-2">
+        <div className="flex justify-between pr-3 mb-5 sm:px-2 mt-5">
+          {/* Close button */}
           <button
             ref={trigger}
             className="lg:hidden text-primary"
@@ -166,7 +169,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, userRole }) {
           </button>
         </div>
 
-        {/* Sidebar Links */}
+        {/* Sidebar links */}
         <div className="space-y-8">
           {userRole === "seniman" && (
             <Link to="/seniman/dashboard/balance">

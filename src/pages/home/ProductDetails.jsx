@@ -105,24 +105,21 @@ const ProductDetails = ({ setProgress }) => {
   return (
     <>
       <Navbar />
-      <div className="container px-6 py-4">
+      <div className="container px-6 py-4 mb-20">
         <Breadcrumbs items={breadcrumbItems} />
         <ScrollTab tabs={tabs} />
         {product && user && user.id !== product.shop.user_id ? (
           <OrderBottomBar product={product} />
         ) : null}
-        {
-          user && product ? (
-            user.id !== product.shop.user_id ? (
-              <OrderBottomBar product={product} />
-            ) : (
-              <></>
-            )
-          ) : (
+        {user && product ? (
+          user.id !== product.shop.user_id ? (
             <OrderBottomBar product={product} />
+          ) : (
+            <></>
           )
-        }
-
+        ) : (
+          <OrderBottomBar product={product} />
+        )}
 
         <ProductList
           title={"Produk Lainnya"}
