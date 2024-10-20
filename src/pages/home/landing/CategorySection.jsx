@@ -65,11 +65,11 @@ const KesenianCategory = () => {
   return (
     <div className="container px-4 mb-6">
       <Heading title={"Kategori Kesenian"} />
-      <div className="grid grid-cols-2 md:grid-cols-4  gap-3">
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         {categories.map((category) => (
           <Link
             key={category.id}
-            to={category.link}
+            to={''}
             className={`relative rounded-xl overflow-hidden shadow-lg ${category.grid} ${category.height} `}
           >
             <img

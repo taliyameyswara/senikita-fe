@@ -133,8 +133,8 @@ const AddProduct = () => {
           img.onload = async () => {
             const result = await predictImage(img);
             console.log(result)
-            if (result >= 0.65) {
-              toast.error("Gambar diklasifikasikan sebagai berbahaya.");
+            if (result >= 0.55) {
+              toast.error("Gambar terdeksi berbahaya, silahkan ganti gambar anda. ");
               setLoading(false);
               return;
             }
