@@ -9,7 +9,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminRoutes from "./routes/AdminRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS untuk toastify
+import "react-toastify/dist/ReactToastify.css";
 import NotAuthorized from "./pages/auth/NotAuthorized";
 import SignUp from "./pages/auth/SignUp";
 import UserLists from "./pages/admin/Users/UserLists";
@@ -44,6 +44,7 @@ import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 import Playground from "./pages/Playground";
+import About from "./pages/home/About";
 function App() {
   const [progress, setProgress] = useState(0);
   return (
@@ -101,7 +102,9 @@ function App() {
           path="/seniman/:id"
           element={<ProfileDetailSeniman setProgress={setProgress} />}
         />
-        {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
+
+        {/* Route for Footer */}
+        <Route path="/about-senikita" element={<About />} />
 
         {/* Route yang bisa diakses setelah login */}
         <Route element={<ProtectedRoute />}>

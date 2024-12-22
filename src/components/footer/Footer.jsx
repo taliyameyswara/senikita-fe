@@ -28,11 +28,8 @@ const MainFooter = () => {
                 Info SeniKita
               </h3>
               <ul className="space-y-2 text-gray-500 text-sm lg:text-base">
-                <Link to="/">
+                <Link to="/about-senikita">
                   <li>Tentang SeniKita</li>
-                </Link>
-                <Link to="/">
-                  <li>Tentang Developer</li>
                 </Link>
               </ul>
             </div>
