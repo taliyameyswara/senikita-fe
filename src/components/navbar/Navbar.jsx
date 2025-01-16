@@ -1,9 +1,6 @@
-// src/components/Navbar.js
 import React, { useContext, useState, useEffect } from "react";
 import {
   IoCartOutline,
-  IoChatboxOutline,
-  IoStorefrontOutline,
   IoLogOutOutline,
   IoColorPaletteOutline,
   IoChevronDownOutline,
@@ -15,6 +12,7 @@ import Avatar from "/assets/avatar.png";
 import { UserContext } from "../../context/UserContext";
 import Header from "../../components/sidebar/Header";
 import { useNavigate } from "react-router-dom";
+import { RiAppsLine } from "react-icons/ri";
 
 const CategoryLinks = [
   { id: 1, name: "Seni Lukis", link: "/#" },
@@ -25,13 +23,13 @@ const CategoryLinks = [
 const auth = true;
 
 const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
-  const { user, logout, loading } = useContext(UserContext); // Use logout from context
+  const { user, logout, loading } = useContext(UserContext);
   const ProfileLinks = [
     {
       id: 1,
       title: "Dashboard",
-      icon: <IoStorefrontOutline />,
-      link: user && user.role === 1 ? "/dashboard" : "/user/dashboard", // Cek role user
+      icon: <RiAppsLine />,
+      link: user && user.role === 1 ? "/dashboard" : "/user/dashboard",
     },
     {
       id: 2,
@@ -146,8 +144,8 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                             onClick={(e) => {
                               if (data.id === 3) {
                                 e.preventDefault();
-                                logout(); // Call logout from context
-                                window.location.href = "/login"; // Redirect after logout
+                                logout();
+                                window.location.href = "/login";
                               }
                             }}
                             className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
@@ -162,27 +160,12 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   {/* cart */}
                   <Link to={"/cart"} className="relative p-3">
                     <IoCartOutline className="text-2xl text-secondary" />
-                    {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                      20
-                    </div> */}
                   </Link>
-                  {/* message */}
-                  {/* <button className="relative p-3">
-                    <IoChatboxOutline className="text-2xl text-secondary" />
-                    <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                      20
-                    </div>
-                  </button> */}
-                  {/* liked */}
-
                   <Link
                     to={"/user/dashboard/wishlist"}
                     className="relative p-3"
                   >
                     <IoMdHeartEmpty className="text-2xl text-secondary" />
-                    {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                      1
-                    </div> */}
                   </Link>
                 </>
               ) : (
@@ -257,8 +240,8 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                               onClick={(e) => {
                                 if (data.id === 3) {
                                   e.preventDefault();
-                                  logout(); // Call logout from context
-                                  window.location.href = "/login"; // Redirect after logout
+                                  logout();
+                                  window.location.href = "/login";
                                 }
                               }}
                               className="flex items-center w-full gap-3 p-2 px-4 text-secondary/80 hover:bg-gray-100 hover:text-primary"
@@ -273,9 +256,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     {/* cart */}
                     <Link to={"/cart"} className="relative p-3">
                       <IoCartOutline className="text-2xl text-secondary" />
-                      {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                        20
-                      </div> */}
                     </Link>
                     {/* message */}
                     {/* <button className="relative p-3">
@@ -290,9 +270,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                       className="relative p-3"
                     >
                       <IoMdHeartEmpty className="text-2xl text-secondary" />
-                      {/* <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                        1
-                      </div> */}
                     </Link>
                   </>
                 ) : (

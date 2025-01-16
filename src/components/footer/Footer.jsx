@@ -28,11 +28,8 @@ const MainFooter = () => {
                 Info SeniKita
               </h3>
               <ul className="space-y-2 text-gray-500 text-sm lg:text-base">
-                <Link to="/">
+                <Link to="/about-senikita">
                   <li>Tentang SeniKita</li>
-                </Link>
-                <Link to="/">
-                  <li>Tentang Developer</li>
                 </Link>
               </ul>
             </div>
@@ -43,19 +40,19 @@ const MainFooter = () => {
                 Penggunaan
               </h3>
               <ul className="space-y-2 text-gray-500 text-sm lg:text-base">
-                <Link to="/">
+                <Link to="/client-guide">
                   <li>Cara Kerja Pembeli</li>
                 </Link>
-                <Link to="/">
+                <Link to="/seniman-guide">
                   <li>Cara Menjadi Seniman</li>
                 </Link>
-                <Link to="/">
+                <Link to="/client-rules">
                   <li>Peraturan Pembeli</li>
                 </Link>
-                <Link to="/">
-                  <li>Peraturan Penyedia Kesenian</li>
+                <Link to="/seniman-rules">
+                  <li>Peraturan Seniman</li>
                 </Link>
-                <Link to="/">
+                <Link to="/kebijakan-privasi">
                   <li>Kebijakan Privasi</li>
                 </Link>
               </ul>

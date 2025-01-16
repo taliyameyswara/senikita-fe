@@ -9,7 +9,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminRoutes from "./routes/AdminRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS untuk toastify
+import "react-toastify/dist/ReactToastify.css";
 import NotAuthorized from "./pages/auth/NotAuthorized";
 import SignUp from "./pages/auth/SignUp";
 import UserLists from "./pages/admin/Users/UserLists";
@@ -44,11 +44,16 @@ import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
 import Playground from "./pages/Playground";
+import About from "./pages/home/About";
+import ClientGuideSection from "./pages/home/landing/ClientGuideSection";
+import SenimanGuideSection from "./pages/home/landing/SenimanGuideSection";
+import ClientRules from "./pages/home/landing/ClientRules";
+import SenimanRules from "./pages/home/landing/SenimanRules";
+import PrivacyPolicy from "./pages/home/landing/PrivacyPolicy";
 function App() {
   const [progress, setProgress] = useState(0);
   return (
     <Router>
-      {/* <ToastContainer> */}
       <LoadingBar
         color="#8B5C21"
         progress={progress}
@@ -57,67 +62,36 @@ function App() {
       <Routes>
         <Route path="/" element={<Home setProgress={setProgress} />} />
 
-        {/* Route yang gabisa diakses ketika sudah login */}
+        {/* Public Routes */}
         <Route element={<PublicRoutes />}>
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<LogIn setProgress={setProgress} />} />
           <Route path="/otp" element={<OTPVerification />} />
         </Route>
 
-        {/* Route untuk admin */}
+        {/* Admin Routes */}
         <Route element={<AdminRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* user */}
           <Route path="/dashboard/users" element={<UserLists />} />
-          {/* category */}
           <Route path="/dashboard/categories" element={<CategoryLists />} />
-          {/* verification shop */}
           <Route
             path="/dashboard/verification-shop"
             element={<VerificationLists />}
           />
         </Route>
 
-        {/* Route 403 Not Authorized */}
-        <Route path="/not-authorized" element={<NotAuthorized />} />
-
-        {/* Route 404 */}
-        <Route path="*" element={<NotFound />} />
-
-        {/* Route for home */}
-        <Route
-          path="/search"
-          element={<SearchResult setProgress={setProgress} />}
-        />
-        <Route
-          path="/product/:id"
-          element={<ProductDetails setProgress={setProgress} />}
-        />
-        <Route
-          path="/service/:id"
-          element={<ServiceDetails setProgress={setProgress} />}
-        />
-        <Route
-          path="/seniman/:id"
-          element={<ProfileDetailSeniman setProgress={setProgress} />}
-        />
-        {/* <Route path="/artprovider-register" element={<ArtProviderRegister />} /> */}
-
-        {/* Route yang bisa diakses setelah login */}
+        {/* Protected Route (Authorized only) */}
         <Route element={<ProtectedRoute />}>
           <Route path="/daftar/seniman" element={<ArtProviderRegister />} />
-
-          {/* SENIMAN */}
+          {/* Seniman */}
           <Route
             path="/seniman/dashboard"
             element={<DashboardSeniman setProgress={setProgress} />}
           />
-          {/* kesenian */}
           <Route
             path="/seniman/dashboard/kesenian"
             element={<KesenianList setProgress={setProgress} />}
           />
-          {/* product */}
           <Route
             path="/seniman/dashboard/kesenian/addproduct"
             element={<AddProduct />}
@@ -126,7 +100,6 @@ function App() {
             path="/seniman/dashboard/kesenian/updateproduct/:id"
             element={<EditProduct />}
           />
-          {/* service */}
           <Route
             path="/seniman/dashboard/kesenian/addservice"
             element={<AddService />}
@@ -145,10 +118,8 @@ function App() {
             element={<SenimanBalance />}
           />
 
-          {/* user */}
-          {/* dashboard */}
+          {/* User */}
           <Route path="/user/dashboard" element={<DashboardUser />} />
-          {/* transaction */}
           <Route
             path="/user/dashboard/transaction"
             element={<DashboardTransaction setProgress={setProgress} />}
@@ -165,17 +136,40 @@ function App() {
             path="/user/dashboard/wishlist"
             element={<DashboardWishlist setProgress={setProgress} />}
           />
-          {/* profil */}
           <Route
             path="/user/dashboard/profil"
             element={<UserProfile setProgress={setProgress} />}
           />
-
           <Route path="/product-order" element={<ProductOrder />} />
           <Route path="/service-order" element={<ServiceOrder />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
-        <Route path="/playground" element={<Playground />}></Route>
+
+        {/* Route for home */}
+        <Route
+          path="/search"
+          element={<SearchResult setProgress={setProgress} />}
+        />
+        <Route
+          path="/product/:id"
+          element={<ProductDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/service/:id"
+          element={<ServiceDetails setProgress={setProgress} />}
+        />
+        <Route
+          path="/seniman/:id"
+          element={<ProfileDetailSeniman setProgress={setProgress} />}
+        />
+        <Route path="/about-senikita" element={<About />} />
+        <Route path="/client-guide" element={<ClientGuideSection />} />
+        <Route path="/seniman-guide" element={<SenimanGuideSection />} />
+        <Route path="/client-rules" element={<ClientRules />} />
+        <Route path="/seniman-rules" element={<SenimanRules />} />
+        <Route path="/kebijakan-privasi" element={<PrivacyPolicy />} />
+        <Route path="/not-authorized" element={<NotAuthorized />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer autoClose={1200} />
     </Router>
