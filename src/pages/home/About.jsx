@@ -35,6 +35,10 @@ const About = () => {
     document.title = "Tentang SeniKita";
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Navbar />

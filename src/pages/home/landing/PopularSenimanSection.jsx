@@ -11,8 +11,9 @@ import FullPageLoader from "../../../components/loading/FullPageLoader";
 // Custom ArrowButton Component
 const ArrowButton = ({ onClick, direction }) => (
   <button
-    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${direction === "left" ? "-left-10" : "-right-10"
-      }`}
+    className={`bg-primary bg-opacity-85 p-3 rounded-full text-white z-10 hover:bg-opacity-75 transition-opacity duration-300 absolute top-1/2 transform -translate-y-1/2 ${
+      direction === "left" ? "-left-10" : "-right-10"
+    }`}
     onClick={onClick}
   >
     {direction === "left" ? (
@@ -81,7 +82,7 @@ const PopularSenimanSection = () => {
   const generateSlug = (id, name) => {
     const encryptedId = btoa(id + "-" + name);
     return encryptedId;
-  }
+  };
 
   return (
     <div>
@@ -96,7 +97,10 @@ const PopularSenimanSection = () => {
 
           <Slider {...sliderSettings} className="mt-10 overflow-visible">
             {seniman.map((seniman) => (
-              <Link to={`/seniman/${generateSlug(seniman.id, seniman.name)}`} key={seniman.id}>
+              <Link
+                to={`/seniman/${generateSlug(seniman.id, seniman.name)}`}
+                key={seniman.id}
+              >
                 {" "}
                 <div className="relative p-8">
                   <div className="bg-white rounded-2xl border-[0.5px] shadow-md border-opacity-20 border-primary relative p-8 overflow-visible">
@@ -104,7 +108,7 @@ const PopularSenimanSection = () => {
                       <img
                         src={
                           seniman.profile_picture ||
-                          "https://via.placeholder.com/100"
+                          "assets/home/defaultpic.png"
                         }
                         className="object-cover w-32 h-32 rounded-full shadow-lg border-primary/20"
                       />

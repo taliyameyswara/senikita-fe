@@ -7,7 +7,7 @@ import CategorySection from "./landing/CategorySection";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import RegisterSenimanSection from "./landing/RegisterSenimanSection";
 import PromotionSection from "./landing/PromotionSection";
-import GuideSection from "./landing/GuideSection";
+import GuideSection from "./landing/ClientGuideSection";
 import RecentReviewSection from "./landing/RecentReviewSection";
 import PopularSenimanSection from "./landing/PopularSenimanSection";
 import FaqSection from "./landing/FaqSection";
