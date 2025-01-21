@@ -242,7 +242,7 @@ const Home = ({ setProgress }) => {
           {loadingData ? (
             <SkeletonLoader />
           ) : (
-            <div class="px-4 container">
+            <div className="px-4 container">
               <ProductList
                 title={"Produk Kesenian"}
                 products={products}
