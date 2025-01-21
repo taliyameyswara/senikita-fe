@@ -156,7 +156,7 @@ const Home = ({ setProgress }) => {
                 </div>
 
                 {/* text */}
-                <div className="z-20 col-span-2 px-5 2xl:col-span-3 lg:pl-32 lg:pr-24 md:pl-36 md:mt-0 mt-28">
+                <div className="z-20 col-span-2 px-5 2xl:col-span-3 lg:pl-32 2xl:pl-48 lg:pr-24 md:pl-36 md:mt-0 mt-28">
                   <div className="flex flex-col gap-[0.4rem] text-white">
                     <p className="text-sm lg:text-base">Selamat Datang,</p>
                     {/* desktop */}
