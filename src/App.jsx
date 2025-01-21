@@ -43,13 +43,14 @@ import SenimanProfile from "./pages/seniman/profile/SenimanProfile";
 import SenimanOrder from "./pages/seniman/order/SenimanOrder";
 import SenimanBalance from "./pages/seniman/balance/SenimanBalance";
 import ProfileDetailSeniman from "./pages/home/ProfileDetailSeniman";
-import Playground from "./pages/Playground";
 import About from "./pages/home/About";
 import ClientGuideSection from "./pages/home/landing/ClientGuideSection";
 import SenimanGuideSection from "./pages/home/landing/SenimanGuideSection";
 import ClientRules from "./pages/home/landing/ClientRules";
 import SenimanRules from "./pages/home/landing/SenimanRules";
 import PrivacyPolicy from "./pages/home/landing/PrivacyPolicy";
+import PetaKesenian from "./pages/home/PetaKesenian";
+
 function App() {
   const [progress, setProgress] = useState(0);
   return (
@@ -162,6 +163,7 @@ function App() {
           path="/seniman/:id"
           element={<ProfileDetailSeniman setProgress={setProgress} />}
         />
+        <Route path="/peta-kesenian" element={<PetaKesenian />} />
         <Route path="/about-senikita" element={<About />} />
         <Route path="/client-guide" element={<ClientGuideSection />} />
         <Route path="/seniman-guide" element={<SenimanGuideSection />} />
