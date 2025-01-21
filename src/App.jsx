@@ -50,6 +50,8 @@ import ClientRules from "./pages/home/landing/ClientRules";
 import SenimanRules from "./pages/home/landing/SenimanRules";
 import PrivacyPolicy from "./pages/home/landing/PrivacyPolicy";
 import PetaKesenian from "./pages/home/PetaKesenian";
+import PetaKesenianDetail from "./pages/home/PetaKesenianDetail";
+import TestDetail from "./pages/home/TestDetail";
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -164,6 +166,8 @@ function App() {
           element={<ProfileDetailSeniman setProgress={setProgress} />}
         />
         <Route path="/peta-kesenian" element={<PetaKesenian />} />
+        <Route path="/peta-kesenian/:slug" element={<PetaKesenianDetail />} />
+        <Route path="/peta-kesenian/test" element={<TestDetail />} />
         <Route path="/about-senikita" element={<About />} />
         <Route path="/client-guide" element={<ClientGuideSection />} />
         <Route path="/seniman-guide" element={<SenimanGuideSection />} />

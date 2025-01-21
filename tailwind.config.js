@@ -24,6 +24,7 @@ export default {
       inter: ["Inter", "sans-serif"],
       nunito: ["Nunito", "sans-serif"],
     },
+
     container: {
       center: true,
       padding: {

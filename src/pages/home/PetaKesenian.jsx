@@ -31,7 +31,7 @@ const PetaKesenian = () => {
       })
       .catch((error) => console.error("Error fetching provinces:", error))
       .finally(() => setIsLoading(false));
-  }, [fetchAllProvince]);
+  }, []);
 
   if (isLoading) {
     return <FullPageLoader />;
@@ -91,7 +91,10 @@ const PetaKesenian = () => {
                     </h3>
                     <p className="pb-2">{item.subtitle}</p>
                     <div className="flex w-full justify-end">
-                      <Link className="!text-tertiary font-semibold !pt-2">
+                      <Link
+                        to={`/peta-kesenian/${item.slug}`}
+                        className="!text-tertiary font-semibold !pt-2"
+                      >
                         Lihat lebih lanjut &rarr;
                       </Link>
                     </div>
