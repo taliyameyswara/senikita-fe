@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import AddAddressModal from "../../components/address/AddAdressModal";
 import DeleteModal from "../../components/modal/DeleteModal";
 import { limitText } from "../../utils/limitText";
+import DefaultPicture from "/assets/home/defaultpic.png";
 
 const ProductOrder = () => {
   const location = useLocation();
@@ -263,8 +264,8 @@ const ProductOrder = () => {
   return (
     <div>
       <Navbar />
-      <div className="container lg:p-6 px-4 mx-auto">
-        <div className="grid grid-cols-1 lg:gap-10 gap-4 mb-6 lg:grid-cols-5">
+      <div className="container px-4 mx-auto lg:p-6">
+        <div className="grid grid-cols-1 gap-4 mb-6 lg:gap-10 lg:grid-cols-5">
           <div className="col-span-3 space-y-5">
             {/* Looping per toko berdasarkan shop_id */}
             {Object.keys(groupedProducts).map((shopId) => (
@@ -273,7 +274,7 @@ const ProductOrder = () => {
                   <img
                     src={
                       groupedProducts[shopId][0].storeAvatar ??
-                      "https://via.placeholder.com/100"
+                      DefaultPicture
                     }
                     alt={groupedProducts[shopId][0].storeName}
                     className="w-8 h-8 rounded-lg"
@@ -300,14 +301,14 @@ const ProductOrder = () => {
                   ))}
                 </div>
 
-                <div className="grid lg:grid-cols-2 grid-cols-1 gap-2 w-full">
+                <div className="grid w-full grid-cols-1 gap-2 lg:grid-cols-2">
                   <div>
                     <button
                       className="flex gap-1 items-center text-primary font-semibold text-sm hover:bg-tertiary/10 px-4 py-2 rounded-xl transition-transform duration-150 hover:scale-100 transform scale-[.98] border-[0.5px] border-primary w-full"
                       onClick={handleNotesButton}
                     >
                       <IoAddOutline />
-                      <div className="md:text-sm text-xs">
+                      <div className="text-xs md:text-sm">
                         Tambah catatan untuk{" "}
                         {limitText(groupedProducts[shopId][0].storeName, 18)}
                       </div>
@@ -337,8 +338,8 @@ const ProductOrder = () => {
 
             {/* Alamat Pengiriman */}
             <div className="mb-6">
-              <div className="flex justify-between items-center">
-                <h3 className="md:text-base text-sm font-semibold">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold md:text-base">
                   Alamat Anda
                 </h3>
                 {activeAddress && !loadingAddress && (
@@ -424,18 +425,18 @@ const ProductOrder = () => {
                     <span className="p-1.5 rounded-lg md:text-sm text-xs bg-tertiary/10 text-primary font-semibold">
                       {address.label_address}
                     </span>
-                    <p className="mt-1 md:text-lg font-semibold">
+                    <p className="mt-1 font-semibold md:text-lg">
                       {address.name}{" "}
                     </p>
-                    <p className="font-light font-nunito md:text-base text-sm">
+                    <p className="text-sm font-light font-nunito md:text-base">
                       {address.phone}
                     </p>
-                    <div className="md:text-sm text-xs font-light text-gray-500">
+                    <div className="text-xs font-light text-gray-500 md:text-sm">
                       <p>{address.address_detail}</p>
                       <p>
                         {address.city.name}, {address.province.name},{" "}
                         {address.province.name}{" "}
-                        <span className="font-nunito font-light">
+                        <span className="font-light font-nunito">
                           {address.postal_code}
                         </span>
                       </p>
@@ -479,9 +480,8 @@ const ProductOrder = () => {
         onClose={closeDeleteModal}
         onConfirm={handleDeleteAddress}
         title="Konfirmasi Hapus"
-        subtitle={`Apakah Anda yakin ingin menghapus alamat ${
-          addressToDelete ? addressToDelete.label_address : ""
-        }?`}
+        subtitle={`Apakah Anda yakin ingin menghapus alamat ${addressToDelete ? addressToDelete.label_address : ""
+          }?`}
       />
     </div>
   );

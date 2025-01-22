@@ -15,6 +15,7 @@ import Header from "../../components/sidebar/Header";
 import { useNavigate } from "react-router-dom";
 import { RiAppsLine } from "react-icons/ri";
 import { CiMap } from "react-icons/ci";
+import { useCheckStatusApi } from "../../api/shop/CheckStatusApi";
 
 const CategoryLinks = [
   { id: 1, name: "Seni Lukis", link: "/#" },
@@ -22,10 +23,38 @@ const CategoryLinks = [
   { id: 3, name: "Seni Desain", link: "/#" },
 ];
 
-const auth = true;
 
 const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
-  const { user, logout, loading } = useContext(UserContext);
+  const { user, logout, loading, refresh } = useContext(UserContext);
+  const { checkStatusShop } = useCheckStatusApi();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getUserFromLocalStorage = () => {
+    const userData = localStorage.getItem('user');
+    return userData ? JSON.parse(userData) : null;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      const userLocal = getUserFromLocalStorage();
+      if (user && user.isHaveStore === 0) {
+        const status = await checkStatusShop();
+        userLocal.isHaveStore = status;
+        refresh(userLocal);
+      }
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (user) {
+    console.log(user);
+  }
+
+
   const ProfileLinks = [
     {
       id: 1,
@@ -36,12 +65,12 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
     {
       id: 2,
       title:
-        user && user.isHaveStore === 1
+        user && user.isHaveStore == 1
           ? "Dashboard Seniman"
           : "Daftar Menjadi Seniman",
       icon: <IoColorPaletteOutline />,
       link:
-        user && user.isHaveStore === 1
+        user && user.isHaveStore == 1
           ? "/seniman/dashboard"
           : "/daftar/seniman",
     },
@@ -65,6 +94,10 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
       handleSearch();
     }
   };
+
+  if (loading || isLoading) {
+    return "";
+  }
 
   return (
     <div className="md:mb-20 mb-36">
@@ -98,10 +131,10 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
             </div>
 
             {/* category items */}
-            <div className="hidden lg:block border-r pr-3">
+            <div className="hidden pr-3 border-r lg:block">
               <Link
                 to="/peta-kesenian"
-                className=" text-sm font-semibold md:text-base flex items-center gap-2"
+                className="flex items-center gap-2 text-sm font-semibold md:text-base"
               >
                 <IoMapOutline className="text-xl" />
                 Peta Kesenian
@@ -109,7 +142,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
             </div>
 
             {/* navbar right section */}
-            <div className="pl-3 flex items-center gap-2">
+            <div className="flex items-center gap-2 pl-3">
               {user ? (
                 // authenticated
                 <>
@@ -119,9 +152,9 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                       <>
                         <div className="flex items-center gap-2">
                           <img
-                            src={Avatar}
+                            src={user.profile_picture ?? Avatar}
                             alt="Profile"
-                            className="w-8 h-8 rounded-full"
+                            className="w-8 h-8 border rounded-full"
                           />
                           <div className="">{user.name}</div>
                         </div>
@@ -171,7 +204,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                   >
                     Daftar
                   </Link>
-                  <div className="p-3 px-5 text-white rounded-full bg-primary font-semibold">
+                  <div className="p-3 px-5 font-semibold text-white rounded-full bg-primary">
                     <Link to="/login" className="">
                       Masuk
                     </Link>
@@ -215,7 +248,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                         <>
                           <div className="flex items-center gap-2">
                             <img
-                              src={Avatar}
+                              src={user.profile_picture ?? Avatar}
                               alt="Profile"
                               className="w-8 h-8 rounded-full"
                             />
@@ -282,7 +315,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
             <div className="flex items-center">
               <Link
                 to="/peta-kesenian"
-                className="text-sm font-semibold md:text-base flex items-center gap-2"
+                className="flex items-center gap-2 text-sm font-semibold md:text-base"
               >
                 <IoMapOutline className="text-xl" />
                 Peta Kesenian

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { limitText } from "../../utils/limitText";
+import DefaultPicture from "/assets/home/defaultpic.png";
 
 const ArtistProfileSection = ({ shop }) => {
   const [textLimit, setTextLimit] = useState(30);
@@ -35,7 +36,7 @@ const ArtistProfileSection = ({ shop }) => {
         </h2>
         <div className="flex items-center gap-4 text-sm">
           <img
-            src={profile_picture}
+            src={profile_picture ?? DefaultPicture}
             alt={`${name} Avatar`}
             className="object-cover w-16 h-16 rounded-full"
           />
