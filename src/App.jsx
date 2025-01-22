@@ -52,6 +52,7 @@ import PrivacyPolicy from "./pages/home/landing/PrivacyPolicy";
 import PetaKesenian from "./pages/home/PetaKesenian";
 import PetaKesenianDetail from "./pages/home/PetaKesenianDetail";
 import TestDetail from "./pages/home/TestDetail";
+import CallbackGoogle from "./pages/callback/CallbackGoogle";
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -175,6 +176,8 @@ function App() {
         <Route path="/seniman-rules" element={<SenimanRules />} />
         <Route path="/kebijakan-privasi" element={<PrivacyPolicy />} />
         <Route path="/not-authorized" element={<NotAuthorized />} />
+        <Route path="/callback-google" element={<CallbackGoogle />} />
+
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer autoClose={1200} />

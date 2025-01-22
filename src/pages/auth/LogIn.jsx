@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { UserContext } from "../../context/UserContext";
 import FooterLogo from "../../components/footer/FooterLogo";
 import PasswordInput from "../../components/form-input/PasswordInput";
+import { useLoginGoogleApi } from "../../api/user/LoginGoogleApi";
 
 const LogIn = ({ setProgress }) => {
   const [email, setEmail] = useState("");
@@ -18,6 +19,8 @@ const LogIn = ({ setProgress }) => {
   const navigate = useNavigate();
   const { login, setEmailOTP } = useContext(UserContext);
   const { login: loginApi } = useAuthApi();
+  const { loginGoogle } = useLoginGoogleApi();
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -72,6 +75,20 @@ const LogIn = ({ setProgress }) => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    return async () => {
+      try {
+        const url = await loginGoogle();
+        window.location.href = url;  // Assign the URL to window.location.href
+      }
+      catch (error) {
+        console.error("Failed to login with Google:", error);
+        toast.error("Gagal masuk dengan Google.");
+      }
+    }
+  }
+
+
   return (
     <>
       {/* navbar */}
@@ -100,6 +117,7 @@ const LogIn = ({ setProgress }) => {
               {/* google login */}
               <div>
                 <button
+                  onClick={handleGoogleLogin()}
                   type="button"
                   className="flex items-center justify-center w-full gap-2 py-3 mt-5 font-semibold text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
                 >
@@ -110,7 +128,7 @@ const LogIn = ({ setProgress }) => {
               {/* divider */}
               <div className="flex items-center gap-4 py-1">
                 <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
-                <div className="md:text-base text-sm">atau</div>
+                <div className="text-sm md:text-base">atau</div>
                 <div className="h-[0.5px] w-full bg-gray-200 flex-1 my-[0.5rem]"></div>
               </div>
               {/* email */}
@@ -124,7 +142,7 @@ const LogIn = ({ setProgress }) => {
                 <input
                   type="email"
                   id="email"
-                  className="w-full p-3 mt-1 md:text-base text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
+                  className="w-full p-3 mt-1 text-sm border border-gray-300 md:text-base rounded-xl focus:outline-none focus:ring-primary focus:border-primary/60"
                   placeholder="Masukkan Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -152,11 +170,10 @@ const LogIn = ({ setProgress }) => {
               <div>
                 <button
                   type="submit"
-                  className={`w-full py-3 text-white font-semibold rounded-xl ${
-                    isFormValid
-                      ? "bg-primary hover:bg-primary-dark"
-                      : "bg-gray-300 cursor-not-allowed"
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
+                  className={`w-full py-3 text-white font-semibold rounded-xl ${isFormValid
+                    ? "bg-primary hover:bg-primary-dark"
+                    : "bg-gray-300 cursor-not-allowed"
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary flex justify-center items-center`}
                   disabled={!isFormValid || isLoading} // Disabled saat loading atau form tidak valid
                 >
                   {isLoading ? (
