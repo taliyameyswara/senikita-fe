@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Modal from "../../../components/Modal";
 import TextInput from "../../../components/form-input/TextInput";
 import DateInput from "../../../components/form-input/DateInput";
@@ -7,6 +7,7 @@ import { useAxiosInstance } from '../../../config/axiosConfig';
 import { toast } from "react-toastify";
 import { useProfileUserApi } from "../../../api/user/ProfileUserApi";
 import Spinner from "../../../components/loading/Spinner";
+import { UserContext } from "../../../context/UserContext";
 
 
 const UserBiodata = ({ setProgress }) => {
@@ -14,6 +15,7 @@ const UserBiodata = ({ setProgress }) => {
   const axiosInstance = useAxiosInstance();
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { refresh } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
     profile_picture: "",
@@ -100,6 +102,7 @@ const UserBiodata = ({ setProgress }) => {
         setLoading(true);
         updateProfileUser(formDataToSend)
           .then((response) => {
+            refresh(response)
             toast.success("Foto profil berhasil diperbarui.");
             fetchUserData();
           })
@@ -152,6 +155,7 @@ const UserBiodata = ({ setProgress }) => {
       updateProfileUser(formDataToSend)
         .then((response) => {
           toast.success("Profil berhasil diperbarui.");
+          refresh(response)
           closeModal();
           fetchUserData();
         })
