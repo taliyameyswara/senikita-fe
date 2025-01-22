@@ -4,6 +4,7 @@ import {
   IoLogOutOutline,
   IoColorPaletteOutline,
   IoChevronDownOutline,
+  IoMapOutline,
 } from "react-icons/io5";
 import { IoMdSearch, IoMdHeartEmpty } from "react-icons/io";
 import { Link } from "react-router-dom";
@@ -13,6 +14,7 @@ import { UserContext } from "../../context/UserContext";
 import Header from "../../components/sidebar/Header";
 import { useNavigate } from "react-router-dom";
 import { RiAppsLine } from "react-icons/ri";
+import { CiMap } from "react-icons/ci";
 
 const CategoryLinks = [
   { id: 1, name: "Seni Lukis", link: "/#" },
@@ -66,7 +68,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
 
   return (
     <div className="md:mb-20 mb-36">
-      <nav className="fixed top-0 z-40 w-full duration-200 bg-white">
+      <nav className="fixed top-0 z-40 w-full duration-200 bg-white shadow">
         <div className="py-4 ">
           {/* desktop nav */}
           <div className="container items-center justify-between hidden md:flex">
@@ -79,25 +81,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
               >
                 senikita
               </Link>
-
-              {/* category items */}
-              <div className="hidden lg:block">
-                {/* dropdown */}
-                <DropdownNav title="Kategori" icon={<IoChevronDownOutline />}>
-                  <ul className="space-y-3">
-                    {CategoryLinks.map((data) => (
-                      <li key={data.id}>
-                        <a
-                          href={data.link}
-                          className="inline-block w-full p-2 px-4 text-secondary/80 hover:underline hover:bg-gray-100 hover:text-primary"
-                        >
-                          {data.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </DropdownNav>
-              </div>
             </div>
             {/* searchbar */}
             <div className="flex-grow mx-4">
@@ -114,8 +97,19 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
               </div>
             </div>
 
+            {/* category items */}
+            <div className="hidden lg:block border-r pr-3">
+              <Link
+                to="/peta-kesenian"
+                className=" text-sm font-semibold md:text-base flex items-center gap-2"
+              >
+                <IoMapOutline className="text-xl" />
+                Peta Kesenian
+              </Link>
+            </div>
+
             {/* navbar right section */}
-            <div className="flex items-center gap-2">
+            <div className="pl-3 flex items-center gap-2">
               {user ? (
                 // authenticated
                 <>
@@ -257,13 +251,6 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
                     <Link to={"/cart"} className="relative p-3">
                       <IoCartOutline className="text-2xl text-secondary" />
                     </Link>
-                    {/* message */}
-                    {/* <button className="relative p-3">
-                      <IoChatboxOutline className="text-2xl text-secondary" />
-                      <div className="w-4 h-4 bg-customRed text-white rounded-full absolute -top-1 -right-1 flex items-center justify-center text-xs p-2.5  border-white border-2">
-                        20
-                      </div>
-                    </button> */}
                     {/* liked */}
                     <Link
                       to={"/user/dashboard/wishlist"}
@@ -293,20 +280,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
 
             {/* category items */}
             <div className="flex items-center">
-              <DropdownNav title={"Kategori"} icon={<IoChevronDownOutline />}>
-                <ul className="space-y-3">
-                  {CategoryLinks.map((data) => (
-                    <li key={data.id}>
-                      <a
-                        href={data.link}
-                        className="inline-block w-full p-2 px-4 text-secondary/80 hover:underline hover:bg-gray-100 hover:text-primary"
-                      >
-                        {data.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </DropdownNav>
+              <Link
+                to="/peta-kesenian"
+                className="text-sm font-semibold md:text-base flex items-center gap-2"
+              >
+                <IoMapOutline className="text-xl" />
+                Peta Kesenian
+              </Link>
               <div className="flex-grow ml-4">
                 <div className="relative group">
                   <input
