@@ -10,6 +10,9 @@ import { VscSend } from "react-icons/vsc";
 import ImageAccordion from "../../components/peta-detail/ImageAccordion";
 import OptionChat from "../../components/peta-detail/OptionChat";
 import Avatar from "../../components/peta-detail/Avatar";
+import { playAudioFromStream, geminiChat, getAudioFromText } from "../../helpers/audioHelper";
+import LoadingImage from "/assets/home/loading.png";
+import Typewriter from "../../components/peta-detail/TypeWritter";
 
 const parallaxData = [
   {
@@ -52,6 +55,27 @@ const PetaKesenianDetail = () => {
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
+  const [input, setInput] = useState("");
+  const [isGeminiLoading, setIsGeminiLoading] = useState(false);
+
+
+  const handleGemini = async (e) => {
+    e.preventDefault();
+    setIsGeminiLoading(true);
+    setInput("");
+
+    const response = await geminiChat(input, artProvince.name)
+    console.log("Response:", response);
+    setContent(response);
+
+    const audioStream = await getAudioFromText(response);
+    playAudioFromStream(audioStream);
+
+
+    setIsGeminiLoading(false);
+  };
+
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -60,6 +84,8 @@ const PetaKesenianDetail = () => {
         console.log("Fetch response:", response);
         setArtProvince(response.art_province);
         setContent(response.content);
+        // const audioStream = await getAudioFromText(response.content);
+        // playAudioFromStream(audioStream);
       } catch (error) {
         console.error("Error fetching art province details:", error);
       } finally {
@@ -95,14 +121,37 @@ const PetaKesenianDetail = () => {
             }}
           ></div>
           <div className="container px-6 py-4">
-            <div className="grid lg:grid-cols-3 gap-6 container">
+            <div className="container grid gap-6 lg:grid-cols-3">
               {/* Bubble Chat */}
               <div className="">
-                <div className="flex items-start relative mt-16 lg:ml-5 mx-5">
+                <div className="relative flex items-start mx-5 mt-16 lg:ml-5">
                   <Plx className="z-[80]" parallaxData={parallaxAvatar}>
-                    <div className="bg-white text-white p-2 px-3 rounded-2xl ml-auto shadow-lg chat-bubble">
-                      <p className="text-secondary 2lg:text-sm text-xs">
-                        {content}
+                    <div className="p-2 px-3 ml-auto text-white bg-white shadow-lg rounded-2xl chat-bubble">
+                      <p className="text-xs text-secondary 2lg:text-sm">
+                        {isGeminiLoading
+                          ? (
+                            <div className="flex flex-row items-center justify-center w-full h-10 gap-2">
+                              <div className="animate-spin-slow">
+                                <img
+                                  src={LoadingImage}
+                                  className="w-4 h-4 rotate-45 animate-pulse-slow"
+                                  alt="Loading"
+                                />
+                              </div>
+                              <h1 className="text-xs text-primary/50 2lg:text-sm">
+                                Tunggu Sebentar...
+                              </h1>
+
+                            </div>
+                          )
+                          : (
+                            <p className="text-xs text-secondary 2lg:text-sm">{
+                              <Typewriter text={content} />
+
+                            }</p>
+                          )
+                        }
+
                       </p>
                     </div>
                   </Plx>
@@ -111,47 +160,60 @@ const PetaKesenianDetail = () => {
                 <div className="flex">
                   <div className="relative w-3/4">
                     <OptionChat
-                      className="lg:hidden block w-full ml-3 my-16 pt-10"
+                      className="block w-full pt-10 my-16 ml-3 lg:hidden"
                       parallaxAvatar={parallaxAvatar}
                     />
                   </div>
                   <div className="relative w-full">
                     <Avatar
                       parallaxAvatar={parallaxAvatar}
-                      className="lg:hidden flex mt-10"
+                      className="flex mt-10 lg:hidden"
                     />
                   </div>
                 </div>
 
                 {/* Inputan */}
                 <div className="flex items-baseline relative lg:mt-48 lg:ml-5 lg:mx-0 mx-5 z-[999]">
+
                   <Plx className="w-full" parallaxData={parallaxAvatar}>
-                    <div className="relative flex items-center bg-white shadow-lg rounded-full px-2 py-2">
+                    <form onSubmit={handleGemini} className="relative flex items-center px-2 py-2 bg-white rounded-full shadow-lg">
                       <input
                         type="text"
                         placeholder={`Tanyakan tentang kebudayaan ${artProvince.name}`}
-                        className="flex-1 bg-transparent border-none focus:outline-none focus:ring-transparent text-gray-700 text-xs"
+                        className="flex-1 text-xs text-gray-700 bg-transparent border-none focus:outline-none focus:ring-transparent"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+
                       />
                       <button
-                        type="button"
-                        className="bg-primary text-white  p-2 rounded-full  shadow-md hover:bg-primary-dark"
+                        disabled={isGeminiLoading}
+                        type="submit"
+                        // className="p-2 text-white rounded-full shadow-md bg-primary hover:bg-primary-dark"
+                        className={"p-2 text-white rounded-full shadow-md bg-primary hover:bg-primary-dark " + (isGeminiLoading ? "bg-primary/50" : "")}
                       >
+
                         <VscSend />
                       </button>
-                    </div>
+                    </form>
                   </Plx>
                 </div>
 
-                <OptionChat
-                  className="lg:block hidden"
+                {/* <OptionChat
+                  className="hidden lg:block"
                   parallaxAvatar={parallaxAvatar}
+                /> */}
+                <OptionChat
+                  className="hidden lg:block"
+                  parallaxAvatar={parallaxAvatar}
+                  setInput={setInput}
+                  setIsGeminiLoading={setIsGeminiLoading}
                 />
               </div>
 
               {/* Avatar */}
               <Avatar
                 parallaxAvatar={parallaxAvatar}
-                className="lg:flex hidden"
+                className="hidden lg:flex"
               />
 
               {/* Gambar dan Deskripsi */}
@@ -162,7 +224,7 @@ const PetaKesenianDetail = () => {
           {/* Footer */}
           <img
             src="/assets/home/batik-footer2.png"
-            className="absolute h-fit w-full z-40 bottom-0 opacity-70"
+            className="absolute bottom-0 z-40 w-full h-fit opacity-70"
             alt="Batik Footer"
           />
         </div>
