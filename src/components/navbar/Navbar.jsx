@@ -100,7 +100,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen, isDashboard }) => {
   }
 
   return (
-    <div className="md:mb-20 mb-36">
+    <div className={`md:mb-20 ${className}`}>
       <nav className="fixed top-0 z-40 w-full duration-200 bg-white shadow">
         <div className="py-4 ">
           {/* desktop nav */}

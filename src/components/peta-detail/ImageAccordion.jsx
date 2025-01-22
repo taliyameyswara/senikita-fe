@@ -4,7 +4,7 @@ const ImageAccordion = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <div className="flex flex-col gap-4 overflow-hidden px-4 translate-y-16">
+    <div className="flex flex-col gap-4 overflow-hidden px-4 xl:translate-y-16 -translate-y-36">
       {images.map((image, index) => (
         <div
           key={image.id}
