@@ -146,12 +146,26 @@
   position: absolute;
   top: 50%;
   right: -10px;
-  transform: translateY(-50%);
+  transform: translateY(-49%);
   width: 0;
   height: 0;
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-left: 10px solid white;
+}
+
+/* chat bubble mobile */
+@media (max-width: 640px) {
+  .chat-bubble::after {
+    top: auto;
+    bottom: -10px;
+    right: 50%;
+    transform: translateX(50%);
+    border-top: 10px solid white;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: none;
+  }
 }
 
 /* avatar */

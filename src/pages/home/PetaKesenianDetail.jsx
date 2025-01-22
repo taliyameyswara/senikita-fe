@@ -3,11 +3,13 @@ import { useParams } from "react-router-dom";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 import { useProvinceApi } from "../../api/landing/ProvinceApi";
 import Navbar from "../../components/navbar/Navbar";
-import ImageHeader from "../../components/ImageHeader";
+import ImageHeader from "../../components/peta-detail/ImageHeader";
 import Plx from "react-plx";
 import MainFooter from "../../components/footer/Footer";
 import { VscSend } from "react-icons/vsc";
-import ImageAccordion from "../../components/ImageAccordion";
+import ImageAccordion from "../../components/peta-detail/ImageAccordion";
+import OptionChat from "../../components/peta-detail/OptionChat";
+import Avatar from "../../components/peta-detail/Avatar";
 
 const parallaxData = [
   {
@@ -74,67 +76,55 @@ const PetaKesenianDetail = () => {
 
   return (
     <div className="bg-tertiary">
-      <Navbar />
-      <div className="image-header-container">
-        {/* Komponen ImageHeader */}
-        <ImageHeader
-          images={artProvince.art_province_details.map((detail) => ({
-            src: detail.image,
-          }))}
-          title={artProvince.name}
-          subtitle={artProvince.subtitle}
-        />
-        <div className="relative w-full">
-          <Plx
-            className="parallax-cloud 3xl:-bottom-64 -bottom-36 absolute z-30"
-            parallaxData={parallaxData}
-          >
-            <img
-              src="/assets/cloud.png"
-              alt="Parallax"
-              className="cloud-image w-screen object-fit"
-              style={{ userSelect: "none", pointerEvents: "none" }}
-            />
-          </Plx>
-          <div
-            className="absolute bg-gradient-to-t from-tertiary to-transparent h-64 w-full z-30"
-            style={{
-              bottom: "-200px",
-            }}
-          ></div>
-          <div
-            className="absolute bg-gradient-to-t from-tertiary to-transparent h-24 w-full z-30"
-            style={{
-              bottom: "-200px",
-            }}
-          ></div>
-        </div>
-      </div>
+      <Navbar className="mb-0" />
+      <ImageHeader
+        images={artProvince.art_province_details.map((detail) => ({
+          src: detail.image,
+        }))}
+        title={artProvince.name}
+        subtitle={artProvince.subtitle}
+      />
+
       <div className="relative bg-tertiary">
         <div className="relative z-30">
           {/* Overlay */}
           <div
-            className="absolute inset-0 bg-center bg-cover opacity-20"
+            className="absolute inset-0 bg-center bg-contain opacity-20"
             style={{
               backgroundImage: `url(/assets/home/hero-texture2.png)`,
             }}
           ></div>
           <div className="container px-6 py-4">
-            <div className="grid grid-cols-3 gap-6 container">
+            <div className="grid lg:grid-cols-3 gap-6 container">
               {/* Bubble Chat */}
               <div className="">
-                <div className="flex items-start relative mt-16 ml-5">
-                  <Plx className="z-[999]" parallaxData={parallaxAvatar}>
+                <div className="flex items-start relative mt-16 lg:ml-5 mx-5">
+                  <Plx className="z-[80]" parallaxData={parallaxAvatar}>
                     <div className="bg-white text-white p-2 px-3 rounded-2xl ml-auto shadow-lg chat-bubble">
-                      <p className="text-secondary 2xl:text-sm text-xs">
+                      <p className="text-secondary 2lg:text-sm text-xs">
                         {content}
                       </p>
                     </div>
                   </Plx>
                 </div>
 
+                <div className="flex">
+                  <div className="relative w-3/4">
+                    <OptionChat
+                      className="lg:hidden block w-full ml-3 my-16 pt-10"
+                      parallaxAvatar={parallaxAvatar}
+                    />
+                  </div>
+                  <div className="relative w-full">
+                    <Avatar
+                      parallaxAvatar={parallaxAvatar}
+                      className="lg:hidden flex mt-10"
+                    />
+                  </div>
+                </div>
+
                 {/* Inputan */}
-                <div className="flex items-baseline relative mt-48 ml-5 z-50">
+                <div className="flex items-baseline relative lg:mt-48 lg:ml-5 lg:mx-0 mx-5 z-[999]">
                   <Plx className="w-full" parallaxData={parallaxAvatar}>
                     <div className="relative flex items-center bg-white shadow-lg rounded-full px-2 py-2">
                       <input
@@ -152,39 +142,17 @@ const PetaKesenianDetail = () => {
                   </Plx>
                 </div>
 
-                <div className=" relative z-50 mt-10 ml-5">
-                  <Plx
-                    className="text-xs grid grid-cols-2 gap-3 space"
-                    parallaxData={parallaxAvatar}
-                  >
-                    {[
-                      "💃 Tarian tradisional",
-                      "🪘 Alat musik tradisional",
-                      "🎊 Festival Budaya",
-                      "🥻 Pakaian Adat",
-                    ].map((question, index) => (
-                      <button
-                        key={index}
-                        className="bg-gradient-to-bl from-tertiary via-white/30 to-tertiary  border-[0.5px] border-white/50   px-4 py-2 rounded-full text-white"
-                      >
-                        {question}
-                      </button>
-                    ))}
-                  </Plx>
-                </div>
+                <OptionChat
+                  className="lg:block hidden"
+                  parallaxAvatar={parallaxAvatar}
+                />
               </div>
 
               {/* Avatar */}
-              <div className="relative flex justify-center items-center">
-                <Plx className="z-30" parallaxData={parallaxAvatar}>
-                  <img
-                    src="/assets/home/avatar.png"
-                    alt="Avatar"
-                    className="avatar-bounce"
-                    style={{ userSelect: "none", pointerEvents: "none" }}
-                  />
-                </Plx>
-              </div>
+              <Avatar
+                parallaxAvatar={parallaxAvatar}
+                className="lg:flex hidden"
+              />
 
               {/* Gambar dan Deskripsi */}
               <ImageAccordion images={artProvince.art_province_details} />
