@@ -8,18 +8,33 @@ import Heading from "../../components/Heading";
 import { Icon } from "leaflet";
 
 import customMarkerIcon from "/assets/custom-marker.png";
+import customMarkerBlue from "/assets/custom-marker-blue.png";
 import FullPageLoader from "../../components/loading/FullPageLoader";
 import MainFooter from "../../components/footer/Footer";
 import { Link } from "react-router-dom";
 
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import L from 'leaflet';
+
+
+
 const PetaKesenian = () => {
+
+  let DefaultIcon = L.icon({
+    iconUrl: icon,
+    shadowUrl: iconShadow,
+    iconAnchor: [10, 40],
+  });
+
   const { fetchAllProvince } = useProvinceApi();
   const [province, setProvince] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const customIcon = new Icon({
-    iconUrl: customMarkerIcon,
-    iconSize: [20, 28],
+    // iconUrl: customMarkerIcon,
+    iconUrl: customMarkerBlue,
+    iconSize: [28, 28],
     iconAnchor: [19, 38],
     popupAnchor: [0, -38],
   });
@@ -40,7 +55,7 @@ const PetaKesenian = () => {
   return (
     <>
       <Navbar />
-      <div className="container px-6 py-4 mb-20 mx-auto ">
+      <div className="container px-6 py-4 mx-auto mb-20 ">
         <div className="text-center">
           <Heading title="Peta Kesenian" />
           <p className="mb-5">
@@ -52,7 +67,7 @@ const PetaKesenian = () => {
         <MapContainer
           center={[-1.1, 130.0]}
           zoom={5}
-          className="rounded-2xl z-10 mx-auto"
+          className="z-10 mx-auto rounded-2xl"
           style={{ height: "70vh", width: "90%" }}
           maxBounds={[
             [-11.0, 94.0],
@@ -82,7 +97,8 @@ const PetaKesenian = () => {
                   parseFloat(item.latitude),
                   parseFloat(item.longitude),
                 ]}
-                // icon={customIcon}
+                icon={DefaultIcon}
+              // icon={customIcon}
               >
                 <Popup closeButton={false} className="font-raleway">
                   <div className="space-y-1">
@@ -90,7 +106,7 @@ const PetaKesenian = () => {
                       {item.name}
                     </h3>
                     <p className="pb-2">{item.subtitle}</p>
-                    <div className="flex w-full justify-end">
+                    <div className="flex justify-end w-full">
                       <Link
                         to={`/peta-kesenian/${item.slug}`}
                         className="!text-tertiary font-semibold !pt-2"
