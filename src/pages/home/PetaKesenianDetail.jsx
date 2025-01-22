@@ -35,7 +35,7 @@ const parallaxAvatar = [
         property: "scale",
       },
       {
-        startValue: 0,
+        startValue: 1,
         endValue: -180,
         property: "translateY",
       },
@@ -134,7 +134,6 @@ const PetaKesenianDetail = () => {
                 </div>
 
                 {/* Inputan */}
-
                 <div className="flex items-baseline relative mt-48 ml-5 z-50">
                   <Plx className="w-full" parallaxData={parallaxAvatar}>
                     <div className="relative flex items-center bg-white shadow-lg rounded-full px-2 py-2">
@@ -152,11 +151,32 @@ const PetaKesenianDetail = () => {
                     </div>
                   </Plx>
                 </div>
+
+                <div className=" relative z-50 mt-10 ml-5">
+                  <Plx
+                    className="text-xs grid grid-cols-2 gap-3 space"
+                    parallaxData={parallaxAvatar}
+                  >
+                    {[
+                      "💃 Tarian tradisional",
+                      "🪘 Alat musik tradisional",
+                      "🎊 Festival Budaya",
+                      "🥻 Pakaian Adat",
+                    ].map((question, index) => (
+                      <button
+                        key={index}
+                        className="bg-gradient-to-bl from-tertiary via-white/30 to-tertiary  border-[0.5px] border-white/50   px-4 py-2 rounded-full text-white"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </Plx>
+                </div>
               </div>
 
               {/* Avatar */}
               <div className="relative flex justify-center items-center">
-                <Plx className="z-90" parallaxData={parallaxAvatar}>
+                <Plx className="z-30" parallaxData={parallaxAvatar}>
                   <img
                     src="/assets/home/avatar.png"
                     alt="Avatar"
@@ -170,6 +190,13 @@ const PetaKesenianDetail = () => {
               <ImageAccordion images={artProvince.art_province_details} />
             </div>
           </div>
+
+          {/* Footer */}
+          <img
+            src="/assets/home/batik-footer2.png"
+            className="absolute h-fit w-full z-40 bottom-0 opacity-70"
+            alt="Batik Footer"
+          />
         </div>
       </div>
 

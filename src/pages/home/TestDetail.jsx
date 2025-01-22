@@ -149,7 +149,7 @@ const TestDetail = () => {
 
                 {/* Inputan */}
 
-                <div className="flex items-baseline relative mt-48 ml-5 z-50">
+                <div className="flex items-baseline relative mt-48 ml-5 z-50 ">
                   <Plx className="w-full" parallaxData={parallaxAvatar}>
                     <div className="relative flex items-center bg-white shadow-lg rounded-full px-2 py-2">
                       <input
@@ -166,6 +166,27 @@ const TestDetail = () => {
                     </div>
                   </Plx>
                 </div>
+
+                <div className=" relative z-50 mt-10 ml-5">
+                  <Plx
+                    className="text-xs grid grid-cols-2 gap-3 space"
+                    parallaxData={parallaxAvatar}
+                  >
+                    {[
+                      "💃 Tarian tradisional",
+                      "🪘 Alat musik tradisional",
+                      "🎊 Festival Budaya",
+                      "🥻 Pakaian Adat",
+                    ].map((question, index) => (
+                      <button
+                        key={index}
+                        className="bg-gradient-to-bl from-tertiary via-white/30 to-tertiary  border-[0.5px] border-white/50   px-4 py-2 rounded-full text-white"
+                      >
+                        {question}
+                      </button>
+                    ))}
+                  </Plx>
+                </div>
               </div>
 
               {/* Avatar */}
@@ -180,7 +201,7 @@ const TestDetail = () => {
                 </Plx>
               </div>
 
-              <ImageAccordion />
+              {/* <ImageAccordion /> */}
             </div>
           </div>
 
