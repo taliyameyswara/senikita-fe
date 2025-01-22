@@ -16,9 +16,9 @@ const CallbackGoogle = () => {
         localStorage.setItem('token', token);
 
         const response = fetchProfileUser();
-        login(response.data.data);
+        login(response);
 
-        if (response.data.data.role === 1) {
+        if (response.role === 1) {
             navigate("/dashboard");
         } else {
             navigate("/");
