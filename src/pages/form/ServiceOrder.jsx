@@ -12,6 +12,8 @@ import ProductTransactionCard from "../user/transaction/product/ProductTransacti
 import { useAxiosInstance } from "../../config/axiosConfig";
 import { toast } from "react-toastify";
 import moment from "moment";
+import DefaultPicture from "/assets/home/defaultpic.png";
+
 const ServiceOrder = () => {
   const axiosInstance = useAxiosInstance();
   const location = useLocation();

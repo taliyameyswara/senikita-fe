@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "@tailwindcss/forms": "^0.5.2",
     "@tensorflow/tfjs": "^4.21.0",
     "axios": "^1.7.7",
     "chartjs-adapter-moment": "^1.0.0",
+    "elevenlabs": "^1.50.2",
     "leaflet": "^1.9.4",
     "moment": "^2.29.4",
     "react": "^19.0.0-rc.1",

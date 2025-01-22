@@ -53,6 +53,7 @@ import PetaKesenian from "./pages/home/PetaKesenian";
 import PetaKesenianDetail from "./pages/home/PetaKesenianDetail";
 import TestDetail from "./pages/home/TestDetail";
 import CallbackGoogle from "./pages/callback/CallbackGoogle";
+import ChatbotPlayground from "./pages/chatbot/ChatbotPlayground";
 
 function App() {
   const [progress, setProgress] = useState(0);
@@ -177,6 +178,7 @@ function App() {
         <Route path="/kebijakan-privasi" element={<PrivacyPolicy />} />
         <Route path="/not-authorized" element={<NotAuthorized />} />
         <Route path="/callback-google" element={<CallbackGoogle />} />
+        <Route path="/chatbot-playground" element={<ChatbotPlayground />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
