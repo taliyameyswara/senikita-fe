@@ -10,23 +10,30 @@ const CallbackGoogle = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
+        async function handleLogin() {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('jwt_token');
+            localStorage.setItem('token', token);
 
-        const token = params.get('jwt_token');
-        localStorage.setItem('token', token);
+            try {
+                const response = await fetchProfileUser();
+                console.log(response);
+                login(response);
 
-        const response = fetchProfileUser();
-        login(response);
-
-        if (response.role === 1) {
-            navigate("/dashboard");
-        } else {
-            navigate("/");
+                if (response.role === 1) {
+                    navigate("/dashboard");
+                } else {
+                    navigate("/");
+                }
+            } catch (error) {
+                console.error("Error fetching profile:", error);
+            }
         }
-    }, []);
-    return (
-        <FullPageLoader />
-    )
+
+        handleLogin();
+    }, [fetchProfileUser, login, navigate]); // Adding dependencies for hooks
+
+    return <FullPageLoader />;
 }
 
-export default CallbackGoogle
+export default CallbackGoogle;
