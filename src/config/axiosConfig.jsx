@@ -5,7 +5,7 @@ import { UserContext } from "../context/UserContext"; // Sesuaikan dengan path a
 // Membuat fungsi untuk membuat axios instance
 const createAxiosInstance = () => {
   const axiosInstance = axios.create({
-    baseURL: "https://api.senikita.my.id/api",
+    baseURL: "https://api-senikita.taliyams.my.id/api",
   });
 
   const { logout } = useContext(UserContext); // Memanggil useContext di dalam fungsi
