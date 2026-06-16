@@ -28,11 +28,11 @@ import ProductTransactionDetails from "./pages/user/Transaction/product/ProductT
 import ServiceTransactionDetails from "./pages/user/Transaction/service/ServiceTransactionDetails";
 
 import DashboardSeniman from "./pages/seniman/DashboardSeniman";
-import KesenianList from "./pages/seniman/kesenian/KesenianList";
+import KesenianList from "./pages/seniman/Kesenian/KesenianList";
 import AddProduct from "./pages/seniman/Kesenian/product/AddProduct";
 import EditProduct from "./pages/seniman/Kesenian/product/EditProduct";
-import AddService from "./pages/seniman/kesenian/service/AddService";
-import EditService from "./pages/seniman/kesenian/service/EditService";
+import AddService from "./pages/seniman/Kesenian/service/AddService";
+import EditService from "./pages/seniman/Kesenian/service/EditService";
 import ProductOrder from "./pages/form/ProductOrder";
 import ServiceOrder from "./pages/form/ServiceOrder";
 import Cart from "./pages/home/Cart";
