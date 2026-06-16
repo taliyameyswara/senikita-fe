@@ -2,7 +2,7 @@ import { useState } from "react";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 import UserDashboardLayout from "../../../layouts/UserDashboardLayout";
 import Tabs from "../../../components/Tabs";
-import ProductTransaction from "../transaction/product/ProductTransaction";
+import ProductTransaction from "../Transaction/product/ProductTransaction";
 import ServiceTransaction from "./service/ServiceTransaction";
 import { ProductData } from "../../../utils/ProductData";
 
