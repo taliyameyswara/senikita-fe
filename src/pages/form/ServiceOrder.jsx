@@ -8,7 +8,7 @@ import FileUpload from "../../components/FileUpload";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import ProductTransactionCard from "../user/transaction/product/ProductTransactionCard";
+import ProductTransactionCard from "../user/Transaction/product/ProductTransactionCard";
 import { useAxiosInstance } from "../../config/axiosConfig";
 import { toast } from "react-toastify";
 import moment from "moment";

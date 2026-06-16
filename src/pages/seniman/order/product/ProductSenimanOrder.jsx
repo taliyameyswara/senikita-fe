@@ -5,12 +5,12 @@ import Modal from "../../../../components/Modal";
 import OrderInfo from "../../../user/transaction/OrderInfo";
 import { useAxiosInstance } from "../../../../config/axiosConfig";
 import ProductOrderTable from "./ProductOrderTable";
-import ProductCardDetail from "../../../user/transaction/product/ProductCardDetail";
-import OrderNotes from "../../../user/transaction/product/OrderNotes";
-import ShippingInfo from "../../../user/transaction/product/ShippingInfo";
+import ProductCardDetail from "../../../user/Transaction/product/ProductCardDetail";
+import OrderNotes from "../../../user/Transaction/product/OrderNotes";
+import ShippingInfo from "../../../user/Transaction/product/ShippingInfo";
 import PaymentDetail from "../../../user/transaction/PaymentDetail";
 import { toast } from "react-toastify";
-import ProductTransactionCard from "../../../user/transaction/product/ProductTransactionCard";
+import ProductTransactionCard from "../../../user/Transaction/product/ProductTransactionCard";
 import Spinner from "../../../../components/loading/Spinner";
 const ProductSenimanOrder = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
