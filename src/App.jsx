@@ -23,9 +23,9 @@ import ServiceDetails from "./pages/home/ServiceDetails";
 import ArtProviderRegister from "./pages/form/ArtProviderRegister";
 import DashboardUser from "./pages/user/DashboardUser";
 
-import DashboardTransaction from "./pages/user/transaction/DashboardTransaction";
-import ProductTransactionDetails from "./pages/user/transaction/product/ProductTransactionDetails";
-import ServiceTransactionDetails from "./pages/user/transaction/service/ServiceTransactionDetails";
+import DashboardTransaction from "./pages/user/Transaction/DashboardTransaction";
+import ProductTransactionDetails from "./pages/user/Transaction/product/ProductTransactionDetails";
+import ServiceTransactionDetails from "./pages/user/Transaction/service/ServiceTransactionDetails";
 
 import DashboardSeniman from "./pages/seniman/DashboardSeniman";
 import KesenianList from "./pages/seniman/kesenian/KesenianList";
