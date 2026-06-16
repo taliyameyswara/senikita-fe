@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/admin/partials/Sidebar';
 import Header from '../../../components/admin/partials/Header';
-import DataTable from '../../../components/admin/components/DataTable';
+import DataTable from '../../../components/admin/components/Datatable';
 import PaginationClassic from '../../../components/admin/components/PaginationClassic';
 import { useAxiosInstance } from '../../../config/axiosConfig';
 import UserModal from './UserModal';

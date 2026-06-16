@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/admin/partials/Sidebar';
 import Header from '../../../components/admin/partials/Header';
 import { useAxiosInstance } from '../../../config/axiosConfig';
-import DataTable from '../../../components/admin/components/DataTable';
+import DataTable from '../../../components/admin/components/Datatable';
 import LoadingTable from '../../../components/loading/LoadingTable';
 import PaginationClassic from '../../../components/admin/components/PaginationClassic';
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
